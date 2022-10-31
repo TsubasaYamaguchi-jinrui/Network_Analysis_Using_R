@@ -1,0 +1,111 @@
+# データの読み込みとマトリックスの作成  
+個体のassociationを表すデータには、既にマトリックス(隣接行列)になっているもの以外にも様々な表し方をしたものがある。  
+以下では、様々な形式のデータからマトリックスを作成する方法を学ぶ。  
+
+## 交渉を記録したデータフレーム  
+例えば、以下は金華山島$B_1$群で2018年時点で6歳以上のメスを個体追跡した際のデータであり、1分間の瞬間サンプリングで以下を記録したデータフレーム。    
+- 追跡個体の活動(G: 毛づくろい、R: 休息、F: 採食、M: 移動、O: その他)  
+- 追跡個体が毛づくろいした場合には毛づくろいをした個体(Groomer)とされた個体(Groomee)
+
+```{r}
+groom <- read_csv("data/focal_demo.csv")
+
+groom %>% 
+  filter(activity == "G")
+```
+
+追跡したメスのIDは以下のとおりである。  
+```{r}
+adult <- adult <- c("Kil","Kit","Koh","Kur","Kun","Kor","Ntr",
+           "Ten","Aka","Ako","Tam","Tot","Hen","Hot",
+           "Mal","Mik","Mei")
+```
+
+
+このデータをもとに、個体追跡中にメス間が毛づくろいをした頻度を示したマトリックスを作成する。  
+ここで、頻度は以下の式で表すものとする。  
+
+$G_{AB}$: AからBへの毛づくろい頻度  
+$x_{AB}$: AからBへの毛づくろいが確認された瞬間サンプリングポイント数  
+$y_A$: Aの個体追跡時間(瞬間サンプリングポイント総数)  
+$y_B$: Bの個体追跡時間(瞬間サンプリングポイント総数)  
+
+$$
+G_{AB} = \frac{x_{AB}}{y_{A} + y_{B}} 
+$$
+
+各個体の追跡時間(瞬間サンプリングポイント総数)を算出する。  
+```{r}
+groom %>% 
+  group_by(subject) %>% 
+  summarise(duration = n()) -> duration
+
+duration
+```
+
+マトリックスは`ANTs`パッケージを用いて以下のように算出できる。  
+```{r}
+## メス同士が毛づくろいをしている行のみを抽出
+groom_G <- groom %>% 
+  filter(activity == "G") %>% 
+  filter(Groomer %in% adult & Groomee %in% adult)
+
+groom_mat <- df.to.mat(groom_G, 
+                       ## 行動の行い手を表す列  
+                       actor = "Groomer",
+                       ## 行動の受け手を表す列
+                       receiver = "Groomee",
+                       ## 追跡時間
+                       tobs = duration$duration,
+                       sym = FALSE)
+```
+
+```{r}
+groom_mat %>% 
+  data.frame()
+```
+
+
+もし交渉の方向性を考慮しない場合は、`sym = TRUE`とすればよい。  
+```{r}
+groom_mat_b <- df.to.mat(groom_G, 
+                       ## 行動の行い手を表す列  
+                       actor = "Groomer",
+                       ## 行動の受け手を表す列
+                       receiver = "Groomee",
+                       ## 追跡時間
+                       tobs = duration$duration,
+                       sym = TRUE)
+```
+
+```{r}
+groom_mat_b %>% 
+  data.frame()
+```
+
+## Group by individual  
+その他にも、以下のようにある時点・場所において確認された個体を0/1で記録した"group by individual"と呼ばれる形式のものもある。  
+例えば、以下は2021年交尾期の各観察日にメスが観察されたか否かを示したものである。  
+```{r}
+presence <- read_csv("data/presence_demo.csv")
+
+presence
+```
+
+このようなデータは、同じグループで観察された個体をassociateしていたとみなす(=gambit of the group)。  
+`asnipe`では、こうしたデータから以下のような指標についてマトリックスを作成することが可能である。  
+各指標については、以下を参照[@Hoppitt2018]。  
+- HWI: half-weight index   
+- SRI: simple ratio index  
+
+```{r}
+presence_mat <- get_network(presence %>% dplyr::select(-date),
+                            data_format = "GBI",
+                            ## "HWI"の場合は、"HWI"
+                            association_index = "SRI")
+```
+
+```{r}
+presence_mat %>% 
+  data.frame()
+```

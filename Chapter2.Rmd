@@ -1,0 +1,34 @@
+# 2. 各ネットワーク指標の算出  
+ここでは、`ANTs`パッケージを用いてマトリックスから様々なネットワーク指標を求める(他の様々なパッケージでも求められる)。    
+各指標については、Sosa et al. (2020)やFarine & Whitehead(2015)などを参照[@Sosa2020; @Farine2015]。  
+
+- 重みづけ中心性(strength)  
+- 固有ベクトル中心性(eigenvector centrality)  
+- 次数中心性(degree)  
+- 媒介中心性(betweenness)など...     
+
+`ANTs`パッケージを用いれば、属性データ(年齢や順位などの情報)と結合することができる。  
+2018年時点の属性データは以下の通り。  
+```{r}
+attribute <- read_csv("data/attributes_demo.csv")
+
+attribute
+```
+
+ここでは、上記で作成したの毛づくろいネットワーク(`groom_mat`)を用いる。  
+以下のように属性に次々と指標を付け足していくことができる。
+```{r}
+## 重みづけ中心性(strength)
+met.strength(groom_mat, 
+             df = attribute,
+             ## 個体IDの列番号
+             dfid = 1) -> female_metrics
+
+## 固有ベクトル中心性  
+met.eigen(groom_mat, 
+             df = female_metrics,
+             ## 個体IDの列番号
+             dfid = 1) -> female_metrics
+
+female_metrics
+```

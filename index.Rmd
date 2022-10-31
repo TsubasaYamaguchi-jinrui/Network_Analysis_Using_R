@@ -1,0 +1,30 @@
+--- 
+title: "Network Analysis Using R"
+author: "Tsubasa Yamaguchi"
+date: "`r Sys.Date()`"
+output: 
+  bookdown::gitbook:
+    split_bib: yes  
+    number_sections: true    
+    css: custom_style.css   
+site: bookdown::bookdown_site  
+output_dir: "docs"  
+documentclass: book  
+header-includes:
+   - \usepackage{amsmath}
+   - \usepackage{nccmath}
+bibliography: reference.bib   
+csl: "american-journal-of-primatology.csl"
+link-citations: yes
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE,
+                      warning = FALSE, fig.align = "left",
+                      cache = TRUE)
+```
+
+# 本稿の目的 {-}   
+本稿では、Rでネットワーク分析を行う方法をまとめたものである。  
+本稿では、主に以下の内容を扱う。  
+
