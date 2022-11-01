@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 おまけ. CSIの算出 | Network Analysis Using R</title>
+  <meta name="description" content="5 おまけ. CSIの算出 | Network Analysis Using R" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 おまけ. CSIの算出 | Network Analysis Using R" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 おまけ. CSIの算出 | Network Analysis Using R" />
+  
+  
+  
+
+<meta name="author" content="Tsubasa Yamaguchi" />
+
+
+<meta name="date" content="2022-11-02" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="c4.html"/>
+<link rel="next" href="実行環境.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.23/datatables.js"></script>
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="custom_style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>本稿の目的</a></li>
+<li class="chapter" data-level="" data-path="パッケージの読み込み.html"><a href="パッケージの読み込み.html"><i class="fa fa-check"></i>0. パッケージの読み込み</a></li>
+<li class="chapter" data-level="1" data-path="c1.html"><a href="c1.html"><i class="fa fa-check"></i><b>1</b> 社会ネットワーク分析の概説</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="c1.html"><a href="c1.html#社会ネットワーク分析snaとは"><i class="fa fa-check"></i><b>1.1</b> 社会ネットワーク分析(SNA)とは</a></li>
+<li class="chapter" data-level="1.2" data-path="c1.html"><a href="c1.html#社会ネットワークの基礎"><i class="fa fa-check"></i><b>1.2</b> 社会ネットワークの基礎</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="c1.html"><a href="c1.html#グラフ"><i class="fa fa-check"></i><b>1.2.1</b> グラフ</a></li>
+<li class="chapter" data-level="1.2.2" data-path="c1.html"><a href="c1.html#隣接行列マトリックス"><i class="fa fa-check"></i><b>1.2.2</b> 隣接行列(マトリックス)</a></li>
+<li class="chapter" data-level="1.2.3" data-path="c1.html"><a href="c1.html#rでのグラフの描画"><i class="fa fa-check"></i><b>1.2.3</b> Rでのグラフの描画</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="c2.html"><a href="c2.html"><i class="fa fa-check"></i><b>2</b> データの読み込みとマトリックスの作成</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="c2.html"><a href="c2.html#個体間のassociationを記録したデータフレーム"><i class="fa fa-check"></i><b>2.1</b> 2個体間のassociationを記録したデータフレーム</a></li>
+<li class="chapter" data-level="2.2" data-path="c2.html"><a href="c2.html#group-by-individual"><i class="fa fa-check"></i><b>2.2</b> Group by individual</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="c3.html"><a href="c3.html"><i class="fa fa-check"></i><b>3</b> 各ネットワーク指標の算出</a></li>
+<li class="chapter" data-level="4" data-path="c4.html"><a href="c4.html"><i class="fa fa-check"></i><b>4</b> 統計的検定</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="c4.html"><a href="c4.html#なぜrandomizationが必要か"><i class="fa fa-check"></i><b>4.1</b> なぜrandomizationが必要か？</a></li>
+<li class="chapter" data-level="4.2" data-path="c4.html"><a href="c4.html#node-label-randomization"><i class="fa fa-check"></i><b>4.2</b> node label randomization</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="c4.html"><a href="c4.html#線形回帰分析"><i class="fa fa-check"></i><b>4.2.1</b> 線形回帰分析</a></li>
+<li class="chapter" data-level="4.2.2" data-path="c4.html"><a href="c4.html#ネットワーク同士の関連の検討"><i class="fa fa-check"></i><b>4.2.2</b> ネットワーク同士の関連の検討</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="c4.html"><a href="c4.html#data-stream-randomization"><i class="fa fa-check"></i><b>4.3</b> data stream randomization</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="おまけ.-csiの算出.html"><a href="おまけ.-csiの算出.html"><i class="fa fa-check"></i><b>5</b> おまけ. CSIの算出</a></li>
+<li class="chapter" data-level="" data-path="実行環境.html"><a href="実行環境.html"><i class="fa fa-check"></i>実行環境</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Network Analysis Using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="おまけ.-csiの算出" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">5</span> おまけ. CSIの算出<a href="おまけ.-csiの算出.html#おまけ.-csiの算出" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><code>aninet</code>パッケージを用いれば、CSI<span class="citation">(<a href="#ref-Silk2006" role="doc-biblioref">Silk et al., 2006</a>)</span>を容易に算出できる。<br />
+上で算出すしたメス間の毛づくろいマトリクスと、以下の近接マトリクスを用いて算出する。</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="おまけ.-csiの算出.html#cb63-1" aria-hidden="true" tabindex="-1"></a>prox_mat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/prox_f.csv&quot;</span>,<span class="at">row.names=</span><span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb63-2"><a href="おまけ.-csiの算出.html#cb63-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span>
+<span id="cb63-3"><a href="おまけ.-csiの算出.html#cb63-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-4"><a href="おまけ.-csiの算出.html#cb63-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(prox_mat) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(prox_mat)</span>
+<span id="cb63-5"><a href="おまけ.-csiの算出.html#cb63-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-6"><a href="おまけ.-csiの算出.html#cb63-6" aria-hidden="true" tabindex="-1"></a>prox_mat <span class="sc">%&gt;%</span> </span>
+<span id="cb63-7"><a href="おまけ.-csiの算出.html#cb63-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>()</span></code></pre></div>
+<pre><code>##             Kil         Kit        Koh         Kun        Kor        Ntr
+## Kil          NA 0.148601399 0.10733945 0.029467085 0.04553818 0.04176334
+## Kit 0.148601399          NA 0.09505410 0.064403395 0.06003098 0.03628560
+## Koh 0.107339450 0.095054096         NA 0.059630607 0.08569119 0.02036660
+## Kun 0.029467085 0.064403395 0.05963061          NA 0.03599788 0.02032086
+## Kor 0.045538178 0.060030984 0.08569119 0.035997882         NA 0.06288281
+## Ntr 0.041763341 0.036285603 0.02036660 0.020320856 0.06288281         NA
+## Ten 0.028753994 0.033859177 0.02167804 0.035676810 0.07162978 0.07420925
+## Aka 0.012272950 0.003680982 0.02267865 0.014269406 0.01630202 0.04887543
+## Ako 0.019413093 0.016774685 0.01431412 0.009326425 0.03188521 0.04016064
+## Tam 0.009839461 0.041470714 0.02734200 0.018833536 0.06112360 0.03535811
+## Tot 0.023706897 0.039956012 0.03969466 0.007371007 0.13045141 0.03121387
+## Hot 0.012256267 0.009532456 0.00477327 0.047682119 0.01579703 0.00531401
+## Hen 0.012953368 0.007698888 0.02062780 0.003039514 0.03372302 0.03356009
+## Mal 0.016464891 0.010917913 0.01268499 0.044943820 0.02416278 0.02735043
+## Mik 0.038844150 0.030964669 0.02571547 0.016429354 0.04615385 0.02933780
+## Mei 0.013828868 0.020940485 0.01453711 0.004435683 0.03182515 0.04557744
+##            Ten         Aka         Ako         Tam         Tot         Hot
+## Kil 0.02875399 0.012272950 0.019413093 0.009839461 0.023706897 0.012256267
+## Kit 0.03385918 0.003680982 0.016774685 0.041470714 0.039956012 0.009532456
+## Koh 0.02167804 0.022678648 0.014314115 0.027341999 0.039694656 0.004773270
+## Kun 0.03567681 0.014269406 0.009326425 0.018833536 0.007371007 0.047682119
+## Kor 0.07162978 0.016302016 0.031885213 0.061123596 0.130451415 0.015797032
+## Ntr 0.07420925 0.048875433 0.040160643 0.035358114 0.031213873 0.005314010
+## Ten         NA 0.061754685 0.030087094 0.032560214 0.069555302 0.037511871
+## Aka 0.06175468          NA 0.074620573 0.064176245 0.018974566 0.016905738
+## Ako 0.03008709 0.074620573          NA 0.027802295 0.018455744 0.021126761
+## Tam 0.03256021 0.064176245 0.027802295          NA 0.072121468 0.007583965
+## Tot 0.06955530 0.018974566 0.018455744 0.072121468          NA 0.025055928
+## Hot 0.03751187 0.016905738 0.021126761 0.007583965 0.025055928          NA
+## Hen 0.02052655 0.009103977 0.045474614 0.013629480 0.055274262 0.043902439
+## Mal 0.03577441 0.008550855 0.006250000 0.042533081 0.015968064 0.030808081
+## Mik 0.05284888 0.033068783 0.021668029 0.057354302 0.016464132 0.037018756
+## Mei 0.03047619 0.027114529 0.039637599 0.026215645 0.021060276 0.017945267
+##             Hen         Mal        Mik         Mei
+## Kil 0.012953368 0.016464891 0.03884415 0.013828868
+## Kit 0.007698888 0.010917913 0.03096467 0.020940485
+## Koh 0.020627803 0.012684989 0.02571547 0.014537108
+## Kun 0.003039514 0.044943820 0.01642935 0.004435683
+## Kor 0.033723022 0.024162781 0.04615385 0.031825153
+## Ntr 0.033560091 0.027350427 0.02933780 0.045577443
+## Ten 0.020526551 0.035774411 0.05284888 0.030476190
+## Aka 0.009103977 0.008550855 0.03306878 0.027114529
+## Ako 0.045474614 0.006250000 0.02166803 0.039637599
+## Tam 0.013629480 0.042533081 0.05735430 0.026215645
+## Tot 0.055274262 0.015968064 0.01646413 0.021060276
+## Hot 0.043902439 0.030808081 0.03701876 0.017945267
+## Hen          NA 0.030732861 0.03748265 0.029187817
+## Mal 0.030732861          NA 0.14634146 0.051620648
+## Mik 0.037482647 0.146341463         NA 0.030255403
+## Mei 0.029187817 0.051620648 0.03025540          NA</code></pre>
+<p>毛づくろいマトリクスからKurのデータを除く(近接マトリクスと合わせるため)。</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="おまけ.-csiの算出.html#cb65-1" aria-hidden="true" tabindex="-1"></a>groom_mat_b <span class="ot">&lt;-</span> groom_mat_b[<span class="sc">-</span><span class="dv">10</span>,<span class="sc">-</span><span class="dv">10</span>]</span></code></pre></div>
+<p>CSIは以下のように求められる。<br />
+3つ以上の数値を用いる場合でも、リストに追加していくだけで容易に求まる。</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="おまけ.-csiの算出.html#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 2つのマトリクスをリスト化</span></span>
+<span id="cb66-2"><a href="おまけ.-csiの算出.html#cb66-2" aria-hidden="true" tabindex="-1"></a>list <span class="ot">&lt;-</span> <span class="fu">list</span>(groom_mat_b, prox_mat)</span>
+<span id="cb66-3"><a href="おまけ.-csiの算出.html#cb66-3" aria-hidden="true" tabindex="-1"></a>CSI <span class="ot">&lt;-</span> <span class="fu">dyadic_csi</span>(list)</span></code></pre></div>
+<p>マトリクスは以下の通り。</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="おまけ.-csiの算出.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(CSI) <span class="ot">&lt;-</span> <span class="fu">rownames</span>(prox_mat)</span>
+<span id="cb67-2"><a href="おまけ.-csiの算出.html#cb67-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(CSI) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(prox_mat)</span>
+<span id="cb67-3"><a href="おまけ.-csiの算出.html#cb67-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-4"><a href="おまけ.-csiの算出.html#cb67-4" aria-hidden="true" tabindex="-1"></a>CSI <span class="sc">%&gt;%</span> </span>
+<span id="cb67-5"><a href="おまけ.-csiの算出.html#cb67-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>()</span></code></pre></div>
+<pre><code>##            Kil        Kit       Koh        Kun       Kor        Ntr       Ten
+## Kil         NA 13.1042381 1.5443971 0.98428757 0.6552021 0.60088982 0.7643802
+## Kit 13.1042381         NA 1.8809200 0.92663431 0.8915746 0.78716555 0.5420480
+## Koh  1.5443971  1.8809200        NA 1.23209198 1.2329225 0.61536768 0.3119031
+## Kun  0.9842876  0.9266343 1.2320920         NA 0.5179366 0.31860411 0.5133170
+## Kor  0.6552021  0.8915746 1.2329225 0.51793656        NA 4.64249260 2.6668403
+## Ntr  0.6008898  0.7871655 0.6153677 0.31860411 4.6424926         NA 3.7141526
+## Ten  0.7643802  0.5420480 0.3119031 0.51331698 2.6668403 3.71415256        NA
+## Aka  0.1765829  0.5510337 0.3528585 0.23124757 0.4808443 1.25067658 2.5067746
+## Ako  0.2793151  0.4266683 0.3668997 0.13418835 1.4817507 0.97271675 1.1957603
+## Tam  0.1415699  0.6511851 1.4155272 0.54053793 0.8794447 0.50873159 0.4684755
+## Tot  1.1100956  2.5939561 1.6986391 0.28537814 1.8769314 0.44910436 1.0007598
+## Hot  0.1763428  0.1655378 0.2414133 0.71411246 0.2272873 0.07645783 0.5982682
+## Hen  0.2143964  0.6384085 0.5640990 0.04373245 0.4852059 0.79768327 0.3496319
+## Mal  0.2931029  0.3951573 0.9329951 0.64665047 0.5686548 0.39351721 1.0591778
+## Mik  0.5588886  1.2886155 0.9305812 0.23638510 0.8841411 0.55311373 0.7603883
+## Mei  0.1989694  0.5596737 0.2615050 1.49582258 0.4578994 0.65576702 0.4384906
+##           Aka        Ako       Tam       Tot        Hot        Hen        Mal
+## Kil 0.1765829 0.27931506 0.1415699 1.1100956 0.17634284 0.21439643 0.29310285
+## Kit 0.5510337 0.42666826 0.6511851 2.5939561 0.16553778 0.63840846 0.39515733
+## Koh 0.3528585 0.36689969 1.4155272 1.6986391 0.24141327 0.56409896 0.93299506
+## Kun 0.2312476 0.13418835 0.5405379 0.2853781 0.71411246 0.04373245 0.64665047
+## Kor 0.4808443 1.48175069 0.8794447 1.8769314 0.22728727 0.48520593 0.56865480
+## Ntr 1.2506766 0.97271675 0.5087316 0.4491044 0.07645783 0.79768327 0.39351721
+## Ten 2.5067746 1.19576030 0.4684755 1.0007598 0.59826817 0.34963190 1.05917776
+## Aka        NA 1.90676455 0.9233661 0.2730055 0.88451956 1.45426091 0.30513215
+## Ako 1.9067645         NA 0.6435518 0.2655407 1.26192668 0.78528971 0.08992483
+## Tam 0.9233661 0.64355179        NA 1.6194770 4.55522245 0.19610059 0.61196482
+## Tot 0.2730055 0.26554075 1.6194770        NA 1.02074634 1.38464537 0.22974807
+## Hot 0.8845196 1.26192668 4.5552224 1.0207463         NA 1.36152269 0.94998635
+## Hen 1.4542609 0.78528971 0.1961006 1.3846454 1.36152269         NA 0.44218358
+## Mal 0.3051322 0.08992483 0.6119648 0.2297481 0.94998635 0.44218358         NA
+## Mik 1.1495203 0.39025653 1.2560417 0.4927983 0.98113130 1.97349575 2.10555702
+## Mei 1.5086270 0.57030471 1.8553611 0.3281259 0.36802291 1.05940524 2.76861473
+##           Mik       Mei
+## Kil 0.5588886 0.1989694
+## Kit 1.2886155 0.5596737
+## Koh 0.9305812 0.2615050
+## Kun 0.2363851 1.4958226
+## Kor 0.8841411 0.4578994
+## Ntr 0.5531137 0.6557670
+## Ten 0.7603883 0.4384906
+## Aka 1.1495203 1.5086270
+## Ako 0.3902565 0.5703047
+## Tam 1.2560417 1.8553611
+## Tot 0.4927983 0.3281259
+## Hot 0.9811313 0.3680229
+## Hen 1.9734957 1.0594052
+## Mal 2.1055570 2.7686147
+## Mik        NA 0.6907648
+## Mei 0.6907648        NA</code></pre>
+
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-Silk2006" class="csl-entry">
+Silk, J. B., Altmann, J., &amp; Alberts, S. C. (2006). Social relationships among adult female baboons (papio cynocephalus) i. Variation in the strength of social bonds. <em>Behav. Ecol. Sociobiol.</em>, <em>61</em>(2), 183–195.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="c4.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="実行環境.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

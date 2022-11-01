@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Network Analysis Using R</title>
+  <meta name="description" content="Network Analysis Using R" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Network Analysis Using R" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Network Analysis Using R" />
+  
+  
+  
+
+<meta name="author" content="Tsubasa Yamaguchi" />
+
+
+<meta name="date" content="2022-11-02" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="パッケージの読み込み.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.23/datatables.js"></script>
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="custom_style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>本稿の目的</a></li>
+<li class="chapter" data-level="" data-path="パッケージの読み込み.html"><a href="パッケージの読み込み.html"><i class="fa fa-check"></i>0. パッケージの読み込み</a></li>
+<li class="chapter" data-level="1" data-path="c1.html"><a href="c1.html"><i class="fa fa-check"></i><b>1</b> 社会ネットワーク分析の概説</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="c1.html"><a href="c1.html#社会ネットワーク分析snaとは"><i class="fa fa-check"></i><b>1.1</b> 社会ネットワーク分析(SNA)とは</a></li>
+<li class="chapter" data-level="1.2" data-path="c1.html"><a href="c1.html#社会ネットワークの基礎"><i class="fa fa-check"></i><b>1.2</b> 社会ネットワークの基礎</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="c1.html"><a href="c1.html#グラフ"><i class="fa fa-check"></i><b>1.2.1</b> グラフ</a></li>
+<li class="chapter" data-level="1.2.2" data-path="c1.html"><a href="c1.html#隣接行列マトリックス"><i class="fa fa-check"></i><b>1.2.2</b> 隣接行列(マトリックス)</a></li>
+<li class="chapter" data-level="1.2.3" data-path="c1.html"><a href="c1.html#rでのグラフの描画"><i class="fa fa-check"></i><b>1.2.3</b> Rでのグラフの描画</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="c2.html"><a href="c2.html"><i class="fa fa-check"></i><b>2</b> データの読み込みとマトリックスの作成</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="c2.html"><a href="c2.html#個体間のassociationを記録したデータフレーム"><i class="fa fa-check"></i><b>2.1</b> 2個体間のassociationを記録したデータフレーム</a></li>
+<li class="chapter" data-level="2.2" data-path="c2.html"><a href="c2.html#group-by-individual"><i class="fa fa-check"></i><b>2.2</b> Group by individual</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="c3.html"><a href="c3.html"><i class="fa fa-check"></i><b>3</b> 各ネットワーク指標の算出</a></li>
+<li class="chapter" data-level="4" data-path="c4.html"><a href="c4.html"><i class="fa fa-check"></i><b>4</b> 統計的検定</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="c4.html"><a href="c4.html#なぜrandomizationが必要か"><i class="fa fa-check"></i><b>4.1</b> なぜrandomizationが必要か？</a></li>
+<li class="chapter" data-level="4.2" data-path="c4.html"><a href="c4.html#node-label-randomization"><i class="fa fa-check"></i><b>4.2</b> node label randomization</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="c4.html"><a href="c4.html#線形回帰分析"><i class="fa fa-check"></i><b>4.2.1</b> 線形回帰分析</a></li>
+<li class="chapter" data-level="4.2.2" data-path="c4.html"><a href="c4.html#ネットワーク同士の関連の検討"><i class="fa fa-check"></i><b>4.2.2</b> ネットワーク同士の関連の検討</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="c4.html"><a href="c4.html#data-stream-randomization"><i class="fa fa-check"></i><b>4.3</b> data stream randomization</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="おまけ.-csiの算出.html"><a href="おまけ.-csiの算出.html"><i class="fa fa-check"></i><b>5</b> おまけ. CSIの算出</a></li>
+<li class="chapter" data-level="" data-path="実行環境.html"><a href="実行環境.html"><i class="fa fa-check"></i>実行環境</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Network Analysis Using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Network Analysis Using R</h1>
+<p class="author"><em>Tsubasa Yamaguchi</em></p>
+<p class="date"><em>2022-11-02</em></p>
+</div>
+<div id="本稿の目的" class="section level1 unnumbered hasAnchor">
+<h1>本稿の目的<a href="index.html#本稿の目的" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>本稿はネットワーク分析の簡単な概要と、Rで分析を行う方法をまとめたものである。<br />
+本稿で扱うのは、以下の内容である。</p>
+<ul>
+<li>社会ネットワーク分析の概要(第<a href="c1.html#c1">1</a>章)</li>
+<li>rawデータからマトリックス(隣接行列)を作成する方法(第<a href="c2.html#c2">2</a>章)<br />
+</li>
+<li>各ネットワーク指標の解説と算出法(第<a href="c3.html#c3">3</a>章)<br />
+</li>
+<li>ネットワークデータでの統計分析（第<a href="c4.html#c4">4</a>章)</li>
+</ul>
+<p><br/></p>
+<p>参考にしたのは主に以下の文献である。<br />
+なお、本稿の作成に使用したファイルとRのコードは筆者の<a href="https://github.com/TsubasaYamaguchi-jinrui/Network_Analysis_Using_R">Github</a>ですべて閲覧できる。</p>
+<ul>
+<li>鈴木努(2017) ネットワーク分析 第2版 <span class="citation">(<a href="#ref-Suzuki2017" role="doc-biblioref">鈴木, 2017</a>)</span><br />
+</li>
+<li>Croft et al. (2008) Exploring Animal Social Network <span class="citation">(<a href="#ref-Croft2019" role="doc-biblioref">Croft et al., 2008</a>)</span><br />
+</li>
+<li>Farine &amp; Whitehead (2015) Constructing, conducting and interpreting animal social network analysis <span class="citation">(<a href="#ref-Farine2015" role="doc-biblioref">Farine &amp; Whitehead, 2015</a>)</span><br />
+</li>
+<li>Farine (2017) A guide to null models for animal social network analysis <span class="citation">(<a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>)</span><br />
+</li>
+<li>Sosa et al. (2020) A multilevel statistical toolkit to study animal social networks: the Animal Network Toolkit Software (ANTs) R package. <span class="citation">(<a href="#ref-Sosa2020" role="doc-biblioref">Sosa et al., 2020</a>)</span></li>
+</ul>
+
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-Croft2019" class="csl-entry">
+Croft, D., James, R., &amp; Krause, J. (2008). <em>動物の社会ネットワーク分析</em> (島田将喜., Trans.). 東海大学出版部.
+</div>
+<div id="ref-Farine2017" class="csl-entry">
+Farine, D. R. (2017). A guide to null models for animal social network analysis. <em>Methods Ecol. Evol.</em>, <em>8</em>(10), 1309–1320.
+</div>
+<div id="ref-Farine2015" class="csl-entry">
+Farine, D. R., &amp; Whitehead, H. (2015). Constructing, conducting and interpreting animal social network analysis. <em>J. Anim. Ecol.</em>, <em>84</em>(5), 1144–1163.
+</div>
+<div id="ref-Sosa2020" class="csl-entry">
+Sosa, S., Puga-Gonzalez, I., Hu, F., Pansanel, J., Xie, X., &amp; Sueur, C. (2020). A multilevel statistical toolkit to study animal social networks: The animal network toolkit software (<span>ANTs</span>) <span>R</span> package. <em>Sci. Rep.</em>, <em>10</em>(1), 12507.
+</div>
+<div id="ref-Suzuki2017" class="csl-entry">
+鈴木努. (2017). <em>R で学ぶデータサイエンス 8 ネットワーク分析　第2版</em> (金明哲., Ed.). 共立出版.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="パッケージの読み込み.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

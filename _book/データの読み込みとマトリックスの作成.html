@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1 データの読み込みとマトリックスの作成 | Network Analysis Using R</title>
+  <meta name="description" content="1 データの読み込みとマトリックスの作成 | Network Analysis Using R" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="1 データの読み込みとマトリックスの作成 | Network Analysis Using R" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="1 データの読み込みとマトリックスの作成 | Network Analysis Using R" />
+  
+  
+  
+
+<meta name="author" content="Tsubasa Yamaguchi" />
+
+
+<meta name="date" content="2022-11-01" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="パッケージの読み込み.html"/>
+<link rel="next" href="各ネットワーク指標の算出.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="custom_style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>本稿の目的</a></li>
+<li class="chapter" data-level="" data-path="パッケージの読み込み.html"><a href="パッケージの読み込み.html"><i class="fa fa-check"></i>0. パッケージの読み込み</a></li>
+<li class="chapter" data-level="1" data-path="データの読み込みとマトリックスの作成.html"><a href="データの読み込みとマトリックスの作成.html"><i class="fa fa-check"></i><b>1</b> データの読み込みとマトリックスの作成</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="データの読み込みとマトリックスの作成.html"><a href="データの読み込みとマトリックスの作成.html#交渉を記録したデータフレーム"><i class="fa fa-check"></i><b>1.1</b> 交渉を記録したデータフレーム</a></li>
+<li class="chapter" data-level="1.2" data-path="データの読み込みとマトリックスの作成.html"><a href="データの読み込みとマトリックスの作成.html#group-by-individual"><i class="fa fa-check"></i><b>1.2</b> Group by individual</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="各ネットワーク指標の算出.html"><a href="各ネットワーク指標の算出.html"><i class="fa fa-check"></i><b>2</b> 2. 各ネットワーク指標の算出</a></li>
+<li class="chapter" data-level="3" data-path="統計的検定.html"><a href="統計的検定.html"><i class="fa fa-check"></i><b>3</b> 3. 統計的検定</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="統計的検定.html"><a href="統計的検定.html#node-label-randomization"><i class="fa fa-check"></i><b>3.1</b> 3.1 node label randomization</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="統計的検定.html"><a href="統計的検定.html#線形回帰分析"><i class="fa fa-check"></i><b>3.1.1</b> 3.1.1 線形回帰分析</a></li>
+<li class="chapter" data-level="3.1.2" data-path="統計的検定.html"><a href="統計的検定.html#ネットワーク同士の関連の検討"><i class="fa fa-check"></i><b>3.1.2</b> 3.1.2 ネットワーク同士の関連の検討</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="統計的検定.html"><a href="統計的検定.html#data-stream-randomization"><i class="fa fa-check"></i><b>3.2</b> 3.2 data stream randomization</a></li>
+<li class="chapter" data-level="3.3" data-path="統計的検定.html"><a href="統計的検定.html#おまけ.-csiの算出"><i class="fa fa-check"></i><b>3.3</b> おまけ. CSIの算出</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="実行環境.html"><a href="実行環境.html"><i class="fa fa-check"></i>実行環境</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Network Analysis Using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="データの読み込みとマトリックスの作成" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">1</span> データの読み込みとマトリックスの作成<a href="データの読み込みとマトリックスの作成.html#データの読み込みとマトリックスの作成" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>個体のassociationを表すデータには、既にマトリックス(隣接行列)になっているもの以外にも様々な表し方をしたものがある。<br />
+以下では、様々な形式のデータからマトリックスを作成する方法を学ぶ。</p>
+<div id="交渉を記録したデータフレーム" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> 交渉を記録したデータフレーム<a href="データの読み込みとマトリックスの作成.html#交渉を記録したデータフレーム" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>例えば、以下は金華山島<span class="math inline">\(B_1\)</span>群で2018年時点で6歳以上のメスを個体追跡した際のデータであり、1分間の瞬間サンプリングで以下を記録したデータフレーム。<br />
+- 追跡個体の活動(G: 毛づくろい、R: 休息、F: 採食、M: 移動、O: その他)<br />
+- 追跡個体が毛づくろいした場合には毛づくろいをした個体(Groomer)とされた個体(Groomee)</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="データの読み込みとマトリックスの作成.html#cb2-1" aria-hidden="true" tabindex="-1"></a>groom <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/focal_demo.csv&quot;</span>)</span>
+<span id="cb2-2"><a href="データの読み込みとマトリックスの作成.html#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="データの読み込みとマトリックスの作成.html#cb2-3" aria-hidden="true" tabindex="-1"></a>groom <span class="sc">%&gt;%</span> </span>
+<span id="cb2-4"><a href="データの読み込みとマトリックスの作成.html#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(activity <span class="sc">==</span> <span class="st">&quot;G&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 5,057 × 9
+##       No no_focal date      subject  time activity TG    Groomer Groomee
+##    &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;   &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;   &lt;chr&gt;  
+##  1    10 A1       2018/10/8 Tot         9 G        G     Tot     In     
+##  2    11 A1       2018/10/8 Tot        10 G        G     Tot     In     
+##  3    12 A1       2018/10/8 Tot        11 G        G     Tot     J      
+##  4    13 A1       2018/10/8 Tot        12 G        G     Tot     J      
+##  5    15 A1       2018/10/8 Tot        14 G        G     Tot     J      
+##  6    16 A1       2018/10/8 Tot        15 G        G     Tot     J      
+##  7    76 A1       2018/10/8 Tot        75 G        G     Tam     Tot    
+##  8    77 A1       2018/10/8 Tot        76 G        G     Tot     Tam    
+##  9    78 A1       2018/10/8 Tot        77 G        G     Tot     Tam    
+## 10    79 A1       2018/10/8 Tot        78 G        G     Tot     Tam    
+## # … with 5,047 more rows</code></pre>
+<p>追跡したメスのIDは以下のとおりである。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="データの読み込みとマトリックスの作成.html#cb4-1" aria-hidden="true" tabindex="-1"></a>adult <span class="ot">&lt;-</span> adult <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Kil&quot;</span>,<span class="st">&quot;Kit&quot;</span>,<span class="st">&quot;Koh&quot;</span>,<span class="st">&quot;Kur&quot;</span>,<span class="st">&quot;Kun&quot;</span>,<span class="st">&quot;Kor&quot;</span>,<span class="st">&quot;Ntr&quot;</span>,</span>
+<span id="cb4-2"><a href="データの読み込みとマトリックスの作成.html#cb4-2" aria-hidden="true" tabindex="-1"></a>           <span class="st">&quot;Ten&quot;</span>,<span class="st">&quot;Aka&quot;</span>,<span class="st">&quot;Ako&quot;</span>,<span class="st">&quot;Tam&quot;</span>,<span class="st">&quot;Tot&quot;</span>,<span class="st">&quot;Hen&quot;</span>,<span class="st">&quot;Hot&quot;</span>,</span>
+<span id="cb4-3"><a href="データの読み込みとマトリックスの作成.html#cb4-3" aria-hidden="true" tabindex="-1"></a>           <span class="st">&quot;Mal&quot;</span>,<span class="st">&quot;Mik&quot;</span>,<span class="st">&quot;Mei&quot;</span>)</span></code></pre></div>
+<p>このデータをもとに、個体追跡中にメス間が毛づくろいをした頻度を示したマトリックスを作成する。<br />
+ここで、頻度は以下の式で表すものとする。</p>
+<p><span class="math inline">\(G_{AB}\)</span>: AからBへの毛づくろい頻度<br />
+<span class="math inline">\(x_{AB}\)</span>: AからBへの毛づくろいが確認された瞬間サンプリングポイント数<br />
+<span class="math inline">\(y_A\)</span>: Aの個体追跡時間(瞬間サンプリングポイント総数)<br />
+<span class="math inline">\(y_B\)</span>: Bの個体追跡時間(瞬間サンプリングポイント総数)</p>
+<p><span class="math display">\[
+G_{AB} = \frac{x_{AB}}{y_{A} + y_{B}}
+\]</span></p>
+<p>各個体の追跡時間(瞬間サンプリングポイント総数)を算出する。</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="データの読み込みとマトリックスの作成.html#cb5-1" aria-hidden="true" tabindex="-1"></a>groom <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="データの読み込みとマトリックスの作成.html#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(subject) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-3"><a href="データの読み込みとマトリックスの作成.html#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">duration =</span> <span class="fu">n</span>()) <span class="ot">-&gt;</span> duration</span>
+<span id="cb5-4"><a href="データの読み込みとマトリックスの作成.html#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="データの読み込みとマトリックスの作成.html#cb5-5" aria-hidden="true" tabindex="-1"></a>duration</span></code></pre></div>
+<pre><code>## # A tibble: 17 × 2
+##    subject duration
+##    &lt;chr&gt;      &lt;int&gt;
+##  1 Aka         1638
+##  2 Ako         1858
+##  3 Hen         1809
+##  4 Hot         1898
+##  5 Kil         1699
+##  6 Kit         1879
+##  7 Koh         1752
+##  8 Kor         1921
+##  9 Kun         1884
+## 10 Kur         1308
+## 11 Mal         1777
+## 12 Mei         1969
+## 13 Mik         1632
+## 14 Ntr         1897
+## 15 Tam         1887
+## 16 Ten         1902
+## 17 Tot         1976</code></pre>
+<p>マトリックスは<code>ANTs</code>パッケージを用いて以下のように算出できる。</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="データの読み込みとマトリックスの作成.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## メス同士が毛づくろいをしている行のみを抽出</span></span>
+<span id="cb7-2"><a href="データの読み込みとマトリックスの作成.html#cb7-2" aria-hidden="true" tabindex="-1"></a>groom_G <span class="ot">&lt;-</span> groom <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="データの読み込みとマトリックスの作成.html#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(activity <span class="sc">==</span> <span class="st">&quot;G&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-4"><a href="データの読み込みとマトリックスの作成.html#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Groomer <span class="sc">%in%</span> adult <span class="sc">&amp;</span> Groomee <span class="sc">%in%</span> adult)</span>
+<span id="cb7-5"><a href="データの読み込みとマトリックスの作成.html#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="データの読み込みとマトリックスの作成.html#cb7-6" aria-hidden="true" tabindex="-1"></a>groom_mat <span class="ot">&lt;-</span> <span class="fu">df.to.mat</span>(groom_G, </span>
+<span id="cb7-7"><a href="データの読み込みとマトリックスの作成.html#cb7-7" aria-hidden="true" tabindex="-1"></a>                       <span class="do">## 行動の行い手を表す列  </span></span>
+<span id="cb7-8"><a href="データの読み込みとマトリックスの作成.html#cb7-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">actor =</span> <span class="st">&quot;Groomer&quot;</span>,</span>
+<span id="cb7-9"><a href="データの読み込みとマトリックスの作成.html#cb7-9" aria-hidden="true" tabindex="-1"></a>                       <span class="do">## 行動の受け手を表す列</span></span>
+<span id="cb7-10"><a href="データの読み込みとマトリックスの作成.html#cb7-10" aria-hidden="true" tabindex="-1"></a>                       <span class="at">receiver =</span> <span class="st">&quot;Groomee&quot;</span>,</span>
+<span id="cb7-11"><a href="データの読み込みとマトリックスの作成.html#cb7-11" aria-hidden="true" tabindex="-1"></a>                       <span class="do">## 追跡時間</span></span>
+<span id="cb7-12"><a href="データの読み込みとマトリックスの作成.html#cb7-12" aria-hidden="true" tabindex="-1"></a>                       <span class="at">tobs =</span> duration<span class="sc">$</span>duration,</span>
+<span id="cb7-13"><a href="データの読み込みとマトリックスの作成.html#cb7-13" aria-hidden="true" tabindex="-1"></a>                       <span class="at">sym =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="データの読み込みとマトリックスの作成.html#cb8-1" aria-hidden="true" tabindex="-1"></a>groom_mat <span class="sc">%&gt;%</span> </span>
+<span id="cb8-2"><a href="データの読み込みとマトリックスの作成.html#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>()</span></code></pre></div>
+<pre><code>##              Aka          Ako          Hen          Hot          Kil
+## Aka 0.0000000000 0.0423340961 0.0000000000 0.0022624434 0.0000000000
+## Ako 0.0683638444 0.0000000000 0.0038178347 0.0000000000 0.0002811358
+## Hen 0.0000000000 0.0013635124 0.0000000000 0.0021580793 0.0000000000
+## Hot 0.0033936652 0.0000000000 0.0016185595 0.0000000000 0.0000000000
+## Kil 0.0000000000 0.0000000000 0.0000000000 0.0000000000 0.0000000000
+## Kit 0.0000000000 0.0000000000 0.0002711497 0.0000000000 0.0237562884
+## Koh 0.0014749263 0.0000000000 0.0000000000 0.0000000000 0.0098522167
+## Kor 0.0000000000 0.0007938608 0.0002680965 0.0000000000 0.0016574586
+## Kun 0.0000000000 0.0002672368 0.0005415651 0.0000000000 0.0075355847
+## Kur 0.0000000000 0.0006317119 0.0000000000 0.0000000000 0.0073162621
+## Mal 0.0000000000 0.0002751032 0.0033463469 0.0010884354 0.0000000000
+## Mei 0.0058220128 0.0086229423 0.0060878772 0.0010343936 0.0000000000
+## Mik 0.0000000000 0.0000000000 0.0011624528 0.0002832861 0.0000000000
+## Ntr 0.0002828854 0.0013315579 0.0021586616 0.0000000000 0.0000000000
+## Tam 0.0005673759 0.0016021362 0.0032467532 0.0000000000 0.0022308979
+## Ten 0.0000000000 0.0034574468 0.0032336297 0.0000000000 0.0022216051
+## Tot 0.0000000000 0.0005216484 0.0000000000 0.0080020650 0.0000000000
+##              Kit          Koh          Kor          Kun         Kur
+## Aka 0.0000000000 0.0020648968 0.0000000000 0.0000000000 0.000000000
+## Ako 0.0026759433 0.0005540166 0.0042339243 0.0016034206 0.002526848
+## Hen 0.0029826464 0.0000000000 0.0000000000 0.0010831302 0.000000000
+## Hot 0.0002647604 0.0000000000 0.0002618487 0.0000000000 0.000000000
+## Kil 0.0139742873 0.0066647349 0.0008287293 0.0027909573 0.003990688
+## Kit 0.0000000000 0.0126686863 0.0018421053 0.0010629817 0.010982115
+## Koh 0.0140457174 0.0000000000 0.0089844814 0.0035753575 0.000000000
+## Kor 0.0036842105 0.0073509393 0.0000000000 0.0073587385 0.015794364
+## Kun 0.0029231996 0.0041254125 0.0010512484 0.0000000000 0.002192982
+## Kur 0.0084719172 0.0000000000 0.0074326417 0.0009398496 0.000000000
+## Mal 0.0000000000 0.0000000000 0.0000000000 0.0010925977 0.001944895
+## Mei 0.0000000000 0.0000000000 0.0000000000 0.0000000000 0.000000000
+## Mik 0.0000000000 0.0002955083 0.0030959752 0.0031285552 0.000000000
+## Ntr 0.0026483051 0.0005480954 0.0078575170 0.0000000000 0.007800312
+## Tam 0.0000000000 0.0030228085 0.0005252101 0.0000000000 0.000312989
+## Ten 0.0010579212 0.0000000000 0.0039236202 0.0002641310 0.006230530
+## Tot 0.0000000000 0.0000000000 0.0082114447 0.0000000000 0.000000000
+##              Mal          Mei          Mik          Ntr          Tam
+## Aka 0.0000000000 0.0019406709 0.0000000000 0.0000000000 0.0000000000
+## Ako 0.0002751032 0.0117585576 0.0002865330 0.0039946738 0.0008010681
+## Hen 0.0069715561 0.0052938062 0.0005812264 0.0005396654 0.0043290043
+## Hot 0.0016326531 0.0007757952 0.0000000000 0.0000000000 0.0000000000
+## Kil 0.0000000000 0.0000000000 0.0000000000 0.0000000000 0.0000000000
+## Kit 0.0000000000 0.0000000000 0.0000000000 0.0005296610 0.0000000000
+## Koh 0.0000000000 0.0000000000 0.0002955083 0.0000000000 0.0024732069
+## Kor 0.0000000000 0.0000000000 0.0033774275 0.0055002619 0.0013130252
+## Kun 0.0013657471 0.0000000000 0.0065415245 0.0013224015 0.0000000000
+## Kur 0.0003241491 0.0000000000 0.0003401361 0.0028081123 0.0000000000
+## Mal 0.0000000000 0.0040042712 0.0170137870 0.0000000000 0.0000000000
+## Mei 0.0018686599 0.0000000000 0.0022216051 0.0031039834 0.0000000000
+## Mik 0.0278674098 0.0044432102 0.0000000000 0.0017001984 0.0025575448
+## Ntr 0.0000000000 0.0028453182 0.0056673279 0.0000000000 0.0000000000
+## Tam 0.0000000000 0.0000000000 0.0025575448 0.0000000000 0.0000000000
+## Ten 0.0005436260 0.0005166624 0.0022637238 0.0078968150 0.0000000000
+## Tot 0.0055955236 0.0000000000 0.0005543237 0.0023237800 0.0116489775
+##              Ten          Tot
+## Aka 0.0000000000 0.0000000000
+## Ako 0.0050531915 0.0020865936
+## Hen 0.0024252223 0.0005284016
+## Hot 0.0000000000 0.0064532783
+## Kil 0.0000000000 0.0000000000
+## Kit 0.0002644803 0.0000000000
+## Koh 0.0000000000 0.0000000000
+## Kor 0.0028773215 0.0030792918
+## Kun 0.0005282620 0.0000000000
+## Kur 0.0021806854 0.0000000000
+## Mal 0.0038053819 0.0093258726
+## Mei 0.0020666494 0.0002534854
+## Mik 0.0022637238 0.0005543237
+## Ntr 0.0065806791 0.0041311645
+## Tam 0.0000000000 0.0088014497
+## Ten 0.0000000000 0.0000000000
+## Tot 0.0025786488 0.0000000000</code></pre>
+<p>もし交渉の方向性を考慮しない場合は、<code>sym = TRUE</code>とすればよい。</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="データの読み込みとマトリックスの作成.html#cb10-1" aria-hidden="true" tabindex="-1"></a>groom_mat_b <span class="ot">&lt;-</span> <span class="fu">df.to.mat</span>(groom_G, </span>
+<span id="cb10-2"><a href="データの読み込みとマトリックスの作成.html#cb10-2" aria-hidden="true" tabindex="-1"></a>                       <span class="do">## 行動の行い手を表す列  </span></span>
+<span id="cb10-3"><a href="データの読み込みとマトリックスの作成.html#cb10-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">actor =</span> <span class="st">&quot;Groomer&quot;</span>,</span>
+<span id="cb10-4"><a href="データの読み込みとマトリックスの作成.html#cb10-4" aria-hidden="true" tabindex="-1"></a>                       <span class="do">## 行動の受け手を表す列</span></span>
+<span id="cb10-5"><a href="データの読み込みとマトリックスの作成.html#cb10-5" aria-hidden="true" tabindex="-1"></a>                       <span class="at">receiver =</span> <span class="st">&quot;Groomee&quot;</span>,</span>
+<span id="cb10-6"><a href="データの読み込みとマトリックスの作成.html#cb10-6" aria-hidden="true" tabindex="-1"></a>                       <span class="do">## 追跡時間</span></span>
+<span id="cb10-7"><a href="データの読み込みとマトリックスの作成.html#cb10-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">tobs =</span> duration<span class="sc">$</span>duration,</span>
+<span id="cb10-8"><a href="データの読み込みとマトリックスの作成.html#cb10-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">sym =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="データの読み込みとマトリックスの作成.html#cb11-1" aria-hidden="true" tabindex="-1"></a>groom_mat_b <span class="sc">%&gt;%</span> </span>
+<span id="cb11-2"><a href="データの読み込みとマトリックスの作成.html#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>()</span></code></pre></div>
+<pre><code>##              Aka          Ako          Hen          Hot          Kil
+## Aka 0.0000000000 0.1106979405 0.0000000000 0.0056561086 0.0000000000
+## Ako 0.1106979405 0.0000000000 0.0051813472 0.0000000000 0.0002811358
+## Hen 0.0000000000 0.0051813472 0.0000000000 0.0037766388 0.0000000000
+## Hot 0.0056561086 0.0000000000 0.0037766388 0.0000000000 0.0000000000
+## Kil 0.0000000000 0.0002811358 0.0000000000 0.0000000000 0.0000000000
+## Kit 0.0000000000 0.0026759433 0.0032537961 0.0002647604 0.0377305757
+## Koh 0.0035398230 0.0005540166 0.0000000000 0.0000000000 0.0165169516
+## Kor 0.0000000000 0.0050277851 0.0002680965 0.0002618487 0.0024861878
+## Kun 0.0000000000 0.0018706574 0.0016246954 0.0000000000 0.0103265420
+## Kur 0.0000000000 0.0031585597 0.0000000000 0.0000000000 0.0113069504
+## Mal 0.0000000000 0.0005502063 0.0103179030 0.0027210884 0.0000000000
+## Mei 0.0077626837 0.0203814999 0.0113816834 0.0018101888 0.0000000000
+## Mik 0.0000000000 0.0002865330 0.0017436792 0.0002832861 0.0000000000
+## Ntr 0.0002828854 0.0053262317 0.0026983270 0.0000000000 0.0000000000
+## Tam 0.0005673759 0.0024032043 0.0075757576 0.0000000000 0.0022308979
+## Ten 0.0000000000 0.0085106383 0.0056588521 0.0000000000 0.0022216051
+## Tot 0.0000000000 0.0026082420 0.0005284016 0.0144553433 0.0000000000
+##              Kit          Koh          Kor         Kun          Kur
+## Aka 0.0000000000 0.0035398230 0.0000000000 0.000000000 0.0000000000
+## Ako 0.0026759433 0.0005540166 0.0050277851 0.001870657 0.0031585597
+## Hen 0.0032537961 0.0000000000 0.0002680965 0.001624695 0.0000000000
+## Hot 0.0002647604 0.0000000000 0.0002618487 0.000000000 0.0000000000
+## Kil 0.0377305757 0.0165169516 0.0024861878 0.010326542 0.0113069504
+## Kit 0.0000000000 0.0267144037 0.0055263158 0.003986181 0.0194540320
+## Koh 0.0267144037 0.0000000000 0.0163354206 0.007700770 0.0000000000
+## Kor 0.0055263158 0.0163354206 0.0000000000 0.008409987 0.0232270053
+## Kun 0.0039861812 0.0077007701 0.0084099869 0.000000000 0.0031328321
+## Kur 0.0194540320 0.0000000000 0.0232270053 0.003132832 0.0000000000
+## Mal 0.0000000000 0.0000000000 0.0000000000 0.002458345 0.0022690438
+## Mei 0.0000000000 0.0000000000 0.0000000000 0.000000000 0.0000000000
+## Mik 0.0000000000 0.0005910165 0.0064734028 0.009670080 0.0003401361
+## Ntr 0.0031779661 0.0005480954 0.0133577789 0.001322401 0.0106084243
+## Tam 0.0000000000 0.0054960154 0.0018382353 0.000000000 0.0003129890
+## Ten 0.0013224015 0.0000000000 0.0068009417 0.000792393 0.0084112150
+## Tot 0.0000000000 0.0000000000 0.0112907365 0.000000000 0.0000000000
+##              Mal          Mei          Mik          Ntr          Tam
+## Aka 0.0000000000 0.0077626837 0.0000000000 0.0002828854 0.0005673759
+## Ako 0.0005502063 0.0203814999 0.0002865330 0.0053262317 0.0024032043
+## Hen 0.0103179030 0.0113816834 0.0017436792 0.0026983270 0.0075757576
+## Hot 0.0027210884 0.0018101888 0.0002832861 0.0000000000 0.0000000000
+## Kil 0.0000000000 0.0000000000 0.0000000000 0.0000000000 0.0022308979
+## Kit 0.0000000000 0.0000000000 0.0000000000 0.0031779661 0.0000000000
+## Koh 0.0000000000 0.0000000000 0.0005910165 0.0005480954 0.0054960154
+## Kor 0.0000000000 0.0000000000 0.0064734028 0.0133577789 0.0018382353
+## Kun 0.0024583447 0.0000000000 0.0096700796 0.0013224015 0.0000000000
+## Kur 0.0022690438 0.0000000000 0.0003401361 0.0106084243 0.0003129890
+## Mal 0.0000000000 0.0058729311 0.0448811968 0.0000000000 0.0000000000
+## Mei 0.0058729311 0.0000000000 0.0066648153 0.0059493016 0.0000000000
+## Mik 0.0448811968 0.0066648153 0.0000000000 0.0073675262 0.0051150895
+## Ntr 0.0000000000 0.0059493016 0.0073675262 0.0000000000 0.0000000000
+## Tam 0.0000000000 0.0000000000 0.0051150895 0.0000000000 0.0000000000
+## Ten 0.0043490079 0.0025833118 0.0045274477 0.0144774941 0.0000000000
+## Tot 0.0149213962 0.0002534854 0.0011086475 0.0064549445 0.0204504271
+##             Ten          Tot
+## Aka 0.000000000 0.0000000000
+## Ako 0.008510638 0.0026082420
+## Hen 0.005658852 0.0005284016
+## Hot 0.000000000 0.0144553433
+## Kil 0.002221605 0.0000000000
+## Kit 0.001322401 0.0000000000
+## Koh 0.000000000 0.0000000000
+## Kor 0.006800942 0.0112907365
+## Kun 0.000792393 0.0000000000
+## Kur 0.008411215 0.0000000000
+## Mal 0.004349008 0.0149213962
+## Mei 0.002583312 0.0002534854
+## Mik 0.004527448 0.0011086475
+## Ntr 0.014477494 0.0064549445
+## Tam 0.000000000 0.0204504271
+## Ten 0.000000000 0.0025786488
+## Tot 0.002578649 0.0000000000</code></pre>
+</div>
+<div id="group-by-individual" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Group by individual<a href="データの読み込みとマトリックスの作成.html#group-by-individual" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>その他にも、以下のようにある時点・場所において確認された個体を0/1で記録した”group by individual”と呼ばれる形式のものもある。<br />
+例えば、以下は2021年交尾期の各観察日にメスが観察されたか否かを示したものである。</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="データの読み込みとマトリックスの作成.html#cb13-1" aria-hidden="true" tabindex="-1"></a>presence <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/presence_demo.csv&quot;</span>)</span>
+<span id="cb13-2"><a href="データの読み込みとマトリックスの作成.html#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="データの読み込みとマトリックスの作成.html#cb13-3" aria-hidden="true" tabindex="-1"></a>presence</span></code></pre></div>
+<pre><code>## # A tibble: 85 × 16
+##    date    Mik   Kil   Koh   Aka   Ntr   Ten   Tot   Hen   Hot   Mei   Ako   Kor
+##    &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 2021…     1     1     1     0     1     1     0     1     0     1     0     1
+##  2 2021…     1     1     1     1     1     1     1     1     1     1     1     1
+##  3 2021…     1     1     1     1     1     1     1     1     0     1     1     1
+##  4 2021…     1     1     1     1     1     1     1     1     0     1     0     1
+##  5 2021…     1     1     1     1     1     1     1     1     0     1     1     1
+##  6 2021…     1     1     1     1     1     1     1     1     1     0     1     1
+##  7 2021…     1     1     1     1     1     1     1     1     1     1     1     1
+##  8 2021…     1     0     1     0     1     1     1     0     0     1     0     1
+##  9 2021…     1     1     1     1     1     1     1     1     1     1     1     0
+## 10 2021…     1     1     1     1     0     1     1     1     0     1     1     1
+## # … with 75 more rows, and 3 more variables: Mal &lt;dbl&gt;, Kit &lt;dbl&gt;, Kun &lt;dbl&gt;</code></pre>
+<p>このようなデータは、同じグループで観察された個体をassociateしていたとみなす(=gambit of the group)。<br />
+<code>asnipe</code>では、こうしたデータから以下のような指標についてマトリックスを作成することが可能である。<br />
+各指標については、以下を参照<span class="citation">(<a href="#ref-Hoppitt2018" role="doc-biblioref">Hoppitt &amp; Farine, 2018</a>)</span>。<br />
+- HWI: half-weight index<br />
+- SRI: simple ratio index</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="データの読み込みとマトリックスの作成.html#cb15-1" aria-hidden="true" tabindex="-1"></a>presence_mat <span class="ot">&lt;-</span> <span class="fu">get_network</span>(presence <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>date),</span>
+<span id="cb15-2"><a href="データの読み込みとマトリックスの作成.html#cb15-2" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data_format =</span> <span class="st">&quot;GBI&quot;</span>,</span>
+<span id="cb15-3"><a href="データの読み込みとマトリックスの作成.html#cb15-3" aria-hidden="true" tabindex="-1"></a>                            <span class="do">## &quot;HWI&quot;の場合は、&quot;HWI&quot;</span></span>
+<span id="cb15-4"><a href="データの読み込みとマトリックスの作成.html#cb15-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">association_index =</span> <span class="st">&quot;SRI&quot;</span>)</span></code></pre></div>
+<pre><code>## Generating  15  x  15  matrix</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="データの読み込みとマトリックスの作成.html#cb17-1" aria-hidden="true" tabindex="-1"></a>presence_mat <span class="sc">%&gt;%</span> </span>
+<span id="cb17-2"><a href="データの読み込みとマトリックスの作成.html#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>()</span></code></pre></div>
+<pre><code>##           Mik       Kil       Koh       Aka       Ntr       Ten       Tot
+## Mik 0.0000000 0.4337349 0.4512195 0.6304348 0.4096386 0.4625000 0.4096386
+## Kil 0.4337349 0.0000000 0.9759036 0.4457831 0.9285714 0.9518072 0.9518072
+## Koh 0.4512195 0.9759036 0.0000000 0.4457831 0.9518072 0.9518072 0.9518072
+## Aka 0.6304348 0.4457831 0.4457831 0.0000000 0.4390244 0.4567901 0.4216867
+## Ntr 0.4096386 0.9285714 0.9518072 0.4390244 0.0000000 0.9047619 0.9047619
+## Ten 0.4625000 0.9518072 0.9518072 0.4567901 0.9047619 0.0000000 0.9277108
+## Tot 0.4096386 0.9518072 0.9518072 0.4216867 0.9047619 0.9277108 0.0000000
+## Hen 0.3902439 0.9390244 0.9390244 0.4197531 0.8915663 0.8915663 0.8915663
+## Hot 0.3205128 0.8048780 0.7831325 0.3866667 0.7590361 0.7590361 0.7804878
+## Mei 0.4337349 0.9759036 0.9759036 0.4285714 0.9285714 0.9518072 0.9518072
+## Ako 0.4520548 0.7976190 0.7976190 0.5285714 0.7738095 0.7738095 0.7738095
+## Kor 0.4337349 0.9759036 0.9759036 0.4285714 0.9285714 0.9518072 0.9518072
+## Mal 0.3214286 0.8795181 0.8571429 0.3493976 0.8554217 0.8333333 0.8554217
+## Kit 0.4166667 0.9523810 0.9523810 0.4285714 0.9285714 0.9285714 0.9518072
+## Kun 0.4166667 0.9523810 0.9523810 0.4117647 0.9285714 0.9285714 0.9518072
+##           Hen       Hot       Mei       Ako       Kor       Mal       Kit
+## Mik 0.3902439 0.3205128 0.4337349 0.4520548 0.4337349 0.3214286 0.4166667
+## Kil 0.9390244 0.8048780 0.9759036 0.7976190 0.9759036 0.8795181 0.9523810
+## Koh 0.9390244 0.7831325 0.9759036 0.7976190 0.9759036 0.8571429 0.9523810
+## Aka 0.4197531 0.3866667 0.4285714 0.5285714 0.4285714 0.3493976 0.4285714
+## Ntr 0.8915663 0.7590361 0.9285714 0.7738095 0.9285714 0.8554217 0.9285714
+## Ten 0.8915663 0.7590361 0.9518072 0.7738095 0.9518072 0.8333333 0.9285714
+## Tot 0.8915663 0.7804878 0.9518072 0.7738095 0.9518072 0.8554217 0.9518072
+## Hen 0.0000000 0.8101266 0.9156627 0.7590361 0.9156627 0.9113924 0.9156627
+## Hot 0.8101266 0.0000000 0.7831325 0.6463415 0.7831325 0.7948718 0.7831325
+## Mei 0.9156627 0.7831325 0.0000000 0.7764706 0.9759036 0.8571429 0.9523810
+## Ako 0.7590361 0.6463415 0.7764706 0.0000000 0.7764706 0.7023810 0.7764706
+## Kor 0.9156627 0.7831325 0.9759036 0.7764706 0.0000000 0.8795181 0.9523810
+## Mal 0.9113924 0.7948718 0.8571429 0.7023810 0.8795181 0.0000000 0.8795181
+## Kit 0.9156627 0.7831325 0.9523810 0.7764706 0.9523810 0.8795181 0.0000000
+## Kun 0.9156627 0.7831325 0.9523810 0.7764706 0.9523810 0.8795181 0.9759036
+##           Kun
+## Mik 0.4166667
+## Kil 0.9523810
+## Koh 0.9523810
+## Aka 0.4117647
+## Ntr 0.9285714
+## Ten 0.9285714
+## Tot 0.9518072
+## Hen 0.9156627
+## Hot 0.7831325
+## Mei 0.9523810
+## Ako 0.7764706
+## Kor 0.9523810
+## Mal 0.8795181
+## Kit 0.9759036
+## Kun 0.0000000</code></pre>
+
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-Hoppitt2018" class="csl-entry">
+Hoppitt, W. J. E., &amp; Farine, D. R. (2018). Association indices for quantifying social relationships: How to deal with missing observations of individuals or groups. <em>Anim. Behav.</em>, <em>136</em>, 227–238.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="パッケージの読み込み.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="各ネットワーク指標の算出.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

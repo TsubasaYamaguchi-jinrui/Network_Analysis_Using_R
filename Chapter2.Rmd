@@ -1,0 +1,218 @@
+# データの読み込みとマトリックスの作成 {#c2}  
+普通、個体間のassociationの生データは隣接行列になっていないことが多い。例えば個体追跡のデータでは、以下のように1分ごとに毛づくろい相手のIDを記録したものをまずExcelファイルなどに記入する、というようなことが多いだろう。ここでは、このような生データからRで隣接行列を作成する方法を学ぶ。  
+
+```{r, echo = FALSE}
+data.frame(min = c(1,2,3,4,5),
+           groomer = c("A","A","A","B","B"),
+           groomee = c("B","B","C","A","A")) %>% 
+  kable(align = "c")
+```
+
+
+## 2個体間のassociationを記録したデータフレーム  
+ここでは、2個体間のassociation(例えば、毛づくろいや近接)等を記録したデータフレームから隣接行列を作る。  
+例えば、以下は金華山島$B_1$群で2018年時点で6歳以上のメスを個体追跡した際のデータであり、1分間の瞬間サンプリングで以下を記録したデータフレームである。    
+
+- `no_focal`: 個体追跡セッション番号  
+- `subject`: 追跡個体名  
+- `time`: 個体追跡開始からの経過時間  
+- `activity`: 個体の活動(G: 毛づくろい、R: 休息、F: 採食、M: 移動、O: その他)  
+- `TG`: 樹上(T)にいたか地上(G)にいたか   
+- `groomer`: `activity`が毛づくろいだったときのgroomer  
+- `geoomee`: `activity`が毛づくろいだったときのgroomer  
+
+
+```{r}
+groom <- read_csv("data/focal_demo.csv")
+
+groom %>% 
+  head(50) %>% 
+  datatable(rownames = FALSE)
+```
+<br/>  
+
+追跡したメスのIDは以下のとおりである。  
+```{r}
+adult <- adult <- c("Kil","Kit","Koh","Kur","Kun","Kor","Ntr",
+           "Ten","Aka","Ako","Tam","Tot","Hen","Hot",
+           "Mal","Mik","Mei")
+```
+
+
+このデータをもとに、個体追跡中にメス間が毛づくろいをした頻度を示したマトリックスを作成する。  
+ここで、頻度は以下の式で表すものとする。  
+
+- $G_{AB}$: $A$から$B$への毛づくろい頻度  
+- $x_{AB}$: $A$から$B$への毛づくろいが確認された瞬間サンプリングポイント数  
+- $y_A$: $A$の個体追跡時間(瞬間サンプリングポイント総数)  
+- $y_B$: $B$の個体追跡時間(瞬間サンプリングポイント総数)  
+
+$$
+G_{AB} = \frac{x_{AB}}{y_{A} + y_{B}} 
+$$
+<br />  
+
+分母となる各個体の個体追跡時間($y_A, y_B, ...$)を算出する。 
+```{r}
+groom %>% 
+  group_by(subject) %>% 
+  summarise(duration = n()) -> duration
+
+duration %>% 
+  datatable(rownames = FALSE)
+```
+<br/>  
+
+追跡個体がの`activity`が毛づくろいで、かつ地上にいたポイントのみを抽出する。  
+また、毛づくろい相手が大人だったのみを抽出。  
+```{r}
+groom_G <- groom %>% 
+  filter(activity == "G") %>% 
+  filter(Groomer %in% adult & Groomee %in% adult)
+```
+
+毛づくろい頻度は`ANTs`パッケージの`df.to.mat()`関数で以下のように求められる。  
+```{r}
+groom_mat <- df.to.mat(groom_G, 
+                       ## 行動の行い手を表す列  
+                       actor = "Groomer",
+                       ## 行動の受け手を表す列
+                       receiver = "Groomee",
+                       ## 追跡時間
+                       tobs = duration$duration,
+                       ## 交渉の方向を考慮するか。FALSEでする。
+                       sym = FALSE)
+```
+
+```{r}
+groom_mat %>% 
+  kable(digits = 2, align = "c") %>% 
+  kable_styling(font_size = 6, full_width = FALSE)
+```
+<br/>  
+
+もし交渉の方向性を考慮しない場合は、`sym = TRUE`とすればよい。  
+```{r}
+groom_mat_b <- df.to.mat(groom_G, 
+                       ## 行動の行い手を表す列  
+                       actor = "Groomer",
+                       ## 行動の受け手を表す列
+                       receiver = "Groomee",
+                       ## 追跡時間
+                       tobs = duration$duration,
+                       sym = TRUE)
+```
+
+```{r}
+groom_mat_b %>% 
+  kable(digits = 2, align = "c") %>% 
+  kable_styling(font_size = 6, full_width = FALSE)
+```
+<br/>  
+
+グラフを描画すると図\@ref(fig:fig-groom)のようになる。ノードの大きさは順位を表す。    
+血縁個体同士(同じアルファベットで始まる個体)は交渉頻度が高く、近くに配置されていることが分かる。順位の低い個体がネットワークの周辺にいることが多いことも分かるだろう。
+```{r fig-groom, fig.dim = c(6,4), fig.cap = "毛づくろい頻度ネットワークのグラフ"}
+## 順位
+rank <- c(9,10,13,14,1,2,3,6,5,4,15,17,16,7,11,8,12)
+
+groom_mat_b %>% 
+  as_tbl_graph(directed = FALSE) %>% 
+  ## 順位の情報を入れる
+  mutate(rank = rank) %>% 
+  ggraph(layout = "nicely")+
+  # 曲線のエッジ、weightを太さに
+  geom_edge_fan(aes(width = weight),
+                ## 透明度(alpha)と色(color)指定
+                alpha =0.7, color = "grey60")+
+  # エッジの太さの範囲を決める  
+  scale_edge_width(range = c(0.3,3))+
+  ## 四角のノード。大きさは年齢によって変化するとする。  
+  geom_node_point(aes(size = -rank), shape = 18)+
+  ## ノードのラベルは個体名  
+  scale_size(range = c(1,5))+
+  geom_node_text(aes(label = name), 
+                 ## ノードと重ならないようにする 
+                 repel=TRUE, size =6)+
+  theme_graph()+
+  ## 縦横比
+  theme(aspect.ratio = 0.7)+
+  labs(width = "毛づくろい頻度")
+```
+
+## Group by individual  
+個体間のassociationを表したデータには、以下のようにある時点・場所において確認された個体を0/1で記録した"group by individual"と呼ばれる形式のものもある。  
+
+例えば、以下は金華山島$B_1$群で2021年交尾期の各観察日に9歳以上のメスが観察されたか否かを示したものである。  
+```{r}
+presence <- read_csv("data/presence_demo.csv")
+
+presence %>% 
+  datatable(rownames = FALSE)
+```
+<br/>  
+
+このようなデータでは、同じグループで観察された個体をassociateしていたとみなすことが多い(=gambit of the group)[@Farine2015]。Group by individualの形式のデータでは、以下のような指標で個体間の強さを表すことが多い。なお、各指標の詳細については @Hoppitt2018 を参照。  
+
+- $x$: 個体$a$と$b$が一緒に観察された回数  
+- $y_a$: $a$だけが確認された回数  
+- $y_b$: $b$だけが確認された回数  
+- $y_{ab}$: $a$と$B$が共に観察されたが、associateはしてない回数(今回の例では存在しない)  
+- $y_null$ どちらも観察されなかった回数  
+<br/>  
+
+<u>**SRI**: simple ratio index</u>    
+$= x/(y_a + y_b + y_{ab} + x)$  
+
+▶ 単純に一緒に観察された割合。観察ミス(個体がいたにもかかわらずいなかったと記録してしまうこと)が少ない場合にはこちらで問題ない。   
+<br/>  
+
+<u>**HWI**: half-weight index</u>      
+$= x/(\frac{1}{2}(y_a + y_b) + y_{ab} + x)$  
+
+▶ 観察ミスが多いと考えられる場合、補正を行う。  
+<br/>  
+
+`asnipe`パッケージの`get_network()`関数では、こうしたデータかSRIやHWIを算出し、マトリックスを作成することが可能である。
+```{r}
+presence_mat <- get_network(presence %>% dplyr::select(-date),
+                            ## gambit of the group
+                            data_format = "GBI",
+                            ## "HWI"の場合は、"HWI"
+                            association_index = "SRI")
+```
+
+得られた隣接行列は以下の通り。  
+```{r}
+presence_mat %>% 
+  kable(digits = 2, align = "c") %>% 
+  kable_styling(font_size = 6, full_width = FALSE)
+```
+<br/>  
+
+グラフを描画すると図\@ref(fig:fig-gbi)のようになる。ノードの大きさは年齢、色は順位を表す。    
+MikとAkaは他の個体と一緒にいることが少ないことが分かるだろう(年齢も影響しそう？)。 順位の高い個体はネットワークの中心にいることが多い?   
+```{r fig-gbi, fig.dim = c(6,6), fig.cap = "出欠SRIネットワークのグラフ"}
+age <- c(18,17,15,15,13,13,13,13,13,13,12,11,11,10,9)
+rank2 <- c(16,1,3,9,7,8,12,13,14,17,10,6,15,2,5)
+
+presence_mat %>% 
+  as_tbl_graph(directed = FALSE) %>% 
+  ggraph(layout = "nicely")+
+  # 曲線のエッジ、weightを太さに
+  geom_edge_link(aes(width = weight),
+                ## 透明度(alpha)と色(color)指定
+                alpha =0.7, color = "grey67")+
+  # エッジの太さの範囲を決める  
+  scale_edge_width(range = c(0,2))+
+  ## 四角のノード。大きさは年齢によって変化するとする。  
+  geom_node_point(aes(size = age, color = rank2),shape = 16)+
+  ## ノードのラベルは個体名  
+  scale_size(range = c(0.5,5))+
+  geom_node_text(aes(label = name), 
+                 ## ノードと重ならないようにする 
+                 repel=TRUE, size =6)+
+  theme_graph()+
+  ## 縦横比
+  theme(aspect.ratio = 0.7)
+```

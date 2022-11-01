@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>1 社会ネットワーク分析の概説 | Network Analysis Using R</title>
+  <meta name="description" content="1 社会ネットワーク分析の概説 | Network Analysis Using R" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="1 社会ネットワーク分析の概説 | Network Analysis Using R" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="1 社会ネットワーク分析の概説 | Network Analysis Using R" />
+  
+  
+  
+
+<meta name="author" content="Tsubasa Yamaguchi" />
+
+
+<meta name="date" content="2022-11-02" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="パッケージの読み込み.html"/>
+<link rel="next" href="c2.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.23/datatables.js"></script>
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="custom_style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>本稿の目的</a></li>
+<li class="chapter" data-level="" data-path="パッケージの読み込み.html"><a href="パッケージの読み込み.html"><i class="fa fa-check"></i>0. パッケージの読み込み</a></li>
+<li class="chapter" data-level="1" data-path="c1.html"><a href="c1.html"><i class="fa fa-check"></i><b>1</b> 社会ネットワーク分析の概説</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="c1.html"><a href="c1.html#社会ネットワーク分析snaとは"><i class="fa fa-check"></i><b>1.1</b> 社会ネットワーク分析(SNA)とは</a></li>
+<li class="chapter" data-level="1.2" data-path="c1.html"><a href="c1.html#社会ネットワークの基礎"><i class="fa fa-check"></i><b>1.2</b> 社会ネットワークの基礎</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="c1.html"><a href="c1.html#グラフ"><i class="fa fa-check"></i><b>1.2.1</b> グラフ</a></li>
+<li class="chapter" data-level="1.2.2" data-path="c1.html"><a href="c1.html#隣接行列マトリックス"><i class="fa fa-check"></i><b>1.2.2</b> 隣接行列(マトリックス)</a></li>
+<li class="chapter" data-level="1.2.3" data-path="c1.html"><a href="c1.html#rでのグラフの描画"><i class="fa fa-check"></i><b>1.2.3</b> Rでのグラフの描画</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="c2.html"><a href="c2.html"><i class="fa fa-check"></i><b>2</b> データの読み込みとマトリックスの作成</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="c2.html"><a href="c2.html#個体間のassociationを記録したデータフレーム"><i class="fa fa-check"></i><b>2.1</b> 2個体間のassociationを記録したデータフレーム</a></li>
+<li class="chapter" data-level="2.2" data-path="c2.html"><a href="c2.html#group-by-individual"><i class="fa fa-check"></i><b>2.2</b> Group by individual</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="c3.html"><a href="c3.html"><i class="fa fa-check"></i><b>3</b> 各ネットワーク指標の算出</a></li>
+<li class="chapter" data-level="4" data-path="c4.html"><a href="c4.html"><i class="fa fa-check"></i><b>4</b> 統計的検定</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="c4.html"><a href="c4.html#なぜrandomizationが必要か"><i class="fa fa-check"></i><b>4.1</b> なぜrandomizationが必要か？</a></li>
+<li class="chapter" data-level="4.2" data-path="c4.html"><a href="c4.html#node-label-randomization"><i class="fa fa-check"></i><b>4.2</b> node label randomization</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="c4.html"><a href="c4.html#線形回帰分析"><i class="fa fa-check"></i><b>4.2.1</b> 線形回帰分析</a></li>
+<li class="chapter" data-level="4.2.2" data-path="c4.html"><a href="c4.html#ネットワーク同士の関連の検討"><i class="fa fa-check"></i><b>4.2.2</b> ネットワーク同士の関連の検討</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="c4.html"><a href="c4.html#data-stream-randomization"><i class="fa fa-check"></i><b>4.3</b> data stream randomization</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="おまけ.-csiの算出.html"><a href="おまけ.-csiの算出.html"><i class="fa fa-check"></i><b>5</b> おまけ. CSIの算出</a></li>
+<li class="chapter" data-level="" data-path="実行環境.html"><a href="実行環境.html"><i class="fa fa-check"></i>実行環境</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Network Analysis Using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="c1" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">1</span> 社会ネットワーク分析の概説<a href="c1.html#c1" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="社会ネットワーク分析snaとは" class="section level2 hasAnchor" number="1.1">
+<h2><span class="header-section-number">1.1</span> 社会ネットワーク分析(SNA)とは<a href="c1.html#社会ネットワーク分析snaとは" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>社会ネットワーク</strong>とは，相互に社会的なつながりをもつ個体の集まりのことを指す<span class="citation">(<a href="#ref-Krause2015" role="doc-biblioref">Krause et al., 2015</a>)</span>。多くの生物において、集団を構成する個体たちはランダムランダム・均一に他個体と関わりあっているわけではなく、その関係の強度やタイプ、ダイナミクスは非常に多様である。社会ネットワークは、このような多様な関係によって構成されている<span class="citation">(<a href="#ref-Croft2019" role="doc-biblioref">Croft et al., 2008</a>)</span>。</p>
+<p>霊長類のように多くの個体が集団生活を行う種においては、個体の行動は一対一の社会関係だけではなく、集団全体の関係構造(e.g., 誰と誰がどのような関係を持つか)に強く影響を受ける。例えば、個体<span class="math inline">\(A\)</span>が個体<span class="math inline">\(B\)</span>に攻撃を仕掛けるかは、個体<span class="math inline">\(B\)</span>が誰と/何頭と親密な関係を持つかや、その関係の強度に大きく依存するだろう。また、どのように行動や感染症等が個体間を伝播するのかにも、ネットワーク構造が大きくかかわっている。以上のことから、集団で生活する種を対象に研究を行う際には、その背後にある社会ネットワークについて理解することが非常に重要だと分かる<span class="citation">(<a href="#ref-Krause2015" role="doc-biblioref">Krause et al., 2015</a>; <a href="#ref-Sueur2011" role="doc-biblioref">Sueur et al., 2011</a>)</span>。</p>
+<p><strong>ネットワーク分析（SNA: Social Network Analysis）</strong>とは，集団内の2個体間の社会関係に基づいて社会ネットワークを描写することで，その社会関係の構造や構成個体の特性を調べる分析手法のことである<span class="citation">(<a href="#ref-Croft2019" role="doc-biblioref">Croft et al., 2008</a>; <a href="#ref-Krause2015" role="doc-biblioref">Krause et al., 2015</a>)</span>。SNAの手法を用いることで、社会ネットワークの構造が個体の行動に与える影響などを検討することが可能になる。</p>
+</div>
+<div id="社会ネットワークの基礎" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> 社会ネットワークの基礎<a href="c1.html#社会ネットワークの基礎" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="グラフ" class="section level3 hasAnchor" number="1.2.1">
+<h3><span class="header-section-number">1.2.1</span> グラフ<a href="c1.html#グラフ" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>SNAでは、ネットワークの構造を点(<strong>ノード</strong>)と線(<strong>エッジ</strong>)の集合によって表す。これを、<strong>グラフ</strong>と呼ぶ。点は個体などを、辺は何らかの個体間の社会関係を表す。</p>
+<ul>
+<li><p>関係の有無(1か0か)だけを考慮するグラフと、関係の強さ(交渉頻度など)も考慮するグラフがある。後者は特に<strong>重み付きグラフ</strong>という。グラフでは、エッジの太さで関係の強さを表す(図<a href="c1.html#fig:fig-graph">1.1</a>)。</p></li>
+<li><p>関係の向きを考える(<span class="math inline">\(A \rightarrow B\)</span>と<span class="math inline">\(A \leftarrow B\)</span>を区別)グラフを<strong>有向グラフ</strong>、考えないグラフを<strong>無向グラフ</strong>という。有向グラフの場合は、辺に矢印を用いることが多い(図<a href="c1.html#fig:fig-graph">1.1</a>のB)。</p></li>
+</ul>
+<div class="figure" style="text-align: left"><span style="display:block;" id="fig:fig-graph"></span>
+<img src="Network_Analysis_Using_R_files/figure-html/fig-graph-1.png" alt="例1. 無向グラフ(A)と有向グラフ(B)の例" width="672" />
+<p class="caption">
+図1.1: 例1. 無向グラフ(A)と有向グラフ(B)の例
+</p>
+</div>
+<p><br /></p>
+</div>
+<div id="隣接行列マトリックス" class="section level3 hasAnchor" number="1.2.2">
+<h3><span class="header-section-number">1.2.2</span> 隣接行列(マトリックス)<a href="c1.html#隣接行列マトリックス" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>ネットワーク分析では、データを<strong>隣接行列</strong>(adjacency matrix)の形で表現することが多い。隣接行列はグラフのノード間の関係が記された行列で、ノードの数が<span class="math inline">\(n\)</span>個ならば、<span class="math inline">\(n \times n\)</span>の正方行列になる。Rの分析でも、基本的に隣接行列を用いることが多い。</p>
+<p>Rでは、<code>matrix()</code>関数によって以下のように作成できる。</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="c1.html#cb2-1" aria-hidden="true" tabindex="-1"></a>mat_example <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="do">## 数値のベクトル</span></span>
+<span id="cb2-2"><a href="c1.html#cb2-2" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">2</span>,</span>
+<span id="cb2-3"><a href="c1.html#cb2-3" aria-hidden="true" tabindex="-1"></a>                       <span class="fl">1.5</span>,<span class="dv">0</span>,<span class="dv">2</span>,<span class="dv">0</span>,</span>
+<span id="cb2-4"><a href="c1.html#cb2-4" aria-hidden="true" tabindex="-1"></a>                       <span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,</span>
+<span id="cb2-5"><a href="c1.html#cb2-5" aria-hidden="true" tabindex="-1"></a>                       <span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">0</span>),</span>
+<span id="cb2-6"><a href="c1.html#cb2-6" aria-hidden="true" tabindex="-1"></a>                       <span class="do">## 行数と列数</span></span>
+<span id="cb2-7"><a href="c1.html#cb2-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">nrow =</span> <span class="dv">4</span>,</span>
+<span id="cb2-8"><a href="c1.html#cb2-8" aria-hidden="true" tabindex="-1"></a>                       <span class="do">## TRUEなら、1行目から順に数値を入れていく</span></span>
+<span id="cb2-9"><a href="c1.html#cb2-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-10"><a href="c1.html#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="c1.html#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 列名と行名を入れられる</span></span>
+<span id="cb2-12"><a href="c1.html#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mat_example) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;D&quot;</span>)</span>
+<span id="cb2-13"><a href="c1.html#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(mat_example) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;D&quot;</span>)</span>
+<span id="cb2-14"><a href="c1.html#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="c1.html#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 完成したのがこちら</span></span>
+<span id="cb2-16"><a href="c1.html#cb2-16" aria-hidden="true" tabindex="-1"></a>mat_example <span class="sc">%&gt;%</span> </span>
+<span id="cb2-17"><a href="c1.html#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>()</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">A</th>
+<th align="right">B</th>
+<th align="right">C</th>
+<th align="right">D</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">A</td>
+<td align="right">0.0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">B</td>
+<td align="right">1.5</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td align="left">C</td>
+<td align="right">3.0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">D</td>
+<td align="right">0.0</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><br/></p>
+<p>Excel等で作成したcsvファイルをデータフレームとして読み込み、それをマトリックスに変換する方法もある。</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="c1.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 1列目を行名に指定</span></span>
+<span id="cb3-2"><a href="c1.html#cb3-2" aria-hidden="true" tabindex="-1"></a>mat_example2 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/example.csv&quot;</span>, <span class="at">row.names =</span> <span class="dv">1</span>) </span>
+<span id="cb3-3"><a href="c1.html#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="c1.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="do">## マトリックスに変換  </span></span>
+<span id="cb3-5"><a href="c1.html#cb3-5" aria-hidden="true" tabindex="-1"></a>mat_example2 <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(mat_example2)</span>
+<span id="cb3-6"><a href="c1.html#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="c1.html#cb3-7" aria-hidden="true" tabindex="-1"></a>mat_example2 <span class="sc">%&gt;%</span> </span>
+<span id="cb3-8"><a href="c1.html#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">align =</span> <span class="st">&quot;c&quot;</span>)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="center">A</th>
+<th align="center">B</th>
+<th align="center">C</th>
+<th align="center">D</th>
+<th align="center">E</th>
+<th align="center">F</th>
+<th align="center">G</th>
+<th align="center">H</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">A</td>
+<td align="center">0.00</td>
+<td align="center">0.55</td>
+<td align="center">0.15</td>
+<td align="center">0.93</td>
+<td align="center">0.86</td>
+<td align="center">0.29</td>
+<td align="center">0.63</td>
+<td align="center">0.24</td>
+</tr>
+<tr class="even">
+<td align="left">B</td>
+<td align="center">0.41</td>
+<td align="center">0.00</td>
+<td align="center">0.86</td>
+<td align="center">0.95</td>
+<td align="center">0.20</td>
+<td align="center">0.99</td>
+<td align="center">0.36</td>
+<td align="center">0.59</td>
+</tr>
+<tr class="odd">
+<td align="left">C</td>
+<td align="center">0.09</td>
+<td align="center">0.41</td>
+<td align="center">0.00</td>
+<td align="center">0.87</td>
+<td align="center">0.63</td>
+<td align="center">0.85</td>
+<td align="center">0.29</td>
+<td align="center">0.80</td>
+</tr>
+<tr class="even">
+<td align="left">D</td>
+<td align="center">0.83</td>
+<td align="center">0.68</td>
+<td align="center">0.07</td>
+<td align="center">0.00</td>
+<td align="center">0.60</td>
+<td align="center">0.54</td>
+<td align="center">0.14</td>
+<td align="center">0.42</td>
+</tr>
+<tr class="odd">
+<td align="left">E</td>
+<td align="center">0.80</td>
+<td align="center">0.82</td>
+<td align="center">0.34</td>
+<td align="center">0.68</td>
+<td align="center">0.00</td>
+<td align="center">0.70</td>
+<td align="center">0.41</td>
+<td align="center">0.43</td>
+</tr>
+<tr class="even">
+<td align="left">F</td>
+<td align="center">0.80</td>
+<td align="center">0.05</td>
+<td align="center">0.78</td>
+<td align="center">0.17</td>
+<td align="center">0.95</td>
+<td align="center">0.00</td>
+<td align="center">0.04</td>
+<td align="center">0.37</td>
+</tr>
+<tr class="odd">
+<td align="left">G</td>
+<td align="center">0.75</td>
+<td align="center">0.42</td>
+<td align="center">0.90</td>
+<td align="center">0.95</td>
+<td align="center">0.51</td>
+<td align="center">0.16</td>
+<td align="center">0.00</td>
+<td align="center">0.05</td>
+</tr>
+<tr class="even">
+<td align="left">H</td>
+<td align="center">0.87</td>
+<td align="center">0.16</td>
+<td align="center">0.02</td>
+<td align="center">0.05</td>
+<td align="center">0.31</td>
+<td align="center">0.85</td>
+<td align="center">0.13</td>
+<td align="center">0.00</td>
+</tr>
+</tbody>
+</table>
+<p><br/></p>
+</div>
+<div id="rでのグラフの描画" class="section level3 hasAnchor" number="1.2.3">
+<h3><span class="header-section-number">1.2.3</span> Rでのグラフの描画<a href="c1.html#rでのグラフの描画" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>本稿では<code>ggraph</code>パッケージを用いる。このパッケージを用いる利点は主に以下の2点である。</p>
+<ul>
+<li><code>tidygraph</code>と併用することで、データフレーム形式のデータをそのままグラフにできる。それによって、データの加工とグラフの描画をシームレスに行いやすい。<br />
+</li>
+<li><code>ggplot</code>パッケージの拡張なので、<code>ggplot</code>と同じ文法で描ける。</li>
+</ul>
+<p><br/></p>
+<div id="tbl_graphクラスへの変換" class="section level4 hasAnchor" number="1.2.3.1">
+<h4><span class="header-section-number">1.2.3.1</span> <code>tbl_graph</code>クラスへの変換<a href="c1.html#tbl_graphクラスへの変換" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><code>ggraph</code>でグラフを描くには、データを<code>tbl_graph</code>クラスに変換する必要がある。隣接行列を<code>as_tbl_graph()</code>で変換してあげればよい。すると、ノードの名前<code>name</code>と辺リスト(辺の始点、終点、重みが書いてあるリスト)が入ったオブジェクトを返してくれる。</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="c1.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 有向グラフであれば directed = TRUE、無向グラフならFALSE</span></span>
+<span id="cb4-2"><a href="c1.html#cb4-2" aria-hidden="true" tabindex="-1"></a>graph_mat_example2 <span class="ot">&lt;-</span> <span class="fu">as_tbl_graph</span>(mat_example2, <span class="at">directed =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-3"><a href="c1.html#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="c1.html#cb4-4" aria-hidden="true" tabindex="-1"></a>graph_mat_example2 </span></code></pre></div>
+<pre><code>## # A tbl_graph: 8 nodes and 56 edges
+## #
+## # A directed simple graph with 1 component
+## #
+## # Node Data: 8 × 1 (active)
+##   name 
+##   &lt;chr&gt;
+## 1 A    
+## 2 B    
+## 3 C    
+## 4 D    
+## 5 E    
+## 6 F    
+## # … with 2 more rows
+## #
+## # Edge Data: 56 × 3
+##    from    to weight
+##   &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;
+## 1     1     2  0.552
+## 2     1     3  0.153
+## 3     1     4  0.930
+## # … with 53 more rows</code></pre>
+<p>なお、各ノードの名前以外の情報もグラフに反映させたい場合は、以下のように情報を追加できる。ここでは、各個体の年齢の情報を追加した。</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="c1.html#cb6-1" aria-hidden="true" tabindex="-1"></a>graph_mat_example2 <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="c1.html#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="fu">c</span>(<span class="dv">12</span>,<span class="dv">10</span>,<span class="dv">15</span>,<span class="dv">6</span>,<span class="dv">20</span>,<span class="dv">13</span>,<span class="dv">8</span>,<span class="dv">7</span>)) <span class="ot">-&gt;</span> graph_mat_example2</span>
+<span id="cb6-3"><a href="c1.html#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="c1.html#cb6-4" aria-hidden="true" tabindex="-1"></a>graph_mat_example2</span></code></pre></div>
+<pre><code>## # A tbl_graph: 8 nodes and 56 edges
+## #
+## # A directed simple graph with 1 component
+## #
+## # Node Data: 8 × 2 (active)
+##   name    age
+##   &lt;chr&gt; &lt;dbl&gt;
+## 1 A        12
+## 2 B        10
+## 3 C        15
+## 4 D         6
+## 5 E        20
+## 6 F        13
+## # … with 2 more rows
+## #
+## # Edge Data: 56 × 3
+##    from    to weight
+##   &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;
+## 1     1     2  0.552
+## 2     1     3  0.153
+## 3     1     4  0.930
+## # … with 53 more rows</code></pre>
+<p>グラフに使用するデータを絞り込むなどの作業をする場合は、一度隣接行列を辺リストのデータフレームに変換してから(<code>mat.to.edgl()</code>で可能)データフレームを加工し、その後に<code>as_tbl_graph()</code>を用いるとよい。以下では、重みが0.7以上の辺のみを抽出している。</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="c1.html#cb8-1" aria-hidden="true" tabindex="-1"></a>mat_example2 <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="c1.html#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 辺リストのデータフレームに変換</span></span>
+<span id="cb8-3"><a href="c1.html#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mat.to.edgl</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-4"><a href="c1.html#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="do">## weightが0.5以上のものに限定する</span></span>
+<span id="cb8-5"><a href="c1.html#cb8-5" aria-hidden="true" tabindex="-1"></a>　<span class="fu">filter</span>(weight <span class="sc">&gt;=</span> <span class="fl">0.5</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-6"><a href="c1.html#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="do">## tbl_graphクラスに変換</span></span>
+<span id="cb8-7"><a href="c1.html#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tbl_graph</span>(<span class="at">directed =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-8"><a href="c1.html#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="fu">c</span>(<span class="dv">12</span>,<span class="dv">10</span>,<span class="dv">15</span>,<span class="dv">6</span>,<span class="dv">20</span>,<span class="dv">13</span>,<span class="dv">8</span>,<span class="dv">7</span>)) <span class="ot">-&gt;</span> graph_mat_example2_b</span>
+<span id="cb8-9"><a href="c1.html#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="c1.html#cb8-10" aria-hidden="true" tabindex="-1"></a>graph_mat_example2</span></code></pre></div>
+<pre><code>## # A tbl_graph: 8 nodes and 56 edges
+## #
+## # A directed simple graph with 1 component
+## #
+## # Node Data: 8 × 2 (active)
+##   name    age
+##   &lt;chr&gt; &lt;dbl&gt;
+## 1 A        12
+## 2 B        10
+## 3 C        15
+## 4 D         6
+## 5 E        20
+## 6 F        13
+## # … with 2 more rows
+## #
+## # Edge Data: 56 × 3
+##    from    to weight
+##   &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;
+## 1     1     2  0.552
+## 2     1     3  0.153
+## 3     1     4  0.930
+## # … with 53 more rows</code></pre>
+</div>
+<div id="ggraphを用いた描画" class="section level4 hasAnchor" number="1.2.3.2">
+<h4><span class="header-section-number">1.2.3.2</span> <code>ggraph</code>を用いた描画<a href="c1.html#ggraphを用いた描画" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><code>ggraph</code>でグラフを描画するときには、主に以下の3つを指定してあげればよい。</p>
+<ul>
+<li><p><strong>レイアウト</strong>: グラフでノードと辺をどのような規則に基づいて配置するかを決める。<br />
+例. <code>line</code>: 一直線、<code>circle</code>: 円上、<code>nicely</code>: いい感じに?、<code>randomly</code>: ランダムに、…<br />
+詳細は<a href="https://rdrr.io/cran/ggraph/man/layout_tbl_graph_igraph.html">こちら</a>や<a href="https://www.data-imaginist.com/2017/ggraph-introduction-layouts/">こちら</a>を参照。</p></li>
+<li><p><strong>ノード</strong>: <code>geom_node_*()</code>(*には色々入る)という関数群でノードについて指定。関数の中で<code>size =</code>で大きさ、<code>color =</code>で色、<code>shape =</code>で形などを<code>ggplot</code>と同じように指定できる。<br />
+例. <code>geom_node_point()</code>: 普通のノード、<code>geom_node_text()</code>: ノードのラベル、…</p></li>
+<li><p><strong>辺(エッジ)</strong>: <code>geom_edge_*()</code>(*には色々入る)という関数群でノードについて指定。関数の中で<code>width =</code>で太さ、<code>color =</code>で色などを<code>ggplot</code>と同じように指定できる。<br />
+例: <code>geom_edge_link()</code>: 直線、<code>geom_edge_fan()</code>: 曲線、…<br />
+<br/></p></li>
+</ul>
+<p>図<a href="c1.html#fig:fig-ggraph">1.2</a>は実際に以下のコードで描いた例である。<br />
+<code>layout = "nicely"</code>とすると、グラフが見やすいように配置してくれる。関係のある(= 辺がある)個体同士はより近くに配置される傾向があるため、絶対とはいえないが、結果的に多くの個体と繋がっている個体が中心部に来る傾向がある。何らかの指標を出さない限り、そのまま結果としては使えないが、パッと見て仮説を立てたりする際には非常に役立つ。</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="c1.html#cb10-1" aria-hidden="true" tabindex="-1"></a>graph_mat_example2_b <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="c1.html#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># layoutの指定</span></span>
+<span id="cb10-3"><a href="c1.html#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggraph</span>(<span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>)<span class="sc">+</span></span>
+<span id="cb10-4"><a href="c1.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 曲線のエッジ、weightを太さに</span></span>
+<span id="cb10-5"><a href="c1.html#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_fan</span>(<span class="fu">aes</span>(<span class="at">width =</span> weight),</span>
+<span id="cb10-6"><a href="c1.html#cb10-6" aria-hidden="true" tabindex="-1"></a>                <span class="do">## 矢印について指定</span></span>
+<span id="cb10-7"><a href="c1.html#cb10-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">angle =</span> <span class="dv">15</span>, <span class="at">type =</span> <span class="st">&quot;closed&quot;</span>,<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.18</span>, <span class="st">&quot;inches&quot;</span>))</span>
+<span id="cb10-8"><a href="c1.html#cb10-8" aria-hidden="true" tabindex="-1"></a>                <span class="do">## 透明度(alpha)と色(color)指定</span></span>
+<span id="cb10-9"><a href="c1.html#cb10-9" aria-hidden="true" tabindex="-1"></a>                , <span class="at">alpha =</span><span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">&quot;grey60&quot;</span>)<span class="sc">+</span></span>
+<span id="cb10-10"><a href="c1.html#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># エッジの太さの範囲を決める  </span></span>
+<span id="cb10-11"><a href="c1.html#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_edge_width</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.3</span>))<span class="sc">+</span></span>
+<span id="cb10-12"><a href="c1.html#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 四角のノード。大きさは年齢によって変化するとする。  </span></span>
+<span id="cb10-13"><a href="c1.html#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> age), <span class="at">shape =</span> <span class="dv">18</span>)<span class="sc">+</span></span>
+<span id="cb10-14"><a href="c1.html#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="do">## ノードのラベルは個体名  </span></span>
+<span id="cb10-15"><a href="c1.html#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">6</span>))<span class="sc">+</span></span>
+<span id="cb10-16"><a href="c1.html#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), </span>
+<span id="cb10-17"><a href="c1.html#cb10-17" aria-hidden="true" tabindex="-1"></a>                 <span class="do">## ノードと重ならないようにする </span></span>
+<span id="cb10-18"><a href="c1.html#cb10-18" aria-hidden="true" tabindex="-1"></a>                 <span class="at">repel=</span><span class="cn">TRUE</span>, <span class="at">size =</span><span class="dv">6</span>)<span class="sc">+</span></span>
+<span id="cb10-19"><a href="c1.html#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_graph</span>()<span class="sc">+</span></span>
+<span id="cb10-20"><a href="c1.html#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 縦横比</span></span>
+<span id="cb10-21"><a href="c1.html#cb10-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="fl">0.7</span>)</span></code></pre></div>
+<div class="figure" style="text-align: left"><span style="display:block;" id="fig:fig-ggraph"></span>
+<img src="Network_Analysis_Using_R_files/figure-html/fig-ggraph-1.png" alt="ggraphで描いたグラフの例" width="576" />
+<p class="caption">
+図1.2: ggraphで描いたグラフの例
+</p>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-Croft2019" class="csl-entry">
+Croft, D., James, R., &amp; Krause, J. (2008). <em>動物の社会ネットワーク分析</em> (島田将喜., Trans.). 東海大学出版部.
+</div>
+<div id="ref-Krause2015" class="csl-entry">
+Krause, J., James, R., Franks, D. W., &amp; Croft, D. P. (2015). <em>Animal social networks</em>. Oxford University Press.
+</div>
+<div id="ref-Sueur2011" class="csl-entry">
+Sueur, C., Jacobs, A., Amblard, F., Petit, O., &amp; King, A. J. (2011). How can social network analysis improve the study of primate behavior? <em>American Journal of Primatology</em>, <em>73</em>(8), 703–719.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="パッケージの読み込み.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="c2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

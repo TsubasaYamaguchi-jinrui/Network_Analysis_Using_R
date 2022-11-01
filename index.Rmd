@@ -1,0 +1,47 @@
+--- 
+title: "Network Analysis Using R"
+author: "Tsubasa Yamaguchi"
+date: "`r Sys.Date()`"
+output: 
+  bookdown::gitbook:
+    split_bib: yes  
+    number_sections: true    
+    css: custom_style.css   
+site: bookdown::bookdown_site  
+output_dir: "docs"  
+documentclass: book  
+header-includes:
+   - \usepackage{amsmath}
+   - \usepackage{nccmath}
+biblio-style: jecon    
+bibliography: network.bib   
+link-citations: yes
+csl: apa.csl
+---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE,
+                      warning = FALSE, fig.align = "left",
+                      cache = TRUE)
+```
+
+# 本稿の目的 {-}   
+本稿はネットワーク分析の簡単な概要と、Rで分析を行う方法をまとめたものである。  
+本稿で扱うのは、以下の内容である。
+
+- 社会ネットワーク分析の概要(第\@ref(c1)章)
+- rawデータからマトリックス(隣接行列)を作成する方法(第\@ref(c2)章)  
+- 各ネットワーク指標の解説と算出法(第\@ref(c3)章)   
+- ネットワークデータでの統計分析（第\@ref(c4)章)  
+
+<br/>  
+
+参考にしたのは主に以下の文献である。  
+なお、本稿の作成に使用したファイルとRのコードは筆者の[Github](https://github.com/TsubasaYamaguchi-jinrui/Network_Analysis_Using_R)ですべて閲覧できる。  
+
+- 鈴木努(2017) ネットワーク分析 第2版 [@Suzuki2017]  
+- Croft et al. (2008) Exploring Animal Social Network [@Croft2019]  
+- Farine & Whitehead (2015) Constructing, conducting and interpreting animal social network analysis [@Farine2015]  
+- Farine (2017) A guide to null models for animal social network analysis [@Farine2017]  
+- Sosa et al. (2020) A multilevel statistical toolkit to study animal social networks: the Animal Network Toolkit Software (ANTs) R package. [@Sosa2020]  
+
