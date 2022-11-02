@@ -1,4 +1,370 @@
-# 各ネットワーク指標の算出  {#c3}   
+# ネットワーク指標の算出  {#c3}   
+本章では、ネットワークの構造や構成個体の特徴を表すための指標について概説し、それらをRで算出する方法を学ぶ。指標を算出することで統計的な分析が可能になり、**グラフを見るだけでは定量的に言えなかったことを示すことができる**ようになる。  
+
+本稿では主に`ANTs`パッケージ、または`sna`パッケージで指標の算出を行う。各指標についての説明は @Suzuki2017 や @Sosa2020 、 @Farine2015 なども参照。  
+
+## ノードについての諸指標(中心性指標)    
+ここでは、各ノードのネットワーク内での特性を表す指標についてまとめる。中心性指標は、いずれも**あるノードがそのグラフでどのくらい「中心的」であるかを表す指標**である。以下で見るように、中心性を評価する方法は数多く提案されている。    
+
+基本的には、いずれも`ANTs`パッケージの`met.*()`関数で出力できる(*には中心性指標の名前)。これらの関数は、各ノードについて算出した中心性を各ノードの属性データ(例えば年齢や順位など)を記したデータフレームに追加していってくれるので、分析を行う際に非常に便利である。  
+
+<u>属性データの例(年齢と順位)</u>    
+```{r}
+attr <- data.frame(name = c("A","B","C","D","E","F","G","H"),
+                   age = c(12,13,12,11,14,15,18,9),
+                   rank = c(2,3,4,1,8,1,7,6))
+
+attr %>% 
+  datatable(rownames = FALSE, width = "55%")
+```
+<br/>  
+
+### 次数中心性(degree centrality)  
+最も簡便で適用範囲の広い中心性が**次数中心性**である[@Suzuki2017]。重みなしグラフについて算出でき、各ノードに辺で接続しているノードの数を、そのノードの次数中心性とする。例えば、図\@ref(fig:fig-degree)では、Aの次数中心性は5、Dの次数中心性は3である。    
+
+```{r fig-degree, fig.cap = "次数中心性のための無向グラフの例", echo = FALSE, fig.dim = c(4,4)}
+mat_undir <- matrix(c(0,1,1,1,1,1,0,0,
+                1,0,1,0,0,0,1,0,
+                1,1,0,0,0,0,0,0,
+                1,0,0,0,1,0,0,1,
+                1,0,0,1,0,1,0,0,
+                1,0,0,0,1,0,0,0,
+                0,1,0,0,0,0,0,0,
+                0,0,0,1,0,0,0,0),
+              nrow = 8, ncol = 8)
+
+
+colnames(mat_undir) <- c("A","B","C","D","E","F","G","H")
+rownames(mat_undir) <- c("A","B","C","D","E","F","G","H")
+
+mat_undir %>% 
+  as_tbl_graph() %>% 
+  ggraph(layout = "nicely")+
+  geom_node_point(shape = 16, size = 8, color = "black")+
+  geom_edge_link()+
+  geom_node_text(aes(label = name), color = "white")+
+  theme_graph()
+```
+
+`ANTs`パッケージでは、`met.degree`で求められる。以下のように`df = `に属性が入ったデータフレームを指定することで、算出した次数中心性をそのデータフレームに追加してくれる。    
+```{r}
+met.degree(mat_undir, 
+           ## 属性データフレーム
+           df = attr,
+           ## 個体IDの列番号
+           dfid = 1) %>% 
+  kable(align = "c")
+```
+<br/>  
+
+有向グラフでは、他のノードから入ってくる辺の数である入次数(**indegree**)と他のノードへ入っていく辺の数である出次数(**outdegree**)が区別される。図\@ref(fig:fig-degree2)では、Aの入次数は2、出次数は3である。  
+
+```{r fig-degree2, fig.cap = "次数中心性のための有向グラフの例", echo = FALSE, fig.dim = c(5,4)}
+mat_dir <- matrix(c(0,0,1,1,0,0,0,0,
+                1,0,1,0,0,0,1,0,
+                0,0,0,0,0,1,0,0,
+                1,0,0,0,0,0,0,0,
+                0,0,0,1,0,0,0,0,
+                1,0,0,0,0,0,1,0,
+                0,1,0,0,0,0,0,0,
+                0,0,0,0,0,0,1,0),
+              nrow = 8, ncol = 8)
+
+
+colnames(mat_dir) <- c("A","B","C","D","E","F","G","H")
+rownames(mat_dir) <- c("A","B","C","D","E","F","G","H")
+
+mat_dir %>% 
+  as_tbl_graph(directed = TRUE) %>% 
+  ggraph(layout = "fr")+
+  geom_node_point(shape = 16, size = 8, color = "black")+
+  geom_node_text(aes(label = name), color = "white")+
+  geom_edge_fan(arrow = arrow(angle = 30, length = unit(4,units = "mm"), type = "closed",
+                              ends = "last"),
+                end_cap = circle(3,"mm"),
+                start_cap = circle(3,"mm"),
+                color = "grey45")+
+  theme_graph()
+```
+
+`ANTs`パッケージでは、それぞれ`met.indegree()`と`met.outdegree()`で求められる。  
+```{r}
+## このようにすれば、2つの中心性指標を共に属性データに結合できる。
+met.indegree(mat_dir, 
+           ## 属性データフレーム
+           df = attr,
+           ## 個体IDの列番号
+           dfid = 1) -> attr_b
+
+met.outdegree(mat_dir, 
+           ## 属性データフレーム(入次数の情報も含む)
+           df = attr_b,
+           ## 個体IDの列番号
+           dfid = 1) %>% 
+  kable(align = "c")
+  
+```
+<br/>  
+
+### 重み付き中心性(strength centrality)    
+**重み付き中心性**は、各ノードに接続している辺の重みの合計で表される中心性である。図\@ref(fig:fig-strength)において辺上の数字は重みを表す。このとき、Aの重み付き中心性は$3 + 2+ 2+ 1 +1=9$、Cの重み付き中心性は$3 + 2 = 5$である。  
+
+```{r fig-strength, fig.cap = "重み付き中心性のための無向グラフの例", echo = FALSE, fig.dim = c(6,4)}
+mat_undir_b <- matrix(c(0,2,3,1,2,1,0,0,
+                      2,0,2,0,0,0,1,0,
+                      3,2,0,0,0,0,0,0,
+                      1,0,0,0,3,0,0,1,
+                      2,0,0,3,0,2,0,0,
+                      1,0,0,0,2,0,0,0,
+                      0,1,0,0,0,0,0,0,
+                      0,0,0,1,0,0,0,0),
+              nrow = 8, ncol = 8)
+
+
+colnames(mat_undir_b) <- c("A","B","C","D","E","F","G","H")
+rownames(mat_undir_b) <- c("A","B","C","D","E","F","G","H")
+
+mat_undir_b %>% 
+  as_tbl_graph(directed = FALSE) %>% 
+  ggraph(layout = "nicely")+
+  geom_node_point(shape = 16, size = 8, color = "black")+
+  geom_edge_link(aes(label = weight, width = weight),
+                 label_colour = "blue", color = "grey65",
+                 end_cap = circle(0.3,"cm"),
+                 start_cap = circle(0.3,"cm"))+
+  geom_node_text(aes(label = name), color = "white")+
+  scale_edge_width(range = c(1,3))+
+  theme_graph()
+```
+
+`ANTs`パッケージでは、`met.strength()`で求められる。まお、`ANTs`パッケージでは常に有向グラフとして計算されてしまうようなので、1/2してあげる必要がある。  
+```{r}
+met.strength(mat_undir_b/2, 
+           ## 属性データフレーム
+           df = attr,
+           ## 個体IDの列番号
+           dfid = 1) %>% 
+  kable(align = "c")
+```
+<br/>  
+
+なお、有向データについては次数中心性と同じように**instrength**と**outstrength**で区別することもできる。その場合は、それぞれ`ANTs`パッケージの`met.indegree()`と`met.outstrength()`で算出できる。  
+<br/>  
+
+**おまけ**  
+`sna`パッケージでは、次数中心性と重み付き中心性を全て`degree()`関数で求められる。  
+```{r}
+sna::degree(mat_undir_b,
+       ## 重みなしの場合 TRUE
+       ignore.eval = FALSE,
+       ## 有向グラフの場合は "digraph",
+       gmode = "graph",
+       ## indegreeの場合は "indegree"、outdegreeの場合は"outdegree",
+       cmode = "freeman")
+```
+
+
+### 固有ベクトル中心性  
+次数中心性や重み付け中心性は、あるノードに接続する辺の数や重みの合計に基づく中心性指標であった。つまり、例えば毛づくろい頻度ネットワークでは、多くの個体と毛づくろいしている個体や、毛づくろい頻度の合計が多い個体の中心性が高く評価される。しかし、この方法は中心性を評価する指標として適切ではない場合がある。例えば、毛づくろいを通してある行動がネットワーク内をどのように伝播するかを考えるとき、<u>毛づくろい相手の多い個体と毛づくろいすることは、毛づくろい相手の少ない個体と毛づくろいするよりも高く評価するべきかもしれない</u>。  
+
+このことを考慮するためは、あるノードの中心性を評価するときに、そのノードと繋がっているノードの中心性の大きさを反映させる必要がある。例えば、あるノードの中心性がそれとつながるノードの中心性の和に比例する方法が考えられる。このとき、ある無向グラフの隣接行列を$A = (a_{ij})$とし、そこに含まれるノードの中心性を成分とする列ベクトルを$c=c_i$とすると、ノード$i$の中心性$c_i$は次のように表現できる。ただし、$\lambda$は正の比例定数である。  
+
+$$
+\begin{aligned}
+  c_i &= \frac{1}{\lambda} \sum_{j=1}^{n} a_{ij}c_j
+\end{aligned}
+$$
+
+行列とベクトルで表すと、以下のように書ける。  
+$$
+\begin{aligned}
+  c &= \frac{1}{\lambda} Ac\\
+  \therefore \lambda c &= Ac
+\end{aligned}
+$$
+  
+<br/>  
+
+例えば、4個体について以下の隣接行列$A$と中心性を成分とするベクトル$c$を考える。  
+$$  
+\begin{aligned}
+
+&A = (a_{ij}) =
+  \begin{pmatrix}
+  0 & 1 & 0 & 0\\
+  1 & 0 & 1 & 1\\
+  0 & 1 & 0 & 1\\
+  0 & 1 & 1 & 0\\
+  \end{pmatrix}\\
+  \\
+  
+&c = \begin{pmatrix}
+                    c_1\\
+                    c_2\\
+                    c_3\\
+                    c_4
+       \end{pmatrix}
+       
+\end{aligned}  
+$$
+    
+<br/>      
+
+このとき、以下のような式を満たす$c$と$\lambda$を求めることになる。  
+
+$$  
+\begin{aligned}
+
+  \lambda 
+  \begin{pmatrix}c_1\\
+                          c_2\\
+                          c_3\\
+                          c_4
+       \end{pmatrix} &= 
+       
+  \begin{pmatrix}
+  0 & 1 & 0 & 0\\
+  1 & 0 & 1 & 1\\
+  0 & 1 & 0 & 1\\
+  0 & 1 & 1 & 0\\
+  \end{pmatrix} 
+  
+  \begin{pmatrix}
+  c_1\\
+  c_2\\
+  c_3\\
+  c_4\\
+  \end{pmatrix}\\
+  
+  \\
+  
+  \therefore \lambda 
+  \begin{pmatrix}
+    c_1\\
+    c_2\\
+    c_3\\
+    c_4\\
+       \end{pmatrix} &=
+  \begin{pmatrix}
+  c_2\\
+  c_1 +c_3+ c_4\\
+  c_2+c_4\\
+  c_2+c_3\\
+  \end{pmatrix}
+  
+\end{aligned}  
+$$
+
+<br/>  
+
+ここで、これを満たす$\lambda$は正方行列$A$の**固有値**、$c$は**固有ベクトル**になる(分からない場合は[こちら](https://manabitimes.jp/math/1008))。つまり、隣接行列の固有ベクトルを求めれば、隣接するノードの中心性を反映した中心性を求めることができる(なお、固有値と固有ベクトルの組み合わせは$A$の列数と同じだけある)。特に絶対値が最大となる固有値に対応する第1固有ベクトルを中心性指標としたものを、**固有ベクトル中心性(eigenvector centrality)という**。  
+
+あるノードの固有ベクトル中心性は、そのノードにつながるノードの中心性を反映しているが、それらのノードは更にそれらにつながるノードの中心性を反映している。このように、**固有ベクトル中心性は、そのノードから辺をたどって到達できるすべてのノードの中心性を反映**している。  
+
+先ほどの例の$A$の第1固有ベクトルは以下のように求められる。固有ベクトルは負の値をとることもあるため、絶対値をとることが多い。また、最大値を1とした比で表すことも多い。
+```{r}
+A = matrix(c(0,1,0,0,
+             1,0,1,1,
+             0,1,0,1,
+             0,1,1,0),
+           nrow = 4, byrow = TRUE)
+
+## 第1固有ベクトル。絶対値をとる。    
+evc <- abs(eigen(A)$vectors[,1])
+
+## 最大値を1とするようにする
+evc/max(evc)
+```
+
+`ANTs`パッケージでは`met.eigen()`関数で、`sna`パッケージでは`evcent()`関数で固有ベクトル中心性を求められる。前者は最大が1になるように変形しているのに対し、後者はそのような変形はしていない(定数倍しただけなので、分析上はどちらでも構わない)。    
+```{r}
+## ANTs
+met.eigen(A)
+
+## sna
+sna::evcent(A)
+```
+
+### PageRank  
+固有ベクトル中心性は、分離したグラフや有向グラフの中心性分析には使えない。**PageRankは**固有ベクトルに基づきながら、これらのグラフにも摘要できる中心性指標である。
+
+
+
+## ネットワーク構造の諸指標  
+ここでは、ネットワーク全体の特徴を表す指標についてまとめる。  
+
+### 密度(Density)  
+密度は、社会ネットワークにおける関係の緊密さの指標になりうる。密度が低いとき、社会ネットワーク内の個体間の直接的な関係は少なく、両者の関係は媒介者を通じた間接的なものが多いということができる[@Croft2019]。    
+
+- 重み無しグラフの場合: 実際の辺の数をグラフに張ることが可能な辺の最大数で割ったもの    
+ノードの数を$n$、実際の辺の数を$m$としたとき、$2m/n(n-1)$  
+
+- 重み付きグラフの場合: 全辺の重みの合計をグラフに張ることが可能な辺の最大数で割ったもの  
+ノードの数を$n$、重みの合計を$w$としたとき、$2e/n(n-1)$  
+<br/>  
+
+ここでは、\@ref(s2-1)で算出した毛づくろい頻度についての隣接行列を用いて密度を算出する。    
+`ANTs`パッケージでは、`met.density()`で計算可能。ただし、重み無しグラフとして算出されるよう。    
+```{r}
+met.density(groom_mat_b)
+```
+
+`sna`パッケージでは、`gden()`で計算可能。`ignore.value = FALSE`とすると重み付きグラフとして扱われる。
+```{r}
+## 重み付き
+gden(groom_mat_b, ignore.eval = FALSE)
+
+## 重み無し  
+gden(groom_mat_b, ignore.eval = TRUE)
+```
+
+### 推移性(Transitivity)  
+ネットワークにおいて、頂点$i$と$j$の間、および頂点$j$と$k$の間に関係があり、頂点$i$と$k$の間にも関係があるとき、関係が**推移的**であるという。例えば、図\@ref(fig:fig-trans)で頂点A, B, Cの関係は推移的だが、頂点A, B, Gは推移的ではない。  
+
+```{r fig-trans, fig.cap = "遷移性の説明のための無向グラフの例", echo = FALSE, fig.dim = c(4,4)}
+mat <- matrix(c(0,1,1,1,1,1,0,0,
+                1,0,1,0,0,0,1,0,
+                1,1,0,0,0,0,0,0,
+                1,0,0,0,1,0,0,1,
+                1,0,0,1,0,1,0,0,
+                1,0,0,0,1,0,0,0,
+                0,1,0,0,0,0,0,0,
+                0,0,0,1,0,0,0,0),
+              nrow = 8, ncol = 8)
+
+
+colnames(mat) <- c("A","B","C","D","E","F","G","H")
+rownames(mat) <- c("A","B","C","D","E","F","G","H")
+
+mat %>% 
+  as_tbl_graph() %>% 
+  ggraph(layout = "nicely")+
+  geom_node_point(shape = 16, size = 8, color = "black")+
+  geom_edge_link()+
+  geom_node_text(aes(label = name), color = "white")+
+  theme_graph()
+```
+
+有向グラフの場合は、頂点$i$から$j$、頂点$j$から$k$に有向辺があり、かつ頂点$i$から$k$に有向辺があるとき推移的であるという(図\@ref(fig:fig-trans2))。  
+```{r fig-trans2, fig.cap = "遷移性の説明のための有向グラフの例", echo = FALSE, fig.dim = c(2.3,2.3)}
+dagify(j~i,
+        k~j,
+         k~i) %>% 
+  ggdag()+
+  theme_dag()
+```
+
+**推移性**はネットワーク内で推移的な関係が成り立っている比率を指す。例えば無向グラフの場合には、頂点$i$と$j$、$j$と$k$の間に辺があるとき、頂点$i$と$k$にも辺がある割合である。推移性はネットワークがどの程度クラスタ化されているかの指標になる[@Farine2015]。
+
+`ANTs`パッケージでは算出できない。`sna`パッケージでは、`gtrans()`関数で求められる。  
+```{r}
+## 有向グラフの場合は、mode = "digraph"
+gtrans(mat, mode = "graph")
+```
+
+### 
+
+
 ここでは、`ANTs`パッケージを用いてマトリックスから様々なネットワーク指標を求める(他の様々なパッケージでも求められる)。    
 各指標については、Sosa et al. (2020)やFarine & Whitehead(2015)などを参照[@Sosa2020; @Farine2015]。  
 

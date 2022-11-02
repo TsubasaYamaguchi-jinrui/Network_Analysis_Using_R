@@ -179,10 +179,24 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="2" data-path="c2.html"><a href="c2.html"><i class="fa fa-check"></i><b>2</b> データの読み込みとマトリックスの作成</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="c2.html"><a href="c2.html#個体間のassociationを記録したデータフレーム"><i class="fa fa-check"></i><b>2.1</b> 2個体間のassociationを記録したデータフレーム</a></li>
+<li class="chapter" data-level="2.1" data-path="c2.html"><a href="c2.html#s2-1"><i class="fa fa-check"></i><b>2.1</b> 2個体間のassociationを記録したデータフレーム</a></li>
 <li class="chapter" data-level="2.2" data-path="c2.html"><a href="c2.html#group-by-individual"><i class="fa fa-check"></i><b>2.2</b> Group by individual</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="c3.html"><a href="c3.html"><i class="fa fa-check"></i><b>3</b> 各ネットワーク指標の算出</a></li>
+<li class="chapter" data-level="3" data-path="c3.html"><a href="c3.html"><i class="fa fa-check"></i><b>3</b> ネットワーク指標の算出</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="c3.html"><a href="c3.html#ノードについての諸指標中心性指標"><i class="fa fa-check"></i><b>3.1</b> ノードについての諸指標(中心性指標)</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="c3.html"><a href="c3.html#次数中心性degree-centrality"><i class="fa fa-check"></i><b>3.1.1</b> 次数中心性(degree centrality)</a></li>
+<li class="chapter" data-level="3.1.2" data-path="c3.html"><a href="c3.html#重み付き中心性strength-centrality"><i class="fa fa-check"></i><b>3.1.2</b> 重み付き中心性(strength centrality)</a></li>
+<li class="chapter" data-level="3.1.3" data-path="c3.html"><a href="c3.html#固有ベクトル中心性"><i class="fa fa-check"></i><b>3.1.3</b> 固有ベクトル中心性</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="c3.html"><a href="c3.html#ネットワーク構造の諸指標"><i class="fa fa-check"></i><b>3.2</b> ネットワーク構造の諸指標</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="c3.html"><a href="c3.html#密度density"><i class="fa fa-check"></i><b>3.2.1</b> 密度(Density)</a></li>
+<li class="chapter" data-level="3.2.2" data-path="c3.html"><a href="c3.html#推移性transitivity"><i class="fa fa-check"></i><b>3.2.2</b> 推移性(Transitivity)</a></li>
+<li class="chapter" data-level="3.2.3" data-path="c3.html"><a href="c3.html#section"><i class="fa fa-check"></i><b>3.2.3</b> </a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="4" data-path="c4.html"><a href="c4.html"><i class="fa fa-check"></i><b>4</b> 統計的検定</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="c4.html"><a href="c4.html#なぜrandomizationが必要か"><i class="fa fa-check"></i><b>4.1</b> なぜrandomizationが必要か？</a></li>
@@ -232,18 +246,21 @@ div.csl-indent {
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="パッケージの読み込み.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidygraph)</span>
 <span id="cb1-2"><a href="パッケージの読み込み.html#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggraph)</span>
 <span id="cb1-3"><a href="パッケージの読み込み.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(asnipe)  </span>
-<span id="cb1-4"><a href="パッケージの読み込み.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ANTs)</span>
-<span id="cb1-5"><a href="パッケージの読み込み.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="do">## データハンドリング</span></span>
-<span id="cb1-6"><a href="パッケージの読み込み.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-7"><a href="パッケージの読み込み.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
-<span id="cb1-8"><a href="パッケージの読み込み.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
-<span id="cb1-9"><a href="パッケージの読み込み.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb1-10"><a href="パッケージの読み込み.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
-<span id="cb1-11"><a href="パッケージの読み込み.html#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="do">## グラフを並べるために</span></span>
-<span id="cb1-12"><a href="パッケージの読み込み.html#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb1-13"><a href="パッケージの読み込み.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="do">## フォント関連</span></span>
-<span id="cb1-14"><a href="パッケージの読み込み.html#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(extrafont)</span>
-<span id="cb1-15"><a href="パッケージの読み込み.html#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(systemfonts)</span></code></pre></div>
+<span id="cb1-4"><a href="パッケージの読み込み.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sna)</span>
+<span id="cb1-5"><a href="パッケージの読み込み.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ANTs)</span>
+<span id="cb1-6"><a href="パッケージの読み込み.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="do">## データハンドリング</span></span>
+<span id="cb1-7"><a href="パッケージの読み込み.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-8"><a href="パッケージの読み込み.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
+<span id="cb1-9"><a href="パッケージの読み込み.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
+<span id="cb1-10"><a href="パッケージの読み込み.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-11"><a href="パッケージの読み込み.html#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-12"><a href="パッケージの読み込み.html#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dagitty)</span>
+<span id="cb1-13"><a href="パッケージの読み込み.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdag)</span>
+<span id="cb1-14"><a href="パッケージの読み込み.html#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="do">## グラフを並べるために</span></span>
+<span id="cb1-15"><a href="パッケージの読み込み.html#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb1-16"><a href="パッケージの読み込み.html#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="do">## フォント関連</span></span>
+<span id="cb1-17"><a href="パッケージの読み込み.html#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(extrafont)</span>
+<span id="cb1-18"><a href="パッケージの読み込み.html#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(systemfonts)</span></code></pre></div>
 
 </div>
 <h3>References</h3>

@@ -179,10 +179,24 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="2" data-path="c2.html"><a href="c2.html"><i class="fa fa-check"></i><b>2</b> データの読み込みとマトリックスの作成</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="c2.html"><a href="c2.html#個体間のassociationを記録したデータフレーム"><i class="fa fa-check"></i><b>2.1</b> 2個体間のassociationを記録したデータフレーム</a></li>
+<li class="chapter" data-level="2.1" data-path="c2.html"><a href="c2.html#s2-1"><i class="fa fa-check"></i><b>2.1</b> 2個体間のassociationを記録したデータフレーム</a></li>
 <li class="chapter" data-level="2.2" data-path="c2.html"><a href="c2.html#group-by-individual"><i class="fa fa-check"></i><b>2.2</b> Group by individual</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="c3.html"><a href="c3.html"><i class="fa fa-check"></i><b>3</b> 各ネットワーク指標の算出</a></li>
+<li class="chapter" data-level="3" data-path="c3.html"><a href="c3.html"><i class="fa fa-check"></i><b>3</b> ネットワーク指標の算出</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="c3.html"><a href="c3.html#ノードについての諸指標中心性指標"><i class="fa fa-check"></i><b>3.1</b> ノードについての諸指標(中心性指標)</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="c3.html"><a href="c3.html#次数中心性degree-centrality"><i class="fa fa-check"></i><b>3.1.1</b> 次数中心性(degree centrality)</a></li>
+<li class="chapter" data-level="3.1.2" data-path="c3.html"><a href="c3.html#重み付き中心性strength-centrality"><i class="fa fa-check"></i><b>3.1.2</b> 重み付き中心性(strength centrality)</a></li>
+<li class="chapter" data-level="3.1.3" data-path="c3.html"><a href="c3.html#固有ベクトル中心性"><i class="fa fa-check"></i><b>3.1.3</b> 固有ベクトル中心性</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="c3.html"><a href="c3.html#ネットワーク構造の諸指標"><i class="fa fa-check"></i><b>3.2</b> ネットワーク構造の諸指標</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="c3.html"><a href="c3.html#密度density"><i class="fa fa-check"></i><b>3.2.1</b> 密度(Density)</a></li>
+<li class="chapter" data-level="3.2.2" data-path="c3.html"><a href="c3.html#推移性transitivity"><i class="fa fa-check"></i><b>3.2.2</b> 推移性(Transitivity)</a></li>
+<li class="chapter" data-level="3.2.3" data-path="c3.html"><a href="c3.html#section"><i class="fa fa-check"></i><b>3.2.3</b> </a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="4" data-path="c4.html"><a href="c4.html"><i class="fa fa-check"></i><b>4</b> 統計的検定</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="c4.html"><a href="c4.html#なぜrandomizationが必要か"><i class="fa fa-check"></i><b>4.1</b> なぜrandomizationが必要か？</a></li>
@@ -226,7 +240,7 @@ div.csl-indent {
 <h3><span class="header-section-number">1.2.1</span> グラフ<a href="c1.html#グラフ" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>SNAでは、ネットワークの構造を点(<strong>ノード</strong>)と線(<strong>エッジ</strong>)の集合によって表す。これを、<strong>グラフ</strong>と呼ぶ。点は個体などを、辺は何らかの個体間の社会関係を表す。</p>
 <ul>
-<li><p>関係の有無(1か0か)だけを考慮するグラフと、関係の強さ(交渉頻度など)も考慮するグラフがある。後者は特に<strong>重み付きグラフ</strong>という。グラフでは、エッジの太さで関係の強さを表す(図<a href="c1.html#fig:fig-graph">1.1</a>)。</p></li>
+<li><p>関係の有無(1か0か)だけを考慮するグラフと、関係の強さ(交渉頻度など)も考慮するグラフがある。後者は特に<strong>重み付きグラフ</strong>といい、関係の強さを「重み(weight)」という。グラフでは、エッジの太さで関係の強さを表す(図<a href="c1.html#fig:fig-graph">1.1</a>)。</p></li>
 <li><p>関係の向きを考える(<span class="math inline">\(A \rightarrow B\)</span>と<span class="math inline">\(A \leftarrow B\)</span>を区別)グラフを<strong>有向グラフ</strong>、考えないグラフを<strong>無向グラフ</strong>という。有向グラフの場合は、辺に矢印を用いることが多い(図<a href="c1.html#fig:fig-graph">1.1</a>のB)。</p></li>
 </ul>
 <div class="figure" style="text-align: left"><span style="display:block;" id="fig:fig-graph"></span>
@@ -529,28 +543,31 @@ div.csl-indent {
 <br/></p></li>
 </ul>
 <p>図<a href="c1.html#fig:fig-ggraph">1.2</a>は実際に以下のコードで描いた例である。<br />
-<code>layout = "nicely"</code>とすると、グラフが見やすいように配置してくれる。関係のある(= 辺がある)個体同士はより近くに配置される傾向があるため、絶対とはいえないが、結果的に多くの個体と繋がっている個体が中心部に来る傾向がある。何らかの指標を出さない限り、そのまま結果としては使えないが、パッと見て仮説を立てたりする際には非常に役立つ。</p>
+<code>layout = "nicely"</code>とすると、グラフが見やすいように配置してくれる。関係のある(= 辺がある)個体同士はより近くに配置される傾向があるため、絶対とはいえないが、結果的に多くの個体と繋がっている個体が中心部に来る傾向がある。<br />
+何らかの指標を出さない限りグラフのみから何かを結論付けることはできないが、パッと見て関係構造の全体図を掴んだり、仮説を立てたりしようとする際にはグラフを見ることが非常に有用である。</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="c1.html#cb10-1" aria-hidden="true" tabindex="-1"></a>graph_mat_example2_b <span class="sc">%&gt;%</span> </span>
 <span id="cb10-2"><a href="c1.html#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># layoutの指定</span></span>
 <span id="cb10-3"><a href="c1.html#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggraph</span>(<span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>)<span class="sc">+</span></span>
 <span id="cb10-4"><a href="c1.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 曲線のエッジ、weightを太さに</span></span>
 <span id="cb10-5"><a href="c1.html#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_fan</span>(<span class="fu">aes</span>(<span class="at">width =</span> weight),</span>
 <span id="cb10-6"><a href="c1.html#cb10-6" aria-hidden="true" tabindex="-1"></a>                <span class="do">## 矢印について指定</span></span>
-<span id="cb10-7"><a href="c1.html#cb10-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">angle =</span> <span class="dv">15</span>, <span class="at">type =</span> <span class="st">&quot;closed&quot;</span>,<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.18</span>, <span class="st">&quot;inches&quot;</span>))</span>
-<span id="cb10-8"><a href="c1.html#cb10-8" aria-hidden="true" tabindex="-1"></a>                <span class="do">## 透明度(alpha)と色(color)指定</span></span>
-<span id="cb10-9"><a href="c1.html#cb10-9" aria-hidden="true" tabindex="-1"></a>                , <span class="at">alpha =</span><span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">&quot;grey60&quot;</span>)<span class="sc">+</span></span>
-<span id="cb10-10"><a href="c1.html#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># エッジの太さの範囲を決める  </span></span>
-<span id="cb10-11"><a href="c1.html#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_edge_width</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.3</span>))<span class="sc">+</span></span>
-<span id="cb10-12"><a href="c1.html#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 四角のノード。大きさは年齢によって変化するとする。  </span></span>
-<span id="cb10-13"><a href="c1.html#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> age), <span class="at">shape =</span> <span class="dv">18</span>)<span class="sc">+</span></span>
-<span id="cb10-14"><a href="c1.html#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="do">## ノードのラベルは個体名  </span></span>
-<span id="cb10-15"><a href="c1.html#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">6</span>))<span class="sc">+</span></span>
-<span id="cb10-16"><a href="c1.html#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), </span>
-<span id="cb10-17"><a href="c1.html#cb10-17" aria-hidden="true" tabindex="-1"></a>                 <span class="do">## ノードと重ならないようにする </span></span>
-<span id="cb10-18"><a href="c1.html#cb10-18" aria-hidden="true" tabindex="-1"></a>                 <span class="at">repel=</span><span class="cn">TRUE</span>, <span class="at">size =</span><span class="dv">6</span>)<span class="sc">+</span></span>
-<span id="cb10-19"><a href="c1.html#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_graph</span>()<span class="sc">+</span></span>
-<span id="cb10-20"><a href="c1.html#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 縦横比</span></span>
-<span id="cb10-21"><a href="c1.html#cb10-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="fl">0.7</span>)</span></code></pre></div>
+<span id="cb10-7"><a href="c1.html#cb10-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">angle =</span> <span class="dv">15</span>, <span class="at">type =</span> <span class="st">&quot;closed&quot;</span>,<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.18</span>, <span class="st">&quot;inches&quot;</span>)),</span>
+<span id="cb10-8"><a href="c1.html#cb10-8" aria-hidden="true" tabindex="-1"></a>                <span class="do">## 矢印の終点のノードからの距離</span></span>
+<span id="cb10-9"><a href="c1.html#cb10-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">end_cap =</span> <span class="fu">circle</span>(<span class="fl">2.5</span>,<span class="st">&quot;mm&quot;</span>),</span>
+<span id="cb10-10"><a href="c1.html#cb10-10" aria-hidden="true" tabindex="-1"></a>                <span class="do">## 透明度(alpha)と色(color)指定</span></span>
+<span id="cb10-11"><a href="c1.html#cb10-11" aria-hidden="true" tabindex="-1"></a>                 <span class="at">alpha =</span><span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">&quot;grey60&quot;</span>)<span class="sc">+</span></span>
+<span id="cb10-12"><a href="c1.html#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># エッジの太さの範囲を決める  </span></span>
+<span id="cb10-13"><a href="c1.html#cb10-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_edge_width</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.3</span>))<span class="sc">+</span></span>
+<span id="cb10-14"><a href="c1.html#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 四角のノード。大きさは年齢によって変化するとする。  </span></span>
+<span id="cb10-15"><a href="c1.html#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> age), <span class="at">shape =</span> <span class="dv">18</span>)<span class="sc">+</span></span>
+<span id="cb10-16"><a href="c1.html#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="do">## ノードのラベルは個体名  </span></span>
+<span id="cb10-17"><a href="c1.html#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">6</span>))<span class="sc">+</span></span>
+<span id="cb10-18"><a href="c1.html#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), </span>
+<span id="cb10-19"><a href="c1.html#cb10-19" aria-hidden="true" tabindex="-1"></a>                 <span class="do">## ノードと重ならないようにする </span></span>
+<span id="cb10-20"><a href="c1.html#cb10-20" aria-hidden="true" tabindex="-1"></a>                 <span class="at">repel=</span><span class="cn">TRUE</span>, <span class="at">size =</span><span class="dv">6</span>)<span class="sc">+</span></span>
+<span id="cb10-21"><a href="c1.html#cb10-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_graph</span>()<span class="sc">+</span></span>
+<span id="cb10-22"><a href="c1.html#cb10-22" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 縦横比</span></span>
+<span id="cb10-23"><a href="c1.html#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="fl">0.7</span>)</span></code></pre></div>
 <div class="figure" style="text-align: left"><span style="display:block;" id="fig:fig-ggraph"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/fig-ggraph-1.png" alt="ggraphで描いたグラフの例" width="576" />
 <p class="caption">

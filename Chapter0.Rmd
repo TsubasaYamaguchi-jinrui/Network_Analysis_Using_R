@@ -14,6 +14,7 @@
 library(tidygraph)
 library(ggraph)
 library(asnipe)  
+library(sna)
 library(ANTs)
 ## データハンドリング
 library(tidyverse)
@@ -21,6 +22,8 @@ library(easystats)
 library(DT)
 library(knitr)
 library(kableExtra)
+library(dagitty)
+library(ggdag)
 ## グラフを並べるために
 library(patchwork)
 ## フォント関連

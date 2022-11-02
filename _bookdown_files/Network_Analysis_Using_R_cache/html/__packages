@@ -34,3 +34,5 @@ fontregisterer
 DT
 knitr
 kableExtra
+dagitty
+ggdag
