@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2022-11-02" />
+<meta name="date" content="2022-11-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -188,7 +188,10 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="3.1.1" data-path="c3.html"><a href="c3.html#次数中心性degree-centrality"><i class="fa fa-check"></i><b>3.1.1</b> 次数中心性(degree centrality)</a></li>
 <li class="chapter" data-level="3.1.2" data-path="c3.html"><a href="c3.html#重み付き中心性strength-centrality"><i class="fa fa-check"></i><b>3.1.2</b> 重み付き中心性(strength centrality)</a></li>
-<li class="chapter" data-level="3.1.3" data-path="c3.html"><a href="c3.html#固有ベクトル中心性"><i class="fa fa-check"></i><b>3.1.3</b> 固有ベクトル中心性</a></li>
+<li class="chapter" data-level="3.1.3" data-path="c3.html"><a href="c3.html#固有ベクトル中心性eigenvector-centrality"><i class="fa fa-check"></i><b>3.1.3</b> 固有ベクトル中心性(eigenvector centrality)</a></li>
+<li class="chapter" data-level="3.1.4" data-path="c3.html"><a href="c3.html#pagerank"><i class="fa fa-check"></i><b>3.1.4</b> PageRank</a></li>
+<li class="chapter" data-level="3.1.5" data-path="c3.html"><a href="c3.html#媒介中心性betweeness-centrality"><i class="fa fa-check"></i><b>3.1.5</b> 媒介中心性(betweeness centrality)</a></li>
+<li class="chapter" data-level="3.1.6" data-path="c3.html"><a href="c3.html#情報中心性information-centrality"><i class="fa fa-check"></i><b>3.1.6</b> 情報中心性(information centrality)</a></li>
 </ul></li>
 <li class="chapter" data-level="3.2" data-path="c3.html"><a href="c3.html#ネットワーク構造の諸指標"><i class="fa fa-check"></i><b>3.2</b> ネットワーク構造の諸指標</a>
 <ul>
@@ -248,25 +251,38 @@ div.csl-indent {
 <span id="cb1-3"><a href="パッケージの読み込み.html#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(asnipe)  </span>
 <span id="cb1-4"><a href="パッケージの読み込み.html#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sna)</span>
 <span id="cb1-5"><a href="パッケージの読み込み.html#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ANTs)</span>
-<span id="cb1-6"><a href="パッケージの読み込み.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="do">## データハンドリング</span></span>
-<span id="cb1-7"><a href="パッケージの読み込み.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-8"><a href="パッケージの読み込み.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
-<span id="cb1-9"><a href="パッケージの読み込み.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
-<span id="cb1-10"><a href="パッケージの読み込み.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb1-11"><a href="パッケージの読み込み.html#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
-<span id="cb1-12"><a href="パッケージの読み込み.html#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dagitty)</span>
-<span id="cb1-13"><a href="パッケージの読み込み.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdag)</span>
-<span id="cb1-14"><a href="パッケージの読み込み.html#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="do">## グラフを並べるために</span></span>
-<span id="cb1-15"><a href="パッケージの読み込み.html#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb1-16"><a href="パッケージの読み込み.html#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="do">## フォント関連</span></span>
-<span id="cb1-17"><a href="パッケージの読み込み.html#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(extrafont)</span>
-<span id="cb1-18"><a href="パッケージの読み込み.html#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(systemfonts)</span></code></pre></div>
+<span id="cb1-6"><a href="パッケージの読み込み.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
+<span id="cb1-7"><a href="パッケージの読み込み.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="do">## データハンドリング</span></span>
+<span id="cb1-8"><a href="パッケージの読み込み.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-9"><a href="パッケージの読み込み.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
+<span id="cb1-10"><a href="パッケージの読み込み.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
+<span id="cb1-11"><a href="パッケージの読み込み.html#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-12"><a href="パッケージの読み込み.html#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-13"><a href="パッケージの読み込み.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dagitty)</span>
+<span id="cb1-14"><a href="パッケージの読み込み.html#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdag)</span>
+<span id="cb1-15"><a href="パッケージの読み込み.html#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="do">## グラフを並べるために</span></span>
+<span id="cb1-16"><a href="パッケージの読み込み.html#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb1-17"><a href="パッケージの読み込み.html#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="do">## フォント関連</span></span>
+<span id="cb1-18"><a href="パッケージの読み込み.html#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(extrafont)</span>
+<span id="cb1-19"><a href="パッケージの読み込み.html#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(systemfonts)</span></code></pre></div>
+<p>なお、本稿はRの基本操作と<code>tidyverse</code>パッケージによるデータハンドリングができることを前提としている。<br />
+<code>tidyverse</code>パッケージを用いたデータ処理については、以下を参照。</p>
+<ul>
+<li><p>R for Data Science <span class="citation">(<a href="#ref-Wickham2016" role="doc-biblioref">Wickham &amp; Grolemund, 2016</a>)</span><br />
+<a href="https://r4ds.had.co.nz/">電子書籍</a>, <a href="https://www.oreilly.co.jp/books/9784873118147/">日本語</a></p></li>
+<li><p>R Graphics Coocbook 2nd Edition <span class="citation">(<a href="#ref-Chang2018" role="doc-biblioref">Chang, 2018</a>)</span><br />
+<a href="https://r-graphics.org/">電子書籍</a>, <a href="https://www.oreilly.co.jp/books/9784873118925/">日本語</a></p></li>
+<li><p>RユーザのためのRstudio[実践]入門~tidyverseによるモダンな分析フローの世界 改訂2版 <span class="citation">(<a href="#ref-Matsumura2021" role="doc-biblioref">松村 et al., 2021</a>)</span> <a href="https://gihyo.jp/book/2021/978-4-297-12170-9">出版社サイト</a></p></li>
+</ul>
 
 </div>
 <h3>References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-Butts2008" class="csl-entry">
 Butts, C. T. (2008). Social network analysis with sna. <em>J. Stat. Softw.</em>, <em>24</em>, 1–51.
+</div>
+<div id="ref-Chang2018" class="csl-entry">
+Chang, W. (2018). <em><span>R</span> graphics cookbook: Practical recipes for visualizing data</em>. <span>“O’Reilly Media, Inc.”</span>
 </div>
 <div id="ref-Csardi2006" class="csl-entry">
 Csardi, G., Nepusz, T., &amp; Others. (2006). The igraph software package for complex network research. <em>InterJournal, Complex Systems</em>, <em>1695</em>(5), 1–9.
@@ -276,6 +292,12 @@ Farine, D. R. (2013). Animal social network inference and permutations for ecolo
 </div>
 <div id="ref-Sosa2020" class="csl-entry">
 Sosa, S., Puga-Gonzalez, I., Hu, F., Pansanel, J., Xie, X., &amp; Sueur, C. (2020). A multilevel statistical toolkit to study animal social networks: The animal network toolkit software (<span>ANTs</span>) <span>R</span> package. <em>Sci. Rep.</em>, <em>10</em>(1), 12507.
+</div>
+<div id="ref-Wickham2016" class="csl-entry">
+Wickham, H., &amp; Grolemund, G. (2016). <em><span>R</span> for data science: Import, tidy, transform, visualize, and model data</em>. <span>“O’Reilly Media, Inc.”</span>
+</div>
+<div id="ref-Matsumura2021" class="csl-entry">
+松村優哉., 湯谷啓明., 紀ノ定保礼., &amp; 前田和. (2021). <em>RユーザのためのRstudio[実践]入門 tidyverseによるモダンな分析フローの世界 改訂2版</em>. 技術評論社.
 </div>
 </div>
             </section>

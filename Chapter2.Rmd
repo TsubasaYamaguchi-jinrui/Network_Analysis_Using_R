@@ -83,10 +83,12 @@ groom_mat <- df.to.mat(groom_G,
                        ## 交渉の方向を考慮するか。FALSEでする。
                        sym = FALSE)
 ```
+<br/>  
 
-```{r}
+隣接行列は以下のようになる(表\@ref(tab:tab-groom))。  
+```{r tab-groom, echo = FALSE}
 groom_mat %>% 
-  kable(digits = 2, align = "c") %>% 
+  kable(digits = 2, align = "c", caption = "方向性を考慮した毛づくろい頻度の隣接行列") %>% 
   kable_styling(font_size = 6, full_width = FALSE)
 ```
 <br/>  
@@ -102,15 +104,17 @@ groom_mat_b <- df.to.mat(groom_G,
                        tobs = duration$duration,
                        sym = TRUE)
 ```
+<br/>  
 
-```{r}
+その場合の隣接行列は以下の通り(表\@ref(tab:tab-groom-b))。  
+```{r tab-groom-b, echo = FALSE}
 groom_mat_b %>% 
-  kable(digits = 2, align = "c") %>% 
+  kable(digits = 2, align = "c",caption = "方向性を考慮しない毛づくろい頻度の隣接行列") %>% 
   kable_styling(font_size = 6, full_width = FALSE)
 ```
 <br/>  
 
-グラフを描画すると図\@ref(fig:fig-groom)のようになる。ノードの大きさは順位を表す。    
+グラフを描画すると図\@ref(fig:fig-groom)のようになる。ノードの大きさは順位を、辺の太さは毛づくろい頻度を表す。    
 血縁個体同士(同じアルファベットで始まる個体)は交渉頻度が高く、近くに配置されていることが分かる。順位の低い個体がネットワークの周辺にいることが多いことも分かるだろう。
 ```{r fig-groom, fig.dim = c(6,4), fig.cap = "毛づくろい頻度ネットワークのグラフ"}
 ## 順位
@@ -158,7 +162,7 @@ presence %>%
 - $y_a$: $a$だけが確認された回数  
 - $y_b$: $b$だけが確認された回数  
 - $y_{ab}$: $a$と$B$が共に観察されたが、associateはしてない回数(今回の例では存在しない)  
-- $y_null$ どちらも観察されなかった回数  
+- $y_{null}$ どちらも観察されなかった回数  
 <br/>  
 
 <u>**SRI**: simple ratio index</u>    
@@ -182,17 +186,17 @@ presence_mat <- get_network(presence %>% dplyr::select(-date),
                             association_index = "SRI")
 ```
 
-得られた隣接行列は以下の通り。  
-```{r}
+得られた隣接行列は以下の通り(表\@ref(tab:tab-SRI))。  
+```{r tab-SRI, echo = FALSE}
 presence_mat %>% 
-  kable(digits = 2, align = "c") %>% 
+  kable(digits = 2, align = "c", caption = "SRIの隣接行列") %>% 
   kable_styling(font_size = 6, full_width = FALSE)
 ```
 <br/>  
 
-グラフを描画すると図\@ref(fig:fig-gbi)のようになる。ノードの大きさは年齢、色は順位を表す。    
+グラフを描画すると図\@ref(fig:fig-gbi)のようになる。ノードの大きさは年齢、色は順位を、辺の太さはSRIを表す。    
 MikとAkaは他の個体と一緒にいることが少ないことが分かるだろう(年齢も影響しそう？)。 順位の高い個体はネットワークの中心にいることが多い?   
-```{r fig-gbi, fig.dim = c(6,6), fig.cap = "出欠SRIネットワークのグラフ"}
+```{r fig-gbi, fig.dim = c(6,6), fig.cap = "SRIネットワークのグラフ"}
 age <- c(18,17,15,15,13,13,13,13,13,13,12,11,11,10,9)
 rank2 <- c(16,1,3,9,7,8,12,13,14,17,10,6,15,2,5)
 

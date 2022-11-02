@@ -91,7 +91,7 @@ denom <- denom[rownames(kin_mat),colnames(kin_mat)]
 ```
 
 分析は以下の通り。  
-```{r}
+```{r, message = FALSE, cache = TRUE}
 r_qap <- glmqap(presence_mat ~ rank_mat + kin_mat,
                 ## 分母のマトリクス
                 weights = denom,
@@ -184,7 +184,6 @@ r_ds <- map(female_met_nest$data, ~ glm(formula = eigen ~ rank + age, data = .,f
 ここで算出されているp値はこんかいは用いることができない(データの独立性を仮定した結果なので)。  
 得られた係数(Coefficient)をランダム化されたマトリクスを用いた分析の係数と比較することで有意性を判定する。
 ```{r}
-library(easystats)
 model_parameters(r_ds[[1]])
 
 coef_rank_r <- r_ds[[1]]$coefficients[[2]]

@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2022-11-02" />
+<meta name="date" content="2022-11-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -188,7 +188,10 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="3.1.1" data-path="c3.html"><a href="c3.html#次数中心性degree-centrality"><i class="fa fa-check"></i><b>3.1.1</b> 次数中心性(degree centrality)</a></li>
 <li class="chapter" data-level="3.1.2" data-path="c3.html"><a href="c3.html#重み付き中心性strength-centrality"><i class="fa fa-check"></i><b>3.1.2</b> 重み付き中心性(strength centrality)</a></li>
-<li class="chapter" data-level="3.1.3" data-path="c3.html"><a href="c3.html#固有ベクトル中心性"><i class="fa fa-check"></i><b>3.1.3</b> 固有ベクトル中心性</a></li>
+<li class="chapter" data-level="3.1.3" data-path="c3.html"><a href="c3.html#固有ベクトル中心性eigenvector-centrality"><i class="fa fa-check"></i><b>3.1.3</b> 固有ベクトル中心性(eigenvector centrality)</a></li>
+<li class="chapter" data-level="3.1.4" data-path="c3.html"><a href="c3.html#pagerank"><i class="fa fa-check"></i><b>3.1.4</b> PageRank</a></li>
+<li class="chapter" data-level="3.1.5" data-path="c3.html"><a href="c3.html#媒介中心性betweeness-centrality"><i class="fa fa-check"></i><b>3.1.5</b> 媒介中心性(betweeness centrality)</a></li>
+<li class="chapter" data-level="3.1.6" data-path="c3.html"><a href="c3.html#情報中心性information-centrality"><i class="fa fa-check"></i><b>3.1.6</b> 情報中心性(information centrality)</a></li>
 </ul></li>
 <li class="chapter" data-level="3.2" data-path="c3.html"><a href="c3.html#ネットワーク構造の諸指標"><i class="fa fa-check"></i><b>3.2</b> ネットワーク構造の諸指標</a>
 <ul>
@@ -228,21 +231,21 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="c3" class="section level1 hasAnchor" number="3">
 <h1><span class="header-section-number">3</span> ネットワーク指標の算出<a href="c3.html#c3" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>本章では、ネットワークの構造や構成個体の特徴を表すための指標について概説し、それらをRで算出する方法を学ぶ。指標を算出することで統計的な分析が可能になり、<strong>グラフを見るだけでは定量的に言えなかったことを示すことができる</strong>ようになる。</p>
+<p>本章では、ネットワークの構造や構成個体の特徴を表すための指標について概説し、それらをRで算出する方法を学ぶ。指標を算出することで定量的な分析が可能になり、<strong>グラフを見るだけでは定性的にしか言えなかったことを示すことができる</strong>ようになる。</p>
 <p>本稿では主に<code>ANTs</code>パッケージ、または<code>sna</code>パッケージで指標の算出を行う。各指標についての説明は <span class="citation">鈴木 (<a href="#ref-Suzuki2017" role="doc-biblioref">2017</a>)</span> や <span class="citation">Sosa et al. (<a href="#ref-Sosa2020" role="doc-biblioref">2020</a>)</span> 、 <span class="citation">Farine &amp; Whitehead (<a href="#ref-Farine2015" role="doc-biblioref">2015</a>)</span> なども参照。</p>
 <div id="ノードについての諸指標中心性指標" class="section level2 hasAnchor" number="3.1">
 <h2><span class="header-section-number">3.1</span> ノードについての諸指標(中心性指標)<a href="c3.html#ノードについての諸指標中心性指標" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>ここでは、各ノードのネットワーク内での特性を表す指標についてまとめる。中心性指標は、いずれも<strong>あるノードがそのグラフでどのくらい「中心的」であるかを表す指標</strong>である。以下で見るように、中心性を評価する方法は数多く提案されている。</p>
 <p>基本的には、いずれも<code>ANTs</code>パッケージの<code>met.*()</code>関数で出力できる(*には中心性指標の名前)。これらの関数は、各ノードについて算出した中心性を各ノードの属性データ(例えば年齢や順位など)を記したデータフレームに追加していってくれるので、分析を行う際に非常に便利である。</p>
 <p><u>属性データの例(年齢と順位)</u></p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="c3.html#cb25-1" aria-hidden="true" tabindex="-1"></a>attr <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;D&quot;</span>,<span class="st">&quot;E&quot;</span>,<span class="st">&quot;F&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;H&quot;</span>),</span>
-<span id="cb25-2"><a href="c3.html#cb25-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">age =</span> <span class="fu">c</span>(<span class="dv">12</span>,<span class="dv">13</span>,<span class="dv">12</span>,<span class="dv">11</span>,<span class="dv">14</span>,<span class="dv">15</span>,<span class="dv">18</span>,<span class="dv">9</span>),</span>
-<span id="cb25-3"><a href="c3.html#cb25-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">rank =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">8</span>,<span class="dv">1</span>,<span class="dv">7</span>,<span class="dv">6</span>))</span>
-<span id="cb25-4"><a href="c3.html#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-5"><a href="c3.html#cb25-5" aria-hidden="true" tabindex="-1"></a>attr <span class="sc">%&gt;%</span> </span>
-<span id="cb25-6"><a href="c3.html#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(<span class="at">rownames =</span> <span class="cn">FALSE</span>, <span class="at">width =</span> <span class="st">&quot;55%&quot;</span>)</span></code></pre></div>
-<div id="htmlwidget-e1cfc6d356272ce1e272" style="width:55%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-e1cfc6d356272ce1e272">{"x":{"filter":"none","vertical":false,"data":[["A","B","C","D","E","F","G","H"],[12,13,12,11,14,15,18,9],[2,3,4,1,8,1,7,6]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>name<\/th>\n      <th>age<\/th>\n      <th>rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="c3.html#cb22-1" aria-hidden="true" tabindex="-1"></a>attr <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name =</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;D&quot;</span>,<span class="st">&quot;E&quot;</span>,<span class="st">&quot;F&quot;</span>,<span class="st">&quot;G&quot;</span>,<span class="st">&quot;H&quot;</span>),</span>
+<span id="cb22-2"><a href="c3.html#cb22-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">age =</span> <span class="fu">c</span>(<span class="dv">12</span>,<span class="dv">13</span>,<span class="dv">12</span>,<span class="dv">11</span>,<span class="dv">14</span>,<span class="dv">15</span>,<span class="dv">18</span>,<span class="dv">9</span>),</span>
+<span id="cb22-3"><a href="c3.html#cb22-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">rank =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">8</span>,<span class="dv">1</span>,<span class="dv">7</span>,<span class="dv">6</span>))</span>
+<span id="cb22-4"><a href="c3.html#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-5"><a href="c3.html#cb22-5" aria-hidden="true" tabindex="-1"></a>attr <span class="sc">%&gt;%</span> </span>
+<span id="cb22-6"><a href="c3.html#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(<span class="at">rownames =</span> <span class="cn">FALSE</span>, <span class="at">width =</span> <span class="st">&quot;55%&quot;</span>)</span></code></pre></div>
+<div id="htmlwidget-1084ab1f49f21a269d62" style="width:55%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1084ab1f49f21a269d62">{"x":{"filter":"none","vertical":false,"data":[["A","B","C","D","E","F","G","H"],[12,13,12,11,14,15,18,9],[2,3,4,1,8,1,7,6]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>name<\/th>\n      <th>age<\/th>\n      <th>rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p><br/></p>
 <div id="次数中心性degree-centrality" class="section level3 hasAnchor" number="3.1.1">
 <h3><span class="header-section-number">3.1.1</span> 次数中心性(degree centrality)<a href="c3.html#次数中心性degree-centrality" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -253,13 +256,14 @@ div.csl-indent {
 図3.1: 次数中心性のための無向グラフの例
 </p>
 </div>
+<p><br/></p>
 <p><code>ANTs</code>パッケージでは、<code>met.degree</code>で求められる。以下のように<code>df =</code>に属性が入ったデータフレームを指定することで、算出した次数中心性をそのデータフレームに追加してくれる。</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="c3.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">met.degree</span>(mat_undir, </span>
-<span id="cb26-2"><a href="c3.html#cb26-2" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 属性データフレーム</span></span>
-<span id="cb26-3"><a href="c3.html#cb26-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">df =</span> attr,</span>
-<span id="cb26-4"><a href="c3.html#cb26-4" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 個体IDの列番号</span></span>
-<span id="cb26-5"><a href="c3.html#cb26-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">dfid =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb26-6"><a href="c3.html#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&quot;c&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="c3.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">met.degree</span>(mat_undir, </span>
+<span id="cb23-2"><a href="c3.html#cb23-2" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 属性データフレーム</span></span>
+<span id="cb23-3"><a href="c3.html#cb23-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">df =</span> attr,</span>
+<span id="cb23-4"><a href="c3.html#cb23-4" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 個体IDの列番号</span></span>
+<span id="cb23-5"><a href="c3.html#cb23-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">dfid =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-6"><a href="c3.html#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&quot;c&quot;</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -400,20 +404,21 @@ H
 図3.2: 次数中心性のための有向グラフの例
 </p>
 </div>
+<p><br/></p>
 <p><code>ANTs</code>パッケージでは、それぞれ<code>met.indegree()</code>と<code>met.outdegree()</code>で求められる。</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="c3.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="do">## このようにすれば、2つの中心性指標を共に属性データに結合できる。</span></span>
-<span id="cb27-2"><a href="c3.html#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">met.indegree</span>(mat_dir, </span>
-<span id="cb27-3"><a href="c3.html#cb27-3" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 属性データフレーム</span></span>
-<span id="cb27-4"><a href="c3.html#cb27-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">df =</span> attr,</span>
-<span id="cb27-5"><a href="c3.html#cb27-5" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 個体IDの列番号</span></span>
-<span id="cb27-6"><a href="c3.html#cb27-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">dfid =</span> <span class="dv">1</span>) <span class="ot">-&gt;</span> attr_b</span>
-<span id="cb27-7"><a href="c3.html#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-8"><a href="c3.html#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="fu">met.outdegree</span>(mat_dir, </span>
-<span id="cb27-9"><a href="c3.html#cb27-9" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 属性データフレーム(入次数の情報も含む)</span></span>
-<span id="cb27-10"><a href="c3.html#cb27-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">df =</span> attr_b,</span>
-<span id="cb27-11"><a href="c3.html#cb27-11" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 個体IDの列番号</span></span>
-<span id="cb27-12"><a href="c3.html#cb27-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">dfid =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb27-13"><a href="c3.html#cb27-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&quot;c&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="c3.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="do">## このようにすれば、2つの中心性指標を共に属性データに結合できる。</span></span>
+<span id="cb24-2"><a href="c3.html#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">met.indegree</span>(mat_dir, </span>
+<span id="cb24-3"><a href="c3.html#cb24-3" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 属性データフレーム</span></span>
+<span id="cb24-4"><a href="c3.html#cb24-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">df =</span> attr,</span>
+<span id="cb24-5"><a href="c3.html#cb24-5" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 個体IDの列番号</span></span>
+<span id="cb24-6"><a href="c3.html#cb24-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">dfid =</span> <span class="dv">1</span>) <span class="ot">-&gt;</span> attr_b</span>
+<span id="cb24-7"><a href="c3.html#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="c3.html#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="fu">met.outdegree</span>(mat_dir, </span>
+<span id="cb24-9"><a href="c3.html#cb24-9" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 属性データフレーム(入次数の情報も含む)</span></span>
+<span id="cb24-10"><a href="c3.html#cb24-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">df =</span> attr_b,</span>
+<span id="cb24-11"><a href="c3.html#cb24-11" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 個体IDの列番号</span></span>
+<span id="cb24-12"><a href="c3.html#cb24-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">dfid =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-13"><a href="c3.html#cb24-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&quot;c&quot;</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -577,20 +582,290 @@ H
 </div>
 <div id="重み付き中心性strength-centrality" class="section level3 hasAnchor" number="3.1.2">
 <h3><span class="header-section-number">3.1.2</span> 重み付き中心性(strength centrality)<a href="c3.html#重み付き中心性strength-centrality" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p><strong>重み付き中心性</strong>は、各ノードに接続している辺の重みの合計で表される中心性である。図<a href="c3.html#fig:fig-strength">3.3</a>において辺上の数字は重みを表す。このとき、Aの重み付き中心性は<span class="math inline">\(3 + 2+ 2+ 1 +1=9\)</span>、Cの重み付き中心性は<span class="math inline">\(3 + 2 = 5\)</span>である。</p>
+<p><strong>重み付き中心性</strong>は、各ノードに接続している辺の重みの合計で表される中心性である。図<a href="c3.html#fig:fig-strength">3.3</a>は表<a href="c3.html#tab:tab-strength">3.1</a>の隣接行列(<code>mat_undir_b</code>)のグラフである。グラフの辺上の数字は重みを表す。このとき、Aの重み付き中心性は<span class="math inline">\(3 + 2+ 2+ 1 +1=9\)</span>、Cの重み付き中心性は<span class="math inline">\(3 + 2 = 5\)</span>である。</p>
+<table class="table" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:tab-strength">表3.1: </span>隣接行列(mat_undir_b)
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+A
+</th>
+<th style="text-align:center;">
+B
+</th>
+<th style="text-align:center;">
+C
+</th>
+<th style="text-align:center;">
+D
+</th>
+<th style="text-align:center;">
+E
+</th>
+<th style="text-align:center;">
+F
+</th>
+<th style="text-align:center;">
+G
+</th>
+<th style="text-align:center;">
+H
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+E
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+H
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+</tbody>
+</table>
 <div class="figure" style="text-align: left"><span style="display:block;" id="fig:fig-strength"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/fig-strength-1.png" alt="重み付き中心性のための無向グラフの例" width="576" />
 <p class="caption">
 図3.3: 重み付き中心性のための無向グラフの例
 </p>
 </div>
+<p><br/></p>
 <p><code>ANTs</code>パッケージでは、<code>met.strength()</code>で求められる。まお、<code>ANTs</code>パッケージでは常に有向グラフとして計算されてしまうようなので、1/2してあげる必要がある。</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="c3.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">met.strength</span>(mat_undir_b<span class="sc">/</span><span class="dv">2</span>, </span>
-<span id="cb28-2"><a href="c3.html#cb28-2" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 属性データフレーム</span></span>
-<span id="cb28-3"><a href="c3.html#cb28-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">df =</span> attr,</span>
-<span id="cb28-4"><a href="c3.html#cb28-4" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 個体IDの列番号</span></span>
-<span id="cb28-5"><a href="c3.html#cb28-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">dfid =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb28-6"><a href="c3.html#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&quot;c&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="c3.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">met.strength</span>(mat_undir_b<span class="sc">/</span><span class="dv">2</span>, </span>
+<span id="cb25-2"><a href="c3.html#cb25-2" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 属性データフレーム</span></span>
+<span id="cb25-3"><a href="c3.html#cb25-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">df =</span> attr,</span>
+<span id="cb25-4"><a href="c3.html#cb25-4" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 個体IDの列番号</span></span>
+<span id="cb25-5"><a href="c3.html#cb25-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">dfid =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-6"><a href="c3.html#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&quot;c&quot;</span>)</span></code></pre></div>
 <table>
 <thead>
 <tr>
@@ -728,17 +1003,17 @@ H
 <br/></p>
 <p><strong>おまけ</strong><br />
 <code>sna</code>パッケージでは、次数中心性と重み付き中心性を全て<code>degree()</code>関数で求められる。</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="c3.html#cb29-1" aria-hidden="true" tabindex="-1"></a>sna<span class="sc">::</span><span class="fu">degree</span>(mat_undir_b,</span>
-<span id="cb29-2"><a href="c3.html#cb29-2" aria-hidden="true" tabindex="-1"></a>       <span class="do">## 重みなしの場合 TRUE</span></span>
-<span id="cb29-3"><a href="c3.html#cb29-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">ignore.eval =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb29-4"><a href="c3.html#cb29-4" aria-hidden="true" tabindex="-1"></a>       <span class="do">## 有向グラフの場合は &quot;digraph&quot;,</span></span>
-<span id="cb29-5"><a href="c3.html#cb29-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">gmode =</span> <span class="st">&quot;graph&quot;</span>,</span>
-<span id="cb29-6"><a href="c3.html#cb29-6" aria-hidden="true" tabindex="-1"></a>       <span class="do">## indegreeの場合は &quot;indegree&quot;、outdegreeの場合は&quot;outdegree&quot;,</span></span>
-<span id="cb29-7"><a href="c3.html#cb29-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">cmode =</span> <span class="st">&quot;freeman&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="c3.html#cb26-1" aria-hidden="true" tabindex="-1"></a>sna<span class="sc">::</span><span class="fu">degree</span>(mat_undir_b,</span>
+<span id="cb26-2"><a href="c3.html#cb26-2" aria-hidden="true" tabindex="-1"></a>       <span class="do">## 重みなしの場合 TRUE</span></span>
+<span id="cb26-3"><a href="c3.html#cb26-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">ignore.eval =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb26-4"><a href="c3.html#cb26-4" aria-hidden="true" tabindex="-1"></a>       <span class="do">## 有向グラフの場合は &quot;digraph&quot;,</span></span>
+<span id="cb26-5"><a href="c3.html#cb26-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">gmode =</span> <span class="st">&quot;graph&quot;</span>,</span>
+<span id="cb26-6"><a href="c3.html#cb26-6" aria-hidden="true" tabindex="-1"></a>       <span class="do">## indegreeの場合は &quot;indegree&quot;、outdegreeの場合は&quot;outdegree&quot;,</span></span>
+<span id="cb26-7"><a href="c3.html#cb26-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">cmode =</span> <span class="st">&quot;freeman&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 9 5 5 5 7 3 1 1</code></pre>
 </div>
-<div id="固有ベクトル中心性" class="section level3 hasAnchor" number="3.1.3">
-<h3><span class="header-section-number">3.1.3</span> 固有ベクトル中心性<a href="c3.html#固有ベクトル中心性" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="固有ベクトル中心性eigenvector-centrality" class="section level3 hasAnchor" number="3.1.3">
+<h3><span class="header-section-number">3.1.3</span> 固有ベクトル中心性(eigenvector centrality)<a href="c3.html#固有ベクトル中心性eigenvector-centrality" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>次数中心性や重み付け中心性は、あるノードに接続する辺の数や重みの合計に基づく中心性指標であった。つまり、例えば毛づくろい頻度ネットワークでは、多くの個体と毛づくろいしている個体や、毛づくろい頻度の合計が多い個体の中心性が高く評価される。しかし、この方法は中心性を評価する指標として適切ではない場合がある。例えば、毛づくろいを通してある行動がネットワーク内をどのように伝播するかを考えるとき、<u>毛づくろい相手の多い個体と毛づくろいすることは、毛づくろい相手の少ない個体と毛づくろいするよりも高く評価するべきかもしれない</u>。</p>
 <p>このことを考慮するためは、あるノードの中心性を評価するときに、そのノードと繋がっているノードの中心性の大きさを反映させる必要がある。例えば、あるノードの中心性がそれとつながるノードの中心性の和に比例する方法が考えられる。このとき、ある無向グラフの隣接行列を<span class="math inline">\(A = (a_{ij})\)</span>とし、そこに含まれるノードの中心性を成分とする列ベクトルを<span class="math inline">\(c=c_i\)</span>とすると、ノード<span class="math inline">\(i\)</span>の中心性<span class="math inline">\(c_i\)</span>は次のように表現できる。ただし、<span class="math inline">\(\lambda\)</span>は正の比例定数である。</p>
 <p><span class="math display">\[
@@ -777,7 +1052,7 @@ $$<br />
 \end{aligned}\]</span>
 <p>$$</p>
 <p><br/></p>
-このとき、以下のような式を満たす<span class="math inline">\(c\)</span>と<span class="math inline">\(\lambda\)</span>を求めることになる。<br />
+<p>このとき、以下のような式を満たす<span class="math inline">\(c\)</span>と<span class="math inline">\(\lambda\)</span>を求めることになる。</p>
 $$<br />
 <span class="math display">\[\begin{aligned}
 
@@ -821,33 +1096,414 @@ $$<br />
 \end{aligned}\]</span>
 <p>$$</p>
 <p><br/></p>
-<p>ここで、これを満たす<span class="math inline">\(\lambda\)</span>は正方行列<span class="math inline">\(A\)</span>の固有値、<span class="math inline">\(c\)</span>は固有ベクトルになる(分からない場合は<a href="https://manabitimes.jp/math/1008">こちら</a>)。つまり、隣接行列の固有ベクトルを求めれば、隣接するノードの中心性を反映した中心性を求めることができる(なお、固有値と固有ベクトルの組み合わせは<span class="math inline">\(A\)</span>の列数と同じだけある)。特に絶対値が最大となる固有値に対応する第1固有ベクトルを中心性指標としたものを、<strong>固有ベクトル中心性(eigenvector centrality)という</strong>。</p>
+<p>ここで、これを満たす<span class="math inline">\(\lambda\)</span>は正方行列<span class="math inline">\(A\)</span>の<strong>固有値</strong>、<span class="math inline">\(c\)</span>は<strong>固有ベクトル</strong>になる(分からない場合は<a href="https://manabitimes.jp/math/1008">こちら</a>)。つまり、隣接行列の固有ベクトルを求めれば、隣接するノードの中心性を反映した中心性を求めることができる(なお、固有値と固有ベクトルの組み合わせは<span class="math inline">\(A\)</span>の列数と同じだけある)。特に絶対値が最大となる固有値に対応する第1固有ベクトルを中心性指標としたものを、<strong>固有ベクトル中心性(eigenvector centrality)という</strong>。</p>
 <p>あるノードの固有ベクトル中心性は、そのノードにつながるノードの中心性を反映しているが、それらのノードは更にそれらにつながるノードの中心性を反映している。このように、<strong>固有ベクトル中心性は、そのノードから辺をたどって到達できるすべてのノードの中心性を反映</strong>している。</p>
 <p>先ほどの例の<span class="math inline">\(A\)</span>の第1固有ベクトルは以下のように求められる。固有ベクトルは負の値をとることもあるため、絶対値をとることが多い。また、最大値を1とした比で表すことも多い。</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="c3.html#cb31-1" aria-hidden="true" tabindex="-1"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,</span>
-<span id="cb31-2"><a href="c3.html#cb31-2" aria-hidden="true" tabindex="-1"></a>             <span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,</span>
-<span id="cb31-3"><a href="c3.html#cb31-3" aria-hidden="true" tabindex="-1"></a>             <span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,</span>
-<span id="cb31-4"><a href="c3.html#cb31-4" aria-hidden="true" tabindex="-1"></a>             <span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>),</span>
-<span id="cb31-5"><a href="c3.html#cb31-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb31-6"><a href="c3.html#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-7"><a href="c3.html#cb31-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 第1固有ベクトル。絶対値をとる。    </span></span>
-<span id="cb31-8"><a href="c3.html#cb31-8" aria-hidden="true" tabindex="-1"></a>evc <span class="ot">&lt;-</span> <span class="fu">abs</span>(<span class="fu">eigen</span>(A)<span class="sc">$</span>vectors[,<span class="dv">1</span>])</span>
-<span id="cb31-9"><a href="c3.html#cb31-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb31-10"><a href="c3.html#cb31-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 最大値を1とするようにする</span></span>
-<span id="cb31-11"><a href="c3.html#cb31-11" aria-hidden="true" tabindex="-1"></a>evc<span class="sc">/</span><span class="fu">max</span>(evc)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="c3.html#cb28-1" aria-hidden="true" tabindex="-1"></a>A <span class="ot">=</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,</span>
+<span id="cb28-2"><a href="c3.html#cb28-2" aria-hidden="true" tabindex="-1"></a>             <span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,</span>
+<span id="cb28-3"><a href="c3.html#cb28-3" aria-hidden="true" tabindex="-1"></a>             <span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,</span>
+<span id="cb28-4"><a href="c3.html#cb28-4" aria-hidden="true" tabindex="-1"></a>             <span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">0</span>),</span>
+<span id="cb28-5"><a href="c3.html#cb28-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">nrow =</span> <span class="dv">4</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb28-6"><a href="c3.html#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-7"><a href="c3.html#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 第1固有ベクトル。絶対値をとる。    </span></span>
+<span id="cb28-8"><a href="c3.html#cb28-8" aria-hidden="true" tabindex="-1"></a>evc <span class="ot">&lt;-</span> <span class="fu">abs</span>(<span class="fu">eigen</span>(A)<span class="sc">$</span>vectors[,<span class="dv">1</span>])</span>
+<span id="cb28-9"><a href="c3.html#cb28-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-10"><a href="c3.html#cb28-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 最大値を1とするようにする</span></span>
+<span id="cb28-11"><a href="c3.html#cb28-11" aria-hidden="true" tabindex="-1"></a>evc<span class="sc">/</span><span class="fu">max</span>(evc)</span></code></pre></div>
 <pre><code>## [1] 0.4608111 1.0000000 0.8546377 0.8546377</code></pre>
 <p><code>ANTs</code>パッケージでは<code>met.eigen()</code>関数で、<code>sna</code>パッケージでは<code>evcent()</code>関数で固有ベクトル中心性を求められる。前者は最大が1になるように変形しているのに対し、後者はそのような変形はしていない(定数倍しただけなので、分析上はどちらでも構わない)。</p>
-<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="c3.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ANTs</span></span>
-<span id="cb33-2"><a href="c3.html#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">met.eigen</span>(A)</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="c3.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ANTs</span></span>
+<span id="cb30-2"><a href="c3.html#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">met.eigen</span>(A)</span></code></pre></div>
 <pre><code>## [1] 0.4608111 1.0000000 0.8546377 0.8546377</code></pre>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="c3.html#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="do">## sna</span></span>
-<span id="cb35-2"><a href="c3.html#cb35-2" aria-hidden="true" tabindex="-1"></a>sna<span class="sc">::</span><span class="fu">evcent</span>(A)</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="c3.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="do">## sna</span></span>
+<span id="cb32-2"><a href="c3.html#cb32-2" aria-hidden="true" tabindex="-1"></a>sna<span class="sc">::</span><span class="fu">evcent</span>(A)</span></code></pre></div>
 <pre><code>## [1] 0.2818452 0.6116285 0.5227207 0.5227207</code></pre>
+<p>以上は重みなしグラフについて算出を行ったが、重み付きグラフについても同様に算出できる。隣接行列<code>mat_undir_b</code>(表<a href="c3.html#tab:tab-strength">3.1</a>)ついて、固有ベクトル中心性の値をノードの値に反映させたグラフが図<a href="c3.html#fig:fig-eigen">3.4</a>である。</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="c3.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb34-2"><a href="c3.html#cb34-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-3"><a href="c3.html#cb34-3" aria-hidden="true" tabindex="-1"></a>mat_undir_b <span class="sc">%&gt;%</span> </span>
+<span id="cb34-4"><a href="c3.html#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tbl_graph</span>(<span class="at">directed =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb34-5"><a href="c3.html#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="do">## `tbl_graph`に固有ベクトル中心性の情報を追加</span></span>
+<span id="cb34-6"><a href="c3.html#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">eigen =</span> sna<span class="sc">::</span><span class="fu">evcent</span>(mat_undir_b)) <span class="sc">%&gt;%</span> </span>
+<span id="cb34-7"><a href="c3.html#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggraph</span>(<span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>)<span class="sc">+</span></span>
+<span id="cb34-8"><a href="c3.html#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> eigen), <span class="at">shape =</span> <span class="dv">16</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>)<span class="sc">+</span></span>
+<span id="cb34-9"><a href="c3.html#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">13</span>))<span class="sc">+</span></span>
+<span id="cb34-10"><a href="c3.html#cb34-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="fu">aes</span>(<span class="at">width =</span> weight),<span class="at">color =</span> <span class="st">&quot;grey65&quot;</span>,</span>
+<span id="cb34-11"><a href="c3.html#cb34-11" aria-hidden="true" tabindex="-1"></a>                 <span class="at">end_cap =</span> <span class="fu">circle</span>(<span class="fl">0.5</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb34-12"><a href="c3.html#cb34-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">start_cap =</span> <span class="fu">circle</span>(<span class="fl">0.5</span>,<span class="st">&quot;cm&quot;</span>))<span class="sc">+</span></span>
+<span id="cb34-13"><a href="c3.html#cb34-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), <span class="at">color =</span> <span class="st">&quot;white&quot;</span>)<span class="sc">+</span></span>
+<span id="cb34-14"><a href="c3.html#cb34-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_edge_width</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))<span class="sc">+</span></span>
+<span id="cb34-15"><a href="c3.html#cb34-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_graph</span>()</span></code></pre></div>
+<div class="figure" style="text-align: left"><span style="display:block;" id="fig:fig-eigen"></span>
+<img src="Network_Analysis_Using_R_files/figure-html/fig-eigen-1.png" alt="固有ベクトル中心性の値をノードの大きさに反映させたグラフ" width="480" />
+<p class="caption">
+図3.4: 固有ベクトル中心性の値をノードの大きさに反映させたグラフ
+</p>
+</div>
+<p><br/></p>
+</div>
+<div id="pagerank" class="section level3 hasAnchor" number="3.1.4">
+<h3><span class="header-section-number">3.1.4</span> PageRank<a href="c3.html#pagerank" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>固有ベクトル中心性は、分離したグラフや有向グラフの中心性分析には使えない。<strong>PageRankは</strong>固有ベクトルに基づきながら、これらのグラフにも摘要できる中心性指標である。もともとはウェブページの評価法として、Googleの創業者であるラリー・ペイジやセルゲイ・ブリンらによって開発され<span class="citation">(<a href="#ref-Page1999" role="doc-biblioref">Page et al., 1999</a>)</span>、他ページからのリンクが多いページほどランキングが高く、ランキングの高いページからのリンクや、他のページへのリンクが少ないページからのリンクを高く評価するというアルゴリズムに従う。詳細な算出方法は複雑なので、ここでは説明しない。詳しくは <span class="citation">鈴木 (<a href="#ref-Suzuki2017" role="doc-biblioref">2017</a>)</span> を参照。</p>
+<p>PageRankは<code>igraph</code>パッケージを用いて算出できる。<code>igraph</code>パッケージでデータを扱う際には、まず隣接行列を<code>igraph</code>クラスにしなくてはならない。表<a href="c3.html#tab:tab-pagerank">3.2</a>の隣接行列(<code>mat_dir_b</code>)のPageRankを算出する。</p>
+<table class="table" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:tab-pagerank">表3.2: </span>隣接行列(mat_dir_b)
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+A
+</th>
+<th style="text-align:center;">
+B
+</th>
+<th style="text-align:center;">
+C
+</th>
+<th style="text-align:center;">
+D
+</th>
+<th style="text-align:center;">
+E
+</th>
+<th style="text-align:center;">
+F
+</th>
+<th style="text-align:center;">
+G
+</th>
+<th style="text-align:center;">
+H
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+B
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+C
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+D
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+E
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+3
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+F
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+H
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+1
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+<td style="text-align:center;">
+0
+</td>
+</tr>
+</tbody>
+</table>
+<p><code>graph_from_adjacency_matrix()</code>関数で<code>igraph</code>クラスに変換した後、<code>page.rank()</code>関数で算出する。</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="c3.html#cb35-1" aria-hidden="true" tabindex="-1"></a>mat_dir <span class="sc">%&gt;%</span> </span>
+<span id="cb35-2"><a href="c3.html#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 隣接行列をgraphに変換</span></span>
+<span id="cb35-3"><a href="c3.html#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">graph_from_adjacency_matrix</span>(<span class="at">weighted =</span> <span class="cn">NULL</span>, <span class="at">mode =</span> <span class="st">&quot;directed&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb35-4"><a href="c3.html#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="do">## PageRankの算出  </span></span>
+<span id="cb35-5"><a href="c3.html#cb35-5" aria-hidden="true" tabindex="-1"></a>  　<span class="fu">page.rank</span>(<span class="at">directed =</span> <span class="cn">TRUE</span>) <span class="ot">-&gt;</span> page_rank</span>
+<span id="cb35-6"><a href="c3.html#cb35-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-7"><a href="c3.html#cb35-7" aria-hidden="true" tabindex="-1"></a>page_rank<span class="sc">$</span>vector</span></code></pre></div>
+<pre><code>##          A          B          C          D          E          F          G 
+## 0.12584798 0.18619542 0.14217932 0.07093242 0.06542177 0.12576921 0.19354160 
+##          H 
+## 0.09011228</code></pre>
+<p>PageRankの値をノードの大きさに反映したグラフが図<a href="c3.html#fig:fig-pagerank">3.5</a>である。</p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="c3.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb37-2"><a href="c3.html#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="c3.html#cb37-3" aria-hidden="true" tabindex="-1"></a>mat_dir_b <span class="sc">%&gt;%</span> </span>
+<span id="cb37-4"><a href="c3.html#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tbl_graph</span>(<span class="at">directed =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb37-5"><a href="c3.html#cb37-5" aria-hidden="true" tabindex="-1"></a>   <span class="do">## `tbl_graph`にPageRankの情報を追加</span></span>
+<span id="cb37-6"><a href="c3.html#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">PageRank =</span> page_rank<span class="sc">$</span>vector) <span class="sc">%&gt;%</span> </span>
+<span id="cb37-7"><a href="c3.html#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggraph</span>(<span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>)<span class="sc">+</span></span>
+<span id="cb37-8"><a href="c3.html#cb37-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> PageRank),<span class="at">shape =</span> <span class="dv">16</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>)<span class="sc">+</span></span>
+<span id="cb37-9"><a href="c3.html#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">13</span>))<span class="sc">+</span></span>
+<span id="cb37-10"><a href="c3.html#cb37-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_fan</span>(<span class="fu">aes</span>(<span class="at">width =</span> weight),</span>
+<span id="cb37-11"><a href="c3.html#cb37-11" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> <span class="st">&quot;grey65&quot;</span>,</span>
+<span id="cb37-12"><a href="c3.html#cb37-12" aria-hidden="true" tabindex="-1"></a>                 <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">angle =</span> <span class="dv">30</span>, <span class="at">length =</span> <span class="fu">unit</span>(<span class="dv">4</span>,<span class="at">units =</span> <span class="st">&quot;mm&quot;</span>), <span class="at">type =</span> <span class="st">&quot;closed&quot;</span>),</span>
+<span id="cb37-13"><a href="c3.html#cb37-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">end_cap =</span> <span class="fu">circle</span>(<span class="fl">0.5</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb37-14"><a href="c3.html#cb37-14" aria-hidden="true" tabindex="-1"></a>                 <span class="at">start_cap =</span> <span class="fu">circle</span>(<span class="fl">0.5</span>,<span class="st">&quot;cm&quot;</span>))<span class="sc">+</span></span>
+<span id="cb37-15"><a href="c3.html#cb37-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), <span class="at">color =</span> <span class="st">&quot;white&quot;</span>)<span class="sc">+</span></span>
+<span id="cb37-16"><a href="c3.html#cb37-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_edge_width</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">2</span>))<span class="sc">+</span></span>
+<span id="cb37-17"><a href="c3.html#cb37-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_graph</span>()</span></code></pre></div>
+<div class="figure" style="text-align: left"><span style="display:block;" id="fig:fig-pagerank"></span>
+<img src="Network_Analysis_Using_R_files/figure-html/fig-pagerank-1.png" alt="PageRankの値をノードの大きさに反映させたグラフ" width="576" />
+<p class="caption">
+図3.5: PageRankの値をノードの大きさに反映させたグラフ
+</p>
+</div>
+<p><br/></p>
+</div>
+<div id="媒介中心性betweeness-centrality" class="section level3 hasAnchor" number="3.1.5">
+<h3><span class="header-section-number">3.1.5</span> 媒介中心性(betweeness centrality)<a href="c3.html#媒介中心性betweeness-centrality" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>ネットワークにおける媒介や伝達に着目した中心性に<strong>媒介中心性</strong>がある。媒介中心性は、<u>他のノード同士をつなぐ最短経路上に位置するノード</u>は、ノード間の仲介や情報の伝達に与える影響が大きいという点で有力であり、より多くのノード間の最短経路上にあるノードほどその影響力が大きいとする指標である。</p>
+<p>ノード<span class="math inline">\(i\)</span>の媒介中心性は以下の式で定式化される。なお、<span class="math inline">\(g_{jk}\)</span>はノード<span class="math inline">\(j\)</span>と<span class="math inline">\(k\)</span>の間の最短経路数であり、<span class="math inline">\(g_{ij}(i)\)</span>はノード<span class="math inline">\(j\)</span>と<span class="math inline">\(k\)</span>の間の最短経路のうちノード<span class="math inline">\(i\)</span>を通るものの数である。無向グラフの場合、<span class="math inline">\(j &lt; k\)</span>である。</p>
+<p><span class="math display">\[
+C_b(i) = \sum_{i \neq j \neq k} \frac {g_{jk}(i)}{g_{jk}}
+\]</span></p>
+<p><code>ANTs</code>パッケージでは<code>met.betweeness()</code>関数で、<code>sna</code>パッケージでは<code>sna::betweeness()</code>関数で媒介中心性を求められる。表<a href="c3.html#tab:tab-pagerank">3.2</a>の隣接行列(<code>mat_dir_b</code>)について算出すると、以下のようになる。</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="c3.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ANTs</span></span>
+<span id="cb38-2"><a href="c3.html#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">met.betweenness</span>(mat_dir_b,</span>
+<span id="cb38-3"><a href="c3.html#cb38-3" aria-hidden="true" tabindex="-1"></a>                <span class="do">## 重みなしならTRUE</span></span>
+<span id="cb38-4"><a href="c3.html#cb38-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">binary =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb38-5"><a href="c3.html#cb38-5" aria-hidden="true" tabindex="-1"></a>                <span class="do">## 無向グラフならTRUE</span></span>
+<span id="cb38-6"><a href="c3.html#cb38-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">sym =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb38-7"><a href="c3.html#cb38-7" aria-hidden="true" tabindex="-1"></a>                <span class="do">## 最もstrengthが重みの合計が高い経路を最短とする</span></span>
+<span id="cb38-8"><a href="c3.html#cb38-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">shortest.weight =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb38-9"><a href="c3.html#cb38-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">df =</span> attr,</span>
+<span id="cb38-10"><a href="c3.html#cb38-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">dfid =</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>##   name age rank norm.short.outbetweenness
+## 1    A  12    2                      22.0
+## 2    B  13    3                      13.5
+## 3    C  12    4                       1.0
+## 4    D  11    1                       8.5
+## 5    E  14    8                       2.5
+## 6    F  15    1                      15.0
+## 7    G  18    7                       5.5
+## 8    H   9    6                       5.5</code></pre>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="c3.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="do">## sna</span></span>
+<span id="cb40-2"><a href="c3.html#cb40-2" aria-hidden="true" tabindex="-1"></a>sna<span class="sc">::</span><span class="fu">betweenness</span>(mat_dir_b, </span>
+<span id="cb40-3"><a href="c3.html#cb40-3" aria-hidden="true" tabindex="-1"></a>                 <span class="do">## 無向グラフなら&quot;undirected&quot;</span></span>
+<span id="cb40-4"><a href="c3.html#cb40-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">cmode =</span> <span class="st">&quot;directed&quot;</span>,</span>
+<span id="cb40-5"><a href="c3.html#cb40-5" aria-hidden="true" tabindex="-1"></a>                 <span class="do">## 重みなしならTRUE</span></span>
+<span id="cb40-6"><a href="c3.html#cb40-6" aria-hidden="true" tabindex="-1"></a>                 <span class="at">ignore.eval =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## [1] 22.0 13.5  1.0  8.5  2.5 15.0  5.5  5.5</code></pre>
+媒介中心性の値をノードの大きさに反映したグラフが図<a href="c3.html#fig:fig-between">3.6</a>である。
+<div class="figure" style="text-align: left"><span style="display:block;" id="fig:fig-between"></span>
+<img src="Network_Analysis_Using_R_files/figure-html/fig-between-1.png" alt="媒介中心性の値をノードの大きさに反映させたグラフ" width="576" />
+<p class="caption">
+図3.6: 媒介中心性の値をノードの大きさに反映させたグラフ
+</p>
+</div>
+</div>
+<div id="情報中心性information-centrality" class="section level3 hasAnchor" number="3.1.6">
+<h3><span class="header-section-number">3.1.6</span> 情報中心性(information centrality)<a href="c3.html#情報中心性information-centrality" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>媒介中心性は最短経路以外の経路や、経路の長さを考慮していなかった。しかし、実際の情報の伝達は最短経路のみでなされるとは限らないし、情報伝達に関わる人が多いほど情報の精度が下がるような可能性もある。そこで、ノード間の最短経路以外の経路や経路の長さを考慮した指標として、<strong>情報中心性</strong>が考案された。</p>
+<p>情報中心性の算出では、経路が短いほど高く評価されるように経路の長さの逆数で重みづけされる。より具体的には、</p>
 </div>
 </div>
 <div id="ネットワーク構造の諸指標" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> ネットワーク構造の諸指標<a href="c3.html#ネットワーク構造の諸指標" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>ここでは、ネットワーク全体の特徴を表す指標についてまとめる。</p>
+<p>ここでは、ネットワーク全体の構造の特徴を表す指標についてまとめる。</p>
 <div id="密度density" class="section level3 hasAnchor" number="3.2.1">
 <h3><span class="header-section-number">3.2.1</span> 密度(Density)<a href="c3.html#密度density" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>密度は、社会ネットワークにおける関係の緊密さの指標になりうる。密度が低いとき、社会ネットワーク内の個体間の直接的な関係は少なく、両者の関係は媒介者を通じた間接的なものが多いということができる<span class="citation">(<a href="#ref-Croft2019" role="doc-biblioref">Croft et al., 2008</a>)</span>。</p>
@@ -860,37 +1516,37 @@ $$<br />
 </ul>
 <p>ここでは、<a href="c2.html#s2-1">2.1</a>で算出した毛づくろい頻度についての隣接行列を用いて密度を算出する。<br />
 <code>ANTs</code>パッケージでは、<code>met.density()</code>で計算可能。ただし、重み無しグラフとして算出されるよう。</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="c3.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">met.density</span>(groom_mat_b)</span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="c3.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">met.density</span>(groom_mat_b)</span></code></pre></div>
 <pre><code>##   Density 
 ## 0.6470588</code></pre>
 <p><code>sna</code>パッケージでは、<code>gden()</code>で計算可能。<code>ignore.value = FALSE</code>とすると重み付きグラフとして扱われる。</p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="c3.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 重み付き</span></span>
-<span id="cb39-2"><a href="c3.html#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gden</span>(groom_mat_b, <span class="at">ignore.eval =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="c3.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 重み付き</span></span>
+<span id="cb44-2"><a href="c3.html#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gden</span>(groom_mat_b, <span class="at">ignore.eval =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## [1] 0.005058023</code></pre>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="c3.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 重み無し  </span></span>
-<span id="cb41-2"><a href="c3.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gden</span>(groom_mat_b, <span class="at">ignore.eval =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="c3.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 重み無し  </span></span>
+<span id="cb46-2"><a href="c3.html#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gden</span>(groom_mat_b, <span class="at">ignore.eval =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## [1] 0.6470588</code></pre>
 </div>
 <div id="推移性transitivity" class="section level3 hasAnchor" number="3.2.2">
 <h3><span class="header-section-number">3.2.2</span> 推移性(Transitivity)<a href="c3.html#推移性transitivity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>ネットワークにおいて、頂点<span class="math inline">\(i\)</span>と<span class="math inline">\(j\)</span>の間、および頂点<span class="math inline">\(j\)</span>と<span class="math inline">\(k\)</span>の間に関係があり、頂点<span class="math inline">\(i\)</span>と<span class="math inline">\(k\)</span>の間にも関係があるとき、関係が<strong>推移的</strong>であるという。例えば、図<a href="c3.html#fig:fig-trans">3.4</a>で頂点A, B, Cの関係は推移的だが、頂点A, B, Gは推移的ではない。</p>
+<p>ネットワークにおいて、頂点<span class="math inline">\(i\)</span>と<span class="math inline">\(j\)</span>の間、および頂点<span class="math inline">\(j\)</span>と<span class="math inline">\(k\)</span>の間に関係があり、頂点<span class="math inline">\(i\)</span>と<span class="math inline">\(k\)</span>の間にも関係があるとき、関係が<strong>推移的</strong>であるという。例えば、図<a href="c3.html#fig:fig-trans">3.7</a>で頂点A, B, Cの関係は推移的だが、頂点A, B, Gは推移的ではない。</p>
 <div class="figure" style="text-align: left"><span style="display:block;" id="fig:fig-trans"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/fig-trans-1.png" alt="遷移性の説明のための無向グラフの例" width="384" />
 <p class="caption">
-図3.4: 遷移性の説明のための無向グラフの例
+図3.7: 遷移性の説明のための無向グラフの例
 </p>
 </div>
-有向グラフの場合は、頂点<span class="math inline">\(i\)</span>から<span class="math inline">\(j\)</span>、頂点<span class="math inline">\(j\)</span>から<span class="math inline">\(k\)</span>に有向辺があり、かつ頂点<span class="math inline">\(i\)</span>から<span class="math inline">\(k\)</span>に有向辺があるとき推移的であるという(図<a href="c3.html#fig:fig-trans2">3.5</a>)。<br />
+有向グラフの場合は、頂点<span class="math inline">\(i\)</span>から<span class="math inline">\(j\)</span>、頂点<span class="math inline">\(j\)</span>から<span class="math inline">\(k\)</span>に有向辺があり、かつ頂点<span class="math inline">\(i\)</span>から<span class="math inline">\(k\)</span>に有向辺があるとき推移的であるという(図<a href="c3.html#fig:fig-trans2">3.8</a>)。<br />
 <div class="figure" style="text-align: left"><span style="display:block;" id="fig:fig-trans2"></span>
-<img src="Network_Analysis_Using_R_files/figure-html/fig-trans2-1.png" alt="遷移性の説明のための有向グラフの例" width="220.8" />
+<img src="Network_Analysis_Using_R_files/figure-html/fig-trans2-1.png" alt="遷移性の説明のための有向グラフの例" width="316.8" />
 <p class="caption">
-図3.5: 遷移性の説明のための有向グラフの例
+図3.8: 遷移性の説明のための有向グラフの例
 </p>
 </div>
 <p><strong>推移性</strong>はネットワーク内で推移的な関係が成り立っている比率を指す。例えば無向グラフの場合には、頂点<span class="math inline">\(i\)</span>と<span class="math inline">\(j\)</span>、<span class="math inline">\(j\)</span>と<span class="math inline">\(k\)</span>の間に辺があるとき、頂点<span class="math inline">\(i\)</span>と<span class="math inline">\(k\)</span>にも辺がある割合である。推移性はネットワークがどの程度クラスタ化されているかの指標になる<span class="citation">(<a href="#ref-Farine2015" role="doc-biblioref">Farine &amp; Whitehead, 2015</a>)</span>。</p>
 <p><code>ANTs</code>パッケージでは算出できない。<code>sna</code>パッケージでは、<code>gtrans()</code>関数で求められる。</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="c3.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 有向グラフの場合は、mode = &quot;digraph&quot;</span></span>
-<span id="cb43-2"><a href="c3.html#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gtrans</span>(mat, <span class="at">mode =</span> <span class="st">&quot;graph&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="c3.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 有向グラフの場合は、mode = &quot;digraph&quot;</span></span>
+<span id="cb48-2"><a href="c3.html#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gtrans</span>(mat, <span class="at">mode =</span> <span class="st">&quot;graph&quot;</span>)</span></code></pre></div>
 <pre><code>## [1] 0.4285714</code></pre>
 </div>
 <div id="section" class="section level3" number="3.2.3">
@@ -908,9 +1564,9 @@ $$<br />
 </ul>
 <p><code>ANTs</code>パッケージを用いれば、属性データ(年齢や順位などの情報)と結合することができる。<br />
 2018年時点の属性データは以下の通り。</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="c3.html#cb45-1" aria-hidden="true" tabindex="-1"></a>attribute <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/attributes_demo.csv&quot;</span>)</span>
-<span id="cb45-2"><a href="c3.html#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb45-3"><a href="c3.html#cb45-3" aria-hidden="true" tabindex="-1"></a>attribute</span></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="c3.html#cb50-1" aria-hidden="true" tabindex="-1"></a>attribute <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/attributes_demo.csv&quot;</span>)</span>
+<span id="cb50-2"><a href="c3.html#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-3"><a href="c3.html#cb50-3" aria-hidden="true" tabindex="-1"></a>attribute</span></code></pre></div>
 <pre><code>## # A tibble: 17 × 3
 ##    femaleID   age  rank
 ##    &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;
@@ -933,19 +1589,19 @@ $$<br />
 ## 17 Mei         10    17</code></pre>
 <p>ここでは、上記で作成したの毛づくろいネットワーク(<code>groom_mat</code>)を用いる。<br />
 以下のように属性に次々と指標を付け足していくことができる。</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="c3.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 重みづけ中心性(strength)</span></span>
-<span id="cb47-2"><a href="c3.html#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="fu">met.strength</span>(groom_mat, </span>
-<span id="cb47-3"><a href="c3.html#cb47-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">df =</span> attribute,</span>
-<span id="cb47-4"><a href="c3.html#cb47-4" aria-hidden="true" tabindex="-1"></a>             <span class="do">## 個体IDの列番号</span></span>
-<span id="cb47-5"><a href="c3.html#cb47-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">dfid =</span> <span class="dv">1</span>) <span class="ot">-&gt;</span> female_metrics</span>
-<span id="cb47-6"><a href="c3.html#cb47-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-7"><a href="c3.html#cb47-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 固有ベクトル中心性  </span></span>
-<span id="cb47-8"><a href="c3.html#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="fu">met.eigen</span>(groom_mat, </span>
-<span id="cb47-9"><a href="c3.html#cb47-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">df =</span> female_metrics,</span>
-<span id="cb47-10"><a href="c3.html#cb47-10" aria-hidden="true" tabindex="-1"></a>             <span class="do">## 個体IDの列番号</span></span>
-<span id="cb47-11"><a href="c3.html#cb47-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">dfid =</span> <span class="dv">1</span>) <span class="ot">-&gt;</span> female_metrics</span>
-<span id="cb47-12"><a href="c3.html#cb47-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-13"><a href="c3.html#cb47-13" aria-hidden="true" tabindex="-1"></a>female_metrics</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="c3.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 重みづけ中心性(strength)</span></span>
+<span id="cb52-2"><a href="c3.html#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">met.strength</span>(groom_mat, </span>
+<span id="cb52-3"><a href="c3.html#cb52-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">df =</span> attribute,</span>
+<span id="cb52-4"><a href="c3.html#cb52-4" aria-hidden="true" tabindex="-1"></a>             <span class="do">## 個体IDの列番号</span></span>
+<span id="cb52-5"><a href="c3.html#cb52-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">dfid =</span> <span class="dv">1</span>) <span class="ot">-&gt;</span> female_metrics</span>
+<span id="cb52-6"><a href="c3.html#cb52-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-7"><a href="c3.html#cb52-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 固有ベクトル中心性  </span></span>
+<span id="cb52-8"><a href="c3.html#cb52-8" aria-hidden="true" tabindex="-1"></a><span class="fu">met.eigen</span>(groom_mat, </span>
+<span id="cb52-9"><a href="c3.html#cb52-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">df =</span> female_metrics,</span>
+<span id="cb52-10"><a href="c3.html#cb52-10" aria-hidden="true" tabindex="-1"></a>             <span class="do">## 個体IDの列番号</span></span>
+<span id="cb52-11"><a href="c3.html#cb52-11" aria-hidden="true" tabindex="-1"></a>             <span class="at">dfid =</span> <span class="dv">1</span>) <span class="ot">-&gt;</span> female_metrics</span>
+<span id="cb52-12"><a href="c3.html#cb52-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-13"><a href="c3.html#cb52-13" aria-hidden="true" tabindex="-1"></a>female_metrics</span></code></pre></div>
 <pre><code>##    femaleID age rank   strength      eigen
 ## 1       Aka  12    9 0.12850682 0.97182821
 ## 2       Ako   9   10 0.16951394 1.00000000
@@ -975,6 +1631,9 @@ Croft, D., James, R., &amp; Krause, J. (2008). <em>動物の社会ネットワ�
 </div>
 <div id="ref-Farine2015" class="csl-entry">
 Farine, D. R., &amp; Whitehead, H. (2015). Constructing, conducting and interpreting animal social network analysis. <em>J. Anim. Ecol.</em>, <em>84</em>(5), 1144–1163.
+</div>
+<div id="ref-Page1999" class="csl-entry">
+Page, L., Brin, S., Motwani, R., &amp; Winograd, T. (1999). <em>The <span>PageRank</span> citation ranking: Bringing order to the web</em>. Stanford InfoLab.
 </div>
 <div id="ref-Sosa2020" class="csl-entry">
 Sosa, S., Puga-Gonzalez, I., Hu, F., Pansanel, J., Xie, X., &amp; Sueur, C. (2020). A multilevel statistical toolkit to study animal social networks: The animal network toolkit software (<span>ANTs</span>) <span>R</span> package. <em>Sci. Rep.</em>, <em>10</em>(1), 12507.

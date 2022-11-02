@@ -1,5 +1,5 @@
 # ネットワーク指標の算出  {#c3}   
-本章では、ネットワークの構造や構成個体の特徴を表すための指標について概説し、それらをRで算出する方法を学ぶ。指標を算出することで統計的な分析が可能になり、**グラフを見るだけでは定量的に言えなかったことを示すことができる**ようになる。  
+本章では、ネットワークの構造や構成個体の特徴を表すための指標について概説し、それらをRで算出する方法を学ぶ。指標を算出することで定量的な分析が可能になり、**グラフを見るだけでは定性的にしか言えなかったことを示すことができる**ようになる。  
 
 本稿では主に`ANTs`パッケージ、または`sna`パッケージで指標の算出を行う。各指標についての説明は @Suzuki2017 や @Sosa2020 、 @Farine2015 なども参照。  
 
@@ -33,7 +33,6 @@ mat_undir <- matrix(c(0,1,1,1,1,1,0,0,
                 0,0,0,1,0,0,0,0),
               nrow = 8, ncol = 8)
 
-
 colnames(mat_undir) <- c("A","B","C","D","E","F","G","H")
 rownames(mat_undir) <- c("A","B","C","D","E","F","G","H")
 
@@ -45,6 +44,7 @@ mat_undir %>%
   geom_node_text(aes(label = name), color = "white")+
   theme_graph()
 ```
+<br/>  
 
 `ANTs`パッケージでは、`met.degree`で求められる。以下のように`df = `に属性が入ったデータフレームを指定することで、算出した次数中心性をそのデータフレームに追加してくれる。    
 ```{r}
@@ -86,6 +86,7 @@ mat_dir %>%
                 color = "grey45")+
   theme_graph()
 ```
+<br/>  
 
 `ANTs`パッケージでは、それぞれ`met.indegree()`と`met.outdegree()`で求められる。  
 ```{r}
@@ -107,9 +108,9 @@ met.outdegree(mat_dir,
 <br/>  
 
 ### 重み付き中心性(strength centrality)    
-**重み付き中心性**は、各ノードに接続している辺の重みの合計で表される中心性である。図\@ref(fig:fig-strength)において辺上の数字は重みを表す。このとき、Aの重み付き中心性は$3 + 2+ 2+ 1 +1=9$、Cの重み付き中心性は$3 + 2 = 5$である。  
+**重み付き中心性**は、各ノードに接続している辺の重みの合計で表される中心性である。図\@ref(fig:fig-strength)は表\@ref(tab:tab-strength)の隣接行列(`mat_undir_b`)のグラフである。グラフの辺上の数字は重みを表す。このとき、Aの重み付き中心性は$3 + 2+ 2+ 1 +1=9$、Cの重み付き中心性は$3 + 2 = 5$である。  
 
-```{r fig-strength, fig.cap = "重み付き中心性のための無向グラフの例", echo = FALSE, fig.dim = c(6,4)}
+```{r tab-strength, echo = FALSE}
 mat_undir_b <- matrix(c(0,2,3,1,2,1,0,0,
                       2,0,2,0,0,0,1,0,
                       3,2,0,0,0,0,0,0,
@@ -125,6 +126,14 @@ colnames(mat_undir_b) <- c("A","B","C","D","E","F","G","H")
 rownames(mat_undir_b) <- c("A","B","C","D","E","F","G","H")
 
 mat_undir_b %>% 
+  kable(digits = 2, align = "c",caption = "隣接行列(mat_undir_b)") %>% 
+  kable_styling(font_size = 10, full_width = FALSE)
+```
+
+```{r fig-strength, fig.cap = "重み付き中心性のための無向グラフの例", echo = FALSE, fig.dim = c(6,4)}
+set.seed(145)
+
+mat_undir_b %>% 
   as_tbl_graph(directed = FALSE) %>% 
   ggraph(layout = "nicely")+
   geom_node_point(shape = 16, size = 8, color = "black")+
@@ -136,6 +145,7 @@ mat_undir_b %>%
   scale_edge_width(range = c(1,3))+
   theme_graph()
 ```
+<br/>  
 
 `ANTs`パッケージでは、`met.strength()`で求められる。まお、`ANTs`パッケージでは常に有向グラフとして計算されてしまうようなので、1/2してあげる必要がある。  
 ```{r}
@@ -164,7 +174,7 @@ sna::degree(mat_undir_b,
 ```
 
 
-### 固有ベクトル中心性  
+### 固有ベクトル中心性(eigenvector centrality)    
 次数中心性や重み付け中心性は、あるノードに接続する辺の数や重みの合計に基づく中心性指標であった。つまり、例えば毛づくろい頻度ネットワークでは、多くの個体と毛づくろいしている個体や、毛づくろい頻度の合計が多い個体の中心性が高く評価される。しかし、この方法は中心性を評価する指標として適切ではない場合がある。例えば、毛づくろいを通してある行動がネットワーク内をどのように伝播するかを考えるとき、<u>毛づくろい相手の多い個体と毛づくろいすることは、毛づくろい相手の少ない個体と毛づくろいするよりも高く評価するべきかもしれない</u>。  
 
 このことを考慮するためは、あるノードの中心性を評価するときに、そのノードと繋がっているノードの中心性の大きさを反映させる必要がある。例えば、あるノードの中心性がそれとつながるノードの中心性の和に比例する方法が考えられる。このとき、ある無向グラフの隣接行列を$A = (a_{ij})$とし、そこに含まれるノードの中心性を成分とする列ベクトルを$c=c_i$とすると、ノード$i$の中心性$c_i$は次のように表現できる。ただし、$\lambda$は正の比例定数である。  
@@ -275,6 +285,7 @@ evc <- abs(eigen(A)$vectors[,1])
 ## 最大値を1とするようにする
 evc/max(evc)
 ```
+<br/>  
 
 `ANTs`パッケージでは`met.eigen()`関数で、`sna`パッケージでは`evcent()`関数で固有ベクトル中心性を求められる。前者は最大が1になるように変形しているのに対し、後者はそのような変形はしていない(定数倍しただけなので、分析上はどちらでも構わない)。    
 ```{r}
@@ -284,14 +295,152 @@ met.eigen(A)
 ## sna
 sna::evcent(A)
 ```
+<br/>  
+
+以上は重みなしグラフについて算出を行ったが、重み付きグラフについても同様に算出できる。隣接行列`mat_undir_b`(表\@ref(tab:tab-strength))ついて、固有ベクトル中心性の値をノードの値に反映させたグラフが図\@ref(fig:fig-eigen)である。  
+
+```{r fig-eigen, fig.cap = "固有ベクトル中心性の値をノードの大きさに反映させたグラフ", fig.dim = c(5,4)}
+set.seed(123)
+
+mat_undir_b %>% 
+  as_tbl_graph(directed = FALSE) %>%
+  ## `tbl_graph`に固有ベクトル中心性の情報を追加
+  mutate(eigen = sna::evcent(mat_undir_b)) %>% 
+  ggraph(layout = "nicely")+
+  geom_node_point(aes(size = eigen), shape = 16, color = "black")+
+  scale_size(range = c(6,13))+
+  geom_edge_link(aes(width = weight),color = "grey65",
+                 end_cap = circle(0.5,"cm"),
+                 start_cap = circle(0.5,"cm"))+
+  geom_node_text(aes(label = name), color = "white")+
+  scale_edge_width(range = c(1,3))+
+  theme_graph()
+```
+<br/>  
+
 
 ### PageRank  
-固有ベクトル中心性は、分離したグラフや有向グラフの中心性分析には使えない。**PageRankは**固有ベクトルに基づきながら、これらのグラフにも摘要できる中心性指標である。
+固有ベクトル中心性は、分離したグラフや有向グラフの中心性分析には使えない。**PageRankは**固有ベクトルに基づきながら、これらのグラフにも摘要できる中心性指標である。もともとはウェブページの評価法として、Googleの創業者であるラリー・ペイジやセルゲイ・ブリンらによって開発され[@Page1999]、他ページからのリンクが多いページほどランキングが高く、ランキングの高いページからのリンクや、他のページへのリンクが少ないページからのリンクを高く評価するというアルゴリズムに従う。詳細な算出方法は複雑なので、ここでは説明しない。詳しくは @Suzuki2017 を参照。  
+
+PageRankは`igraph`パッケージを用いて算出できる。表\@ref(tab:tab-pagerank)の隣接行列(`mat_dir_b`)のPageRankを算出する。  
+
+```{r tab-pagerank, echo = FALSE}
+mat_dir_b <- matrix(c(0,0,3,1,2,0,0,0,
+                      2,0,2,0,0,0,1,0,
+                      0,2,0,0,0,0,0,0,
+                      1,0,0,0,3,0,0,1,
+                      0,0,0,0,0,2,0,0,
+                      1,0,0,0,0,0,1,0,
+                      0,1,0,0,0,0,0,0,
+                      0,0,0,0,0,2,0,0),
+              nrow = 8, ncol = 8)
+
+colnames(mat_dir_b) <- c("A","B","C","D","E","F","G","H")
+rownames(mat_dir_b) <- c("A","B","C","D","E","F","G","H")
+
+mat_dir_b %>% 
+  kable(digits = 2, align = "c",
+        caption = "隣接行列(mat_dir_b)") %>% 
+  kable_styling(font_size = 10, full_width = FALSE)
+```
+<br/>  
+
+`igraph`パッケージでデータを扱う際には、まず隣接行列を`igraph`クラスにしなくてはならない。`graph_from_adjacency_matrix()`関数で`igraph`クラスに変換した後、`page.rank()`関数でPageRankを算出する。  
+```{r}
+mat_dir %>% 
+  ## 隣接行列をgraphに変換
+    graph_from_adjacency_matrix(weighted = NULL, mode = "directed") %>% 
+  ## PageRankの算出  
+  　page.rank(directed = TRUE) -> page_rank
+
+page_rank$vector
+```
+
+PageRankの値をノードの大きさに反映したグラフが図\@ref(fig:fig-pagerank)である。
+```{r fig-pagerank, fig.cap = "PageRankの値をノードの大きさに反映させたグラフ", fig.dim = c(6,4.4)}
+set.seed(123)
+
+mat_dir_b %>% 
+  as_tbl_graph(directed = TRUE) %>% 
+   ## `tbl_graph`にPageRankの情報を追加
+  mutate(PageRank = page_rank$vector) %>% 
+  ggraph(layout = "nicely")+
+  geom_node_point(aes(size = PageRank),shape = 16, color = "black")+
+  scale_size(range = c(6,13))+
+  geom_edge_fan(aes(width = weight),
+                 color = "grey65",
+                 arrow = arrow(angle = 30, length = unit(4,units = "mm"), type = "closed"),
+                 end_cap = circle(0.5,"cm"),
+                 start_cap = circle(0.5,"cm"))+
+  geom_node_text(aes(label = name), color = "white")+
+  scale_edge_width(range = c(0,2))+
+  theme_graph()
+```
+<br/>  
+
+
+### 媒介中心性(betweeness centrality)  
+ネットワークにおける媒介や伝達に着目した中心性に**媒介中心性**がある。媒介中心性は、<u>他のノード同士をつなぐ最短経路上に位置するノード</u>は、ノード間の仲介や情報の伝達に与える影響が大きいという点で有力であり、より多くのノード間の最短経路上にあるノードほどその影響力が大きいとする指標である。  
+
+ノード$i$の媒介中心性は以下の式で定式化される。なお、$g_{jk}$はノード$j$と$k$の間の最短経路数であり、$g_{ij}(i)$はノード$j$と$k$の間の最短経路のうちノード$i$を通るものの数である。無向グラフの場合、$j < k$である。  
+
+$$
+C_b(i) = \sum_{i \neq j \neq k} \frac {g_{jk}(i)}{g_{jk}}
+$$
+<br/>  
+
+`ANTs`パッケージでは`met.betweeness()`関数で、`sna`パッケージでは`sna::betweeness()`関数で媒介中心性を求められる。表\@ref(tab:tab-pagerank)の隣接行列(`mat_dir_b`)について算出すると、以下のようになる。  
+
+```{r}
+## ANTs
+met.betweenness(mat_dir_b,
+                ## 重みなしならTRUE
+                binary = FALSE,
+                ## 無向グラフならTRUE
+                sym = FALSE,
+                ## 最もstrengthが重みの合計が高い経路を最短とする
+                shortest.weight = TRUE,
+                df = attr,
+                dfid = 1)
+
+## sna
+sna::betweenness(mat_dir_b, 
+                 ## 無向グラフなら"undirected"
+                 cmode = "directed",
+                 ## 重みなしならTRUE
+                 ignore.eval = FALSE)
+```
+
+媒介中心性の値をノードの大きさに反映したグラフが図\@ref(fig:fig-between)である。
+```{r fig-between, fig.cap = "媒介中心性の値をノードの大きさに反映させたグラフ", echo = FALSE, fig.dim = c(6,4)}
+mat_dir_b %>% 
+  as_tbl_graph(directed = TRUE) %>% 
+   ## `tbl_graph`に媒介中心性の情報を追加
+  mutate(betweenness = sna::betweenness(mat_dir_b, 
+                 cmode = "directed",
+                 ignore.eval = FALSE)) %>% 
+  ggraph(layout = "nicely")+
+  geom_node_point(aes(size = betweenness),shape = 16, color = "black")+
+  scale_size(range = c(6,13))+
+  geom_edge_fan(aes(width = weight),
+                 color = "grey65",
+                 arrow = arrow(angle = 30, length = unit(4,units = "mm"), type = "closed"),
+                 end_cap = circle(0.5,"cm"),
+                 start_cap = circle(0.5,"cm"))+
+  geom_node_text(aes(label = name), color = "white")+
+  scale_edge_width(range = c(0,2))+
+  theme_graph()
+```
+
+### 情報中心性(information centrality)  
+媒介中心性は最短経路以外の経路や、経路の長さを考慮していなかった。しかし、実際の情報の伝達は最短経路のみでなされるとは限らないし、情報伝達に関わる人が多いほど情報の精度が下がるような可能性もある。そこで、ノード間の最短経路以外の経路や経路の長さを考慮した指標として、**情報中心性**が考案された。  
+
+情報中心性の算出では、経路が短いほど高く評価されるように経路の長さの逆数で重みづけされる。より具体的には、
 
 
 
 ## ネットワーク構造の諸指標  
-ここでは、ネットワーク全体の特徴を表す指標についてまとめる。  
+ここでは、ネットワーク全体の構造の特徴を表す指標についてまとめる。  
 
 ### 密度(Density)  
 密度は、社会ネットワークにおける関係の緊密さの指標になりうる。密度が低いとき、社会ネットワーク内の個体間の直接的な関係は少なく、両者の関係は媒介者を通じた間接的なものが多いということができる[@Croft2019]。    
@@ -346,7 +495,7 @@ mat %>%
 ```
 
 有向グラフの場合は、頂点$i$から$j$、頂点$j$から$k$に有向辺があり、かつ頂点$i$から$k$に有向辺があるとき推移的であるという(図\@ref(fig:fig-trans2))。  
-```{r fig-trans2, fig.cap = "遷移性の説明のための有向グラフの例", echo = FALSE, fig.dim = c(2.3,2.3)}
+```{r fig-trans2, fig.cap = "遷移性の説明のための有向グラフの例", echo = FALSE, fig.dim = c(3.3,3.3)}
 dagify(j~i,
         k~j,
          k~i) %>% 
