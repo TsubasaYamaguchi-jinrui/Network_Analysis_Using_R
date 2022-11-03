@@ -19,10 +19,11 @@ attr %>%
 ```
 <br/>  
 
-### 次数中心性(degree centrality)  
+### 次数中心性(Degree centrality)  
 最も簡便で適用範囲の広い中心性が**次数中心性**である[@Suzuki2017]。重みなしグラフについて算出でき、各ノードに辺で接続しているノードの数を、そのノードの次数中心性とする。例えば、図\@ref(fig:fig-degree)では、Aの次数中心性は5、Dの次数中心性は3である。    
 
-```{r fig-degree, fig.cap = "次数中心性のための無向グラフの例", echo = FALSE, fig.dim = c(4,4)}
+```{r fig-degree, fig.cap = "次数中心性算出のための無向グラフの例", echo = FALSE, fig.dim = c(3.5,3.5), fig.align = "center"}
+
 mat_undir <- matrix(c(0,1,1,1,1,1,0,0,
                 1,0,1,0,0,0,1,0,
                 1,1,0,0,0,0,0,0,
@@ -53,13 +54,15 @@ met.degree(mat_undir,
            df = attr,
            ## 個体IDの列番号
            dfid = 1) %>% 
-  kable(align = "c")
+  kable(align = "c") %>% 
+  kable_styling(font_size = 12, full_width = FALSE)
 ```
 <br/>  
 
 有向グラフでは、他のノードから入ってくる辺の数である入次数(**indegree**)と他のノードへ入っていく辺の数である出次数(**outdegree**)が区別される。図\@ref(fig:fig-degree2)では、Aの入次数は2、出次数は3である。  
 
-```{r fig-degree2, fig.cap = "次数中心性のための有向グラフの例", echo = FALSE, fig.dim = c(5,4)}
+```{r fig-degree2, fig.cap = "次数中心性算出のための有向グラフの例", echo = FALSE, fig.dim = c(4.5,3.5), fig.align = 'center'}  
+
 mat_dir <- matrix(c(0,0,1,1,0,0,0,0,
                 1,0,1,0,0,0,1,0,
                 0,0,0,0,0,1,0,0,
@@ -102,12 +105,13 @@ met.outdegree(mat_dir,
            df = attr_b,
            ## 個体IDの列番号
            dfid = 1) %>% 
-  kable(align = "c")
+  kable(align = "c") %>% 
+  kable_styling(font_size = 12, full_width = FALSE)
   
 ```
 <br/>  
 
-### 重み付き中心性(strength centrality)    
+### 重み付き中心性(Strength centrality)    
 **重み付き中心性**は、各ノードに接続している辺の重みの合計で表される中心性である。図\@ref(fig:fig-strength)は表\@ref(tab:tab-strength)の隣接行列(`mat_undir_b`)のグラフである。グラフの辺上の数字は重みを表す。このとき、Aの重み付き中心性は$3 + 2+ 2+ 1 +1=9$、Cの重み付き中心性は$3 + 2 = 5$である。  
 
 ```{r tab-strength, echo = FALSE}
@@ -130,7 +134,7 @@ mat_undir_b %>%
   kable_styling(font_size = 10, full_width = FALSE)
 ```
 
-```{r fig-strength, fig.cap = "重み付き中心性のための無向グラフの例", echo = FALSE, fig.dim = c(6,4)}
+```{r fig-strength, fig.cap = "重み付き中心性算出のための無向グラフの例", echo = FALSE, fig.dim = c(6,4)}
 set.seed(145)
 
 mat_undir_b %>% 
@@ -154,7 +158,8 @@ met.strength(mat_undir_b/2,
            df = attr,
            ## 個体IDの列番号
            dfid = 1) %>% 
-  kable(align = "c")
+  kable(align = "c") %>% 
+  kable_styling(font_size = 12, full_width = FALSE)
 ```
 <br/>  
 
@@ -174,7 +179,7 @@ sna::degree(mat_undir_b,
 ```
 
 
-### 固有ベクトル中心性(eigenvector centrality)    
+### 固有ベクトル中心性(Eigenvector centrality)    
 次数中心性や重み付け中心性は、あるノードに接続する辺の数や重みの合計に基づく中心性指標であった。つまり、例えば毛づくろい頻度ネットワークでは、多くの個体と毛づくろいしている個体や、毛づくろい頻度の合計が多い個体の中心性が高く評価される。しかし、この方法は中心性を評価する指標として適切ではない場合がある。例えば、毛づくろいを通してある行動がネットワーク内をどのように伝播するかを考えるとき、<u>毛づくろい相手の多い個体と毛づくろいすることは、毛づくろい相手の少ない個体と毛づくろいするよりも高く評価するべきかもしれない</u>。  
 
 このことを考慮するためは、あるノードの中心性を評価するときに、そのノードと繋がっているノードの中心性の大きさを反映させる必要がある。例えば、あるノードの中心性がそれとつながるノードの中心性の和に比例する方法が考えられる。このとき、ある無向グラフの隣接行列を$A = (a_{ij})$とし、そこに含まれるノードの中心性を成分とする列ベクトルを$c=c_i$とすると、ノード$i$の中心性$c_i$は次のように表現できる。ただし、$\lambda$は正の比例定数である。  
@@ -196,10 +201,11 @@ $$
 <br/>  
 
 例えば、4個体について以下の隣接行列$A$と中心性を成分とするベクトル$c$を考える。  
-$$  
-\begin{aligned}
 
-&A = (a_{ij}) =
+$$  
+
+\begin{aligned}
+  &A = (a_{ij}) =
   \begin{pmatrix}
   0 & 1 & 0 & 0\\
   1 & 0 & 1 & 1\\
@@ -208,14 +214,14 @@ $$
   \end{pmatrix}\\
   \\
   
-&c = \begin{pmatrix}
+  &c = \begin{pmatrix}
                     c_1\\
                     c_2\\
                     c_3\\
                     c_4
        \end{pmatrix}
-       
-\end{aligned}  
+\end{aligned}
+
 $$
     
 <br/>      
@@ -236,7 +242,7 @@ $$
   0 & 1 & 0 & 0\\
   1 & 0 & 1 & 1\\
   0 & 1 & 0 & 1\\
-  0 & 1 & 1 & 0\\
+  0 & 1 & 1 & 0
   \end{pmatrix} 
   
   \begin{pmatrix}
@@ -261,13 +267,15 @@ $$
   c_2+c_4\\
   c_2+c_3\\
   \end{pmatrix}
-  
-\end{aligned}  
+
+\end{aligned}
 $$
 
 <br/>  
 
-ここで、これを満たす$\lambda$は正方行列$A$の**固有値**、$c$は**固有ベクトル**になる(分からない場合は[こちら](https://manabitimes.jp/math/1008))。つまり、隣接行列の固有ベクトルを求めれば、隣接するノードの中心性を反映した中心性を求めることができる(なお、固有値と固有ベクトルの組み合わせは$A$の列数と同じだけある)。特に絶対値が最大となる固有値に対応する第1固有ベクトルを中心性指標としたものを、**固有ベクトル中心性(eigenvector centrality)という**。  
+ここで、これを満たす$\lambda$は正方行列$A$の**固有値**、$c$は**固有ベクトル**になる[^foot1]。つまり、隣接行列の固有ベクトルを求めれば、隣接するノードの中心性を反映した中心性を求めることができる(なお、固有値と固有ベクトルの組み合わせは$A$の列数と同じだけある)。特に絶対値が最大となる固有値に対応する第1固有ベクトルを中心性指標としたものを、**固有ベクトル中心性(eigenvector centrality)という**。  
+
+[^foot1]: 分からない場合は[こちら](https://manabitimes.jp/math/1008)  
 
 あるノードの固有ベクトル中心性は、そのノードにつながるノードの中心性を反映しているが、それらのノードは更にそれらにつながるノードの中心性を反映している。このように、**固有ベクトル中心性は、そのノードから辺をたどって到達できるすべてのノードの中心性を反映**している。  
 
@@ -297,15 +305,43 @@ sna::evcent(A)
 ```
 <br/>  
 
-以上は重みなしグラフについて算出を行ったが、重み付きグラフについても同様に算出できる。隣接行列`mat_undir_b`(表\@ref(tab:tab-strength))ついて、固有ベクトル中心性の値をノードの値に反映させたグラフが図\@ref(fig:fig-eigen)である。  
+以上は重みなしグラフについて算出を行ったが、重み付きグラフについても同様に算出できる。  
+隣接行列`mat_undir_b`(表\@ref(tab:tab-strength))ついて、それぞれ重み付き中心性(左)と固有ベクトル中心性(右)の値をノードの大きさに反映させたグラフが図\@ref(fig:fig-eigen)である。  
 
-```{r fig-eigen, fig.cap = "固有ベクトル中心性の値をノードの大きさに反映させたグラフ", fig.dim = c(5,4)}
+```{r fig-eigen, fig.cap = "重み付き中心性(左)と固有ベクトル中心性(右)の値をノードの大きさに反映させたグラフ", fig.dim = c(9,5)}
 set.seed(123)
 
+## 重み付き中心性の算出
+met.strength(mat_undir_b/2, 
+           df = attr,
+           dfid = 1) -> attr_st
+
+## 固有ベクトル中心性の算出
+met.eigen(mat_undir_b, 
+           df = attr_st,
+           dfid = 1) -> attr_st_evc
+
+## 重み付き中心性のグラフ
+mat_undir_b %>% 
+  as_tbl_graph(directed = FALSE) %>%
+  ## `tbl_graph`に重み付き中心性の情報を追加
+  mutate(strength = attr_st_evc$strength) %>% 
+  ggraph(layout = "nicely")+
+  geom_node_point(aes(size = strength), shape = 16, color = "black")+
+  scale_size(range = c(6,13))+
+  geom_edge_link(aes(width = weight),color = "grey65",
+                 end_cap = circle(0.5,"cm"),
+                 start_cap = circle(0.5,"cm"))+
+  geom_node_text(aes(label = name), color = "white")+
+  scale_edge_width(range = c(1,3))+
+  labs(title = "重み付き中心性")+
+  theme_graph() -> p_strength
+
+## 固有ベクトル中心性のグラフ
 mat_undir_b %>% 
   as_tbl_graph(directed = FALSE) %>%
   ## `tbl_graph`に固有ベクトル中心性の情報を追加
-  mutate(eigen = sna::evcent(mat_undir_b)) %>% 
+  mutate(eigen = attr_st_evc$eigen) %>% 
   ggraph(layout = "nicely")+
   geom_node_point(aes(size = eigen), shape = 16, color = "black")+
   scale_size(range = c(6,13))+
@@ -314,7 +350,10 @@ mat_undir_b %>%
                  start_cap = circle(0.5,"cm"))+
   geom_node_text(aes(label = name), color = "white")+
   scale_edge_width(range = c(1,3))+
-  theme_graph()
+  labs(title = "固有ベクトル中心性")+
+  theme_graph() -> p_eigen
+
+p_strength + p_eigen
 ```
 <br/>  
 
@@ -357,7 +396,7 @@ page_rank$vector
 ```
 
 PageRankの値をノードの大きさに反映したグラフが図\@ref(fig:fig-pagerank)である。
-```{r fig-pagerank, fig.cap = "PageRankの値をノードの大きさに反映させたグラフ", fig.dim = c(6,4.4)}
+```{r fig-pagerank, fig.cap = "PageRankの値をノードの大きさに反映させたグラフ", fig.dim = c(5,4.5), fig.align = "center"}
 set.seed(123)
 
 mat_dir_b %>% 
@@ -374,12 +413,16 @@ mat_dir_b %>%
                  start_cap = circle(0.5,"cm"))+
   geom_node_text(aes(label = name), color = "white")+
   scale_edge_width(range = c(0,2))+
-  theme_graph()
+  labs(title = "PageRank")+
+  theme_graph()+
+  scale_x_continuous(expand = c(0.05,0.05))+
+  scale_y_continuous(expand = c(0.05,0.05))-> p_pr
+
+p_pr
 ```
 <br/>  
 
-
-### 媒介中心性(betweeness centrality)  
+### 媒介中心性(Betweeness centrality)  
 ネットワークにおける媒介や伝達に着目した中心性に**媒介中心性**がある。媒介中心性は、<u>他のノード同士をつなぐ最短経路上に位置するノード</u>は、ノード間の仲介や情報の伝達に与える影響が大きいという点で有力であり、より多くのノード間の最短経路上にあるノードほどその影響力が大きいとする指標である。  
 
 ノード$i$の媒介中心性は以下の式で定式化される。なお、$g_{jk}$はノード$j$と$k$の間の最短経路数であり、$g_{ij}(i)$はノード$j$と$k$の間の最短経路のうちノード$i$を通るものの数である。無向グラフの場合、$j < k$である。  
@@ -401,7 +444,9 @@ met.betweenness(mat_dir_b,
                 ## 最もstrengthが重みの合計が高い経路を最短とする
                 shortest.weight = TRUE,
                 df = attr,
-                dfid = 1)
+                dfid = 1) %>% 
+  kable(align = "c") %>% 
+  kable_styling(font_size = 12, full_width = FALSE)
 
 ## sna
 sna::betweenness(mat_dir_b, 
@@ -412,7 +457,8 @@ sna::betweenness(mat_dir_b,
 ```
 
 媒介中心性の値をノードの大きさに反映したグラフが図\@ref(fig:fig-between)である。
-```{r fig-between, fig.cap = "媒介中心性の値をノードの大きさに反映させたグラフ", echo = FALSE, fig.dim = c(6,4)}
+```{r fig-between, fig.cap = "媒介中心性の値をノードの大きさに反映させたグラフ", echo = FALSE, fig.align = "center", fig.dim = c(5,4.5)}
+
 mat_dir_b %>% 
   as_tbl_graph(directed = TRUE) %>% 
    ## `tbl_graph`に媒介中心性の情報を追加
@@ -429,15 +475,100 @@ mat_dir_b %>%
                  start_cap = circle(0.5,"cm"))+
   geom_node_text(aes(label = name), color = "white")+
   scale_edge_width(range = c(0,2))+
-  theme_graph()
+  labs(title = "媒介中心性")+
+  theme_graph()+
+  scale_x_continuous(expand = c(0.05,0.05))+
+  scale_y_continuous(expand = c(0.05,0.05))-> p_bet
+
+p_bet
 ```
 
-### 情報中心性(information centrality)  
+### 情報中心性(Information centrality)  
 媒介中心性は最短経路以外の経路や、経路の長さを考慮していなかった。しかし、実際の情報の伝達は最短経路のみでなされるとは限らないし、情報伝達に関わる人が多いほど情報の精度が下がるような可能性もある。そこで、ノード間の最短経路以外の経路や経路の長さを考慮した指標として、**情報中心性**が考案された。  
 
-情報中心性の算出では、経路が短いほど高く評価されるように経路の長さの逆数で重みづけされる。より具体的には、
+情報中心性の算出では、経路が短いほど高く評価されるように経路の長さの逆数で重みづけされる。例えば、図\@ref(fig:fig-info-exam)のノード$2$と$4$について考える。これらのノードの間の経路には$2-1-4$と$2-3-1-4$の2通りがあり、それぞれの長さは2と3である。ただし、2つの経路には$1-4$という共通の経路が存在する。    
+
+```{r fig-info-exam, fig.cap = "情報中心性算出のための無向グラフの例", echo = FALSE, fig.dim = c(3.5,3.5)}
+mat_info <- matrix(c(0,1,1,1,
+                     1,0,1,0,
+                     1,1,0,0,
+                     1,0,0,0),
+                   nrow = 4,
+                   byrow = TRUE)
+
+colnames(mat_info) <- c("1","2","3","4")
+rownames(mat_info) <- c("1","2","3","4")
+
+mat_info %>% 
+  as_tbl_graph(directed = FALSE) %>% 
+  ggraph(layout = "circle")+
+  geom_node_point(shape = 16, size = 8)+
+  geom_node_text(aes(label = name), color = "white")+
+  geom_edge_link(start_cap = circle(0.3,"cm"),
+                 end_cap = circle(0.3,"cm"))+
+  theme(aspect.ration = 1)+
+  theme_graph()
+```
+<br/>  
+
+このとき、ノード$2$と$4$について以下の行列$D_{24}$を考える。なお、行列の対角成分にはそれぞれの経路の長さが、それ以外の成分には2つの経路で共通する辺の数が入る。  
+
+$D_{24} = \begin{pmatrix} 2 & 1 \\1 & 3\end{pmatrix}$  
 
 
+そして、この行列の逆行列[^foot2]$D_{24}^{-1}$の各行の成分の合計を、各経路の**情報量**とする。この場合、$0.6-0.2 = 0.4$が経路$2-1-4$の、$-0.2 + 0.4 = 0.2$が経路$2-3-1-4$の情報量である。また、その和($0.4+0.2=0.6$)をノード$2$と$4$のペアについての**情報量**($I_{24}$)とする。このように全てのノードペアについての情報量を算出する(自身との情報量は$I_{ii} = \infty$である)。  
+
+$D_{24}^{-1} = \begin{pmatrix} 0.6 & -0.2 \\ -0.2 & 0.4 \end{pmatrix}$  
+  
+
+[^foot2]: 分からない場合は[こちら](https://manabitimes.jp/math/1153)  
+
+このとき、各ノード$i$の情報中心性($C_{inf}(i)$)は、**ノード**$i$**が含まれるノードペアの情報量の調和平均**[^foot3]になる。数式では以下のように書ける。ただし、$n$は全ノードの数である。  
+
+$C_{inf}(i) = \frac{n}{\sum_{j=1}^n 1/I_{ij}}$    
+  
+
+[^foot3]: 調和平均とは、逆数の平均の逆数である。例えば、1, 2, 4の調和平均は次のようになる。  
+$$
+\frac{3}{\frac{1}{1} + \frac{1}{2} + \frac{1}{4}} = \frac{1}{\frac{7}{12}} = \frac{12}{7}
+$$  
+
+<br/>  
+
+情報中心性は`sna`パッケージの`infocent()`関数で求められる。表\@ref(tab:tab-pagerank)の隣接行列(`mat_dir_b`)について算出すると、以下のようになる。  
+
+```{r}
+infocent(mat_dir_b,
+         ##無向グラフなら "graph"
+         gmode = "digraph")
+```
+<br/>  
+
+情報中心性の値をノードの大きさに反映したグラフを、それぞれPageRankと媒介中心性の値をノードの大きさに反映した2つのグラフと並べたものがが図\@ref(fig:fig-info)である。  
+
+```{r fig-info, fig.cap = "PageRank・媒介中心性・情報中心性の値をノードの大きさに反映させたグラフ", echo = FALSE, fig.align = "center", fig.dim = c(12.5,5.2)}
+
+mat_dir_b %>% 
+  as_tbl_graph(directed = TRUE) %>% 
+   ## `tbl_graph`に媒介中心性の情報を追加
+  mutate(info = infocent(mat_dir_b, gmode = "digraph")) %>% 
+  ggraph(layout = "nicely")+
+  geom_node_point(aes(size = info),shape = 16, color = "black")+
+  scale_size(range = c(6,13))+
+  geom_edge_fan(aes(width = weight),
+                 color = "grey65",
+                 arrow = arrow(angle = 30, length = unit(4,units = "mm"), type = "closed"),
+                 end_cap = circle(0.5,"cm"),
+                 start_cap = circle(0.5,"cm"))+
+  geom_node_text(aes(label = name), color = "white")+
+  scale_edge_width(range = c(0,2))+
+  labs(title = "情報中心性")+
+  theme_graph() +
+  scale_x_continuous(expand = c(0.05,0.05))+
+  scale_y_continuous(expand = c(0.05,0.05))-> p_info
+
+(p_pr + theme(legend.position = "none"))+ (p_bet+theme(legend.position = "none")) +p_info+theme(legend.position = "none")
+```
 
 ## ネットワーク構造の諸指標  
 ここでは、ネットワーク全体の構造の特徴を表す指標についてまとめる。  
@@ -446,31 +577,119 @@ mat_dir_b %>%
 密度は、社会ネットワークにおける関係の緊密さの指標になりうる。密度が低いとき、社会ネットワーク内の個体間の直接的な関係は少なく、両者の関係は媒介者を通じた間接的なものが多いということができる[@Croft2019]。    
 
 - 重み無しグラフの場合: 実際の辺の数をグラフに張ることが可能な辺の最大数で割ったもの    
-ノードの数を$n$、実際の辺の数を$m$としたとき、$2m/n(n-1)$  
+ノードの数を$n$、実際の辺の数を$m$としたとき、$2m/n(n-1)$(無向グラフ)または$m/n(n-1)$(有向グラフ)    
 
 - 重み付きグラフの場合: 全辺の重みの合計をグラフに張ることが可能な辺の最大数で割ったもの  
-ノードの数を$n$、重みの合計を$w$としたとき、$2e/n(n-1)$  
-<br/>  
+ノードの数を$n$、重みの合計を$w$としたとき、$2w/n(n-1)$(無向グラフ)または$2m/n(n-1)$(有向グラフ)    
 
-ここでは、\@ref(s2-1)で算出した毛づくろい頻度についての隣接行列を用いて密度を算出する。    
-`ANTs`パッケージでは、`met.density()`で計算可能。ただし、重み無しグラフとして算出されるよう。    
+ここでは、表\@ref(tab:tab-strength)の隣接行列を用いて密度を算出する。    
+`ANTs`パッケージでは、`met.density()`で計算可能。ただし、重みなしグラフとして算出されるよう。また、`list()`関数で複数の隣接行列をリスト化することで、同時に2つ以上の隣接行列について密度を算出できる。      
 ```{r}
-met.density(groom_mat_b)
+met.density(mat_undir_b)
+
+## リスト化
+list_mat <- list(mat_undir_b, mat_dir_b)
+
+met.density(list_mat)
 ```
 
-`sna`パッケージでは、`gden()`で計算可能。`ignore.value = FALSE`とすると重み付きグラフとして扱われる。
+`sna`パッケージでは、`gden()`で計算可能。`ignore.value = FALSE`とすると重み付きグラフとして扱われる。`ANTs`パッケージと同様、リスト化した複数の隣接行列の密度を同時に算出できる。  
 ```{r}
 ## 重み付き
-gden(groom_mat_b, ignore.eval = FALSE)
+gden(mat_undir_b, 
+     ## 重み無グラフならば、TRUE
+     ignore.eval = FALSE,
+     ## 有向グラフならば "digraph"
+     mode = "graph")
 
-## 重み無し  
-gden(groom_mat_b, ignore.eval = TRUE)
+## リスト化
+gden(list_mat)
+```
+
+### 同類性(Assortativity)  
+ネットワーク内において、<u>次数などの中心性指標の似ているノード同士が結びつきやすい/結びつきにくいか</u>を表したのが**同類性**である。ネットワーク内の辺の両端にあるノードの中心性指標の相関係数を算出したものであり、-1から1の値をとる(重み付きグラフの場合は、それで重み付けされているよう)。計算方法の詳細は @Farine2014 を参照。    
+
+ここでは例として、第\@ref(c2)章で算出した毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))の媒介中心性について次数相関を調べる。`ANTs`パッケージでは、`met.assortativity()`関数で算出できる。引数`attr = `で調べたいノードの中心性指標などを指定する。  
+
+```{r}
+met.assortativity(groom_mat_b,
+                  ## 各ノードの固有ベクトル中心性  
+                  attr = met.betweenness(groom_mat_b, binary = FALSE, sym = FALSE),
+                  ## 重みなしの場合 FALSE
+                  weighted = TRUE)$assortativity.cat -> assortativity_bet
+
+assortativity_bet
+```
+
+係数は`r sprintf("%.3f", assortativity_bet)`なので、**媒介中心性の似ているノード同士は結びつきにくい**という弱い傾向が得られた。なお、以下のようにするとnode label permutation(詳細は\@ref(s3-2))で生成したランダムなネットワークの同類性を指定した数だけ生成してくれる。それらの何%より実際の同類性の数値が大きい/小さいかを検討することで、統計的な検定が行える。今回の例では、実測値はランダムな値の97%より小さいので、片側検定の場合はランダムな場合より<u>有意に小さいと言える</u>(図\@ref(fig:fig-perm))。
+  
+```{r}
+## node label permutationで生成したランダムなネットワーク100個についてassortativityを算出
+met.assortativity(groom_mat_b,
+                  ## 各ノードの固有ベクトル中心性  
+                  attr = met.betweenness(groom_mat_b, binary = FALSE, sym = FALSE),
+                  ## 重みなしの場合 FALSE
+                  weighted = TRUE,
+                  ## node label permutationをするか
+                  perm.nl = TRUE,
+                  ## permutationの数
+                  nperm = 10000) -> nlperm_bet
+
+### ランダムなassortativityの何%より小さい？
+sum(nlperm_bet > assortativity_bet)/10000
+```
+
+```{r fig-perm, fig.cap = "ランダムなネットワークの同類性の分布(灰色)と実測値(赤)", echo = FALSE, fig.dim = c(4,4)}
+data.frame(random =nlperm_bet) %>% 
+  ggplot(aes(x = random))+
+  geom_histogram(binwidth = 0.001) +
+  geom_vline(xintercept = assortativity_bet, size = 1, color = "red")+
+  geom_text(aes(x = -0.12,y= 175, label = str_c("実測値 = ",round(assortativity_bet,3),"\n p < 0.05")),
+            hjust =0, vjust = 0.7)+
+  theme_bw()+
+  theme(aspect.ratio=1)+
+  labs(x = "assortativity", y = "frequency")
+```
+<br />  
+
+`attr = `には、中心性指標だけでなく、順位や性別などの様々な個体の属性(連続値・離散値どちらも可)を指定することができる。例えば、同じ順位カテゴリ(低順位: m、中順位: m、高順位: h)の個体同士が結びつきやすいかを調べる場合は、以下のように個体ごとのカテゴリを指定してあげればよい。係数はかなり高く(0.48)、**有意に同順位カテゴリ―の個体同士がよく結びつく傾向がある**。  
+
+```{r}
+rank <-  c("m","m","l","l","h","h","h","h","h","h","l","l","l","m","m","m","m")
+
+met.assortativity(groom_mat_b,
+                  ## 各ノードの固有ベクトル中心性  
+                  attr = rank,
+                  ## 重みなしの場合 FALSE
+                  weighted = TRUE)$assortativity.cat -> assortativity_rank
+
+assortativity_rank
+```
+
+```{r fig-perm2, fig.cap = "ランダムなネットワークの同類性の分布(灰色)と実測値(赤)", echo = FALSE, fig.dim = c(4,4)}
+met.assortativity(groom_mat_b,
+                  ## 各ノードの固有ベクトル中心性  
+                  attr = rank,
+                  ## 重みなしの場合 FALSE
+                  weighted = TRUE,
+                  perm.nl = TRUE,
+                  nperm = 10000) -> nlperm_rank
+
+data.frame(random =nlperm_rank) %>% 
+  ggplot(aes(x = random))+
+  geom_histogram(binwidth = 0.001) +
+  geom_vline(xintercept = assortativity_rank, size = 1, color = "red")+
+  geom_text(aes(x = 0.23,y= 30, label = str_c("実測値 = ",round(assortativity_rank,3),"\n p < 0.001")),
+            hjust =0, vjust = 0.7)+
+  theme_bw()+
+  theme(aspect.ratio=1)+
+  labs(x = "assortativity", y = "frequency")
 ```
 
 ### 推移性(Transitivity)  
 ネットワークにおいて、頂点$i$と$j$の間、および頂点$j$と$k$の間に関係があり、頂点$i$と$k$の間にも関係があるとき、関係が**推移的**であるという。例えば、図\@ref(fig:fig-trans)で頂点A, B, Cの関係は推移的だが、頂点A, B, Gは推移的ではない。  
 
-```{r fig-trans, fig.cap = "遷移性の説明のための無向グラフの例", echo = FALSE, fig.dim = c(4,4)}
+```{r fig-trans, fig.cap = "推移性の説明のための無向グラフの例", echo = FALSE, fig.dim = c(4,4)}
 mat <- matrix(c(0,1,1,1,1,1,0,0,
                 1,0,1,0,0,0,1,0,
                 1,1,0,0,0,0,0,0,
@@ -495,56 +714,119 @@ mat %>%
 ```
 
 有向グラフの場合は、頂点$i$から$j$、頂点$j$から$k$に有向辺があり、かつ頂点$i$から$k$に有向辺があるとき推移的であるという(図\@ref(fig:fig-trans2))。  
-```{r fig-trans2, fig.cap = "遷移性の説明のための有向グラフの例", echo = FALSE, fig.dim = c(3.3,3.3)}
+```{r fig-trans2, fig.cap = "推移性の説明のための有向グラフの例", echo = FALSE, fig.dim = c(2.3,2.3)}
 dagify(j~i,
         k~j,
          k~i) %>% 
-  ggdag()+
+  ggdag(node_size = 10, text_size = 3.2)+
   theme_dag()
 ```
 
-**推移性**はネットワーク内で推移的な関係が成り立っている比率を指す。例えば無向グラフの場合には、頂点$i$と$j$、$j$と$k$の間に辺があるとき、頂点$i$と$k$にも辺がある割合である。推移性はネットワークがどの程度クラスタ化されているかの指標になる[@Farine2015]。
+**推移性**はネットワーク内で推移的な関係が成り立っている比率を指す。例えば無向グラフの場合には、頂点$i$と$j$、$j$と$k$の間に辺があるとき、頂点$i$と$k$にも辺がある割合である。推移性はネットワークがどの程度クラスター化されているかの指標になる[@Farine2015]。そのため、**クラスター係数**と呼ばれることもある。    
 
-`ANTs`パッケージでは算出できない。`sna`パッケージでは、`gtrans()`関数で求められる。  
+例として、毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))の推移性を算出する。推移性は`igraph`パッケージの`transitivity()`関数で求められる。推移性は高い？      
+
 ```{r}
-## 有向グラフの場合は、mode = "digraph"
-gtrans(mat, mode = "graph")
+## igraphクラスに変換
+graph_groom <- graph_from_adjacency_matrix(groom_mat_b,
+                                           ## 有向グラフなら "directed"
+                                           mode= "undirected", 
+                                           ## 重みなしなら NULL
+                                           weighted = TRUE) 
+
+transitivity(graph_groom,
+             ## 有向グラフなら "directed"
+             type = "undirected")
 ```
 
-### 
+### Modularity  
+霊長類のネットワークの種間比較でよく用いられる指標にNewmanの**modularity**[@Newman2004; @Whitehead2008]がある。この指標は、<u>ネットワーク内を複数のクラスターに分けたとき、クラスター内の個体間での交渉がクラスター間の個体間の交渉よりどの程度多いか</u>を示したもので、0から1の値をとる。値が高い(1に近い)ほどその差が大きいことを示し、クラスターの分け方が妥当であることを示す。@Newman2004 は、modularityが0.3以上のとき、クラスター間がよく分断されているとしている。例えばマカクの種間比較研究では、血縁ごとにクラスター分けしたとき、寛容性が低い種は高い種よりもmodularityが高い(0.33±0.08 vs 0.21 ±0.03)、つまり交渉がより血縁に偏っていることが分かっている[@Sueur2011b]。    
+
+Modularityは以下のように定式化される[@Csardi2006]。  
+
+$Q = \frac{1}{2m} \sum_{i,j} (A_{ij} - \gamma \frac{k_i k_j}{2m}) \delta(c_i,c_j)$  
+<br/>  
+
+なお、$m$は辺の数、$A_{ij}$は隣接行列の$i$行目$j$列目の成分、$k_i$と$k_j$はノード$i$と$j$の重み付き中心性を表す($k_i$と$k_j$に固有ベクトル中心性を使っている論文もある[@Bala2018])。また、$\delta(c_i,c_j)$はノード$i$と$j$が同じクラスターに属しているときは1、そうでないときは0になる。なお、$\gamma \frac{k_i k_j}{2m}$の部分は、ランダムに交渉が行割れていると仮定したときの$A_{ij}$の値である。$\delta$はデフォルトでは1だが変化させることができ、大きい値をとるほどクラスター数が多くなる。  
+
+ここでは例として、毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom))を用いて、各順位カテゴリ内(低順位・中順位・高順位)の交渉がカテゴリ間の交渉よりどの程度多いかを、$Q$を算出することで求める。 
 
 
-ここでは、`ANTs`パッケージを用いてマトリックスから様々なネットワーク指標を求める(他の様々なパッケージでも求められる)。    
-各指標については、Sosa et al. (2020)やFarine & Whitehead(2015)などを参照[@Sosa2020; @Farine2015]。  
-
-- 重みづけ中心性(strength)  
-- 固有ベクトル中心性(eigenvector centrality)  
-- 次数中心性(degree)  
-- 媒介中心性(betweenness)など...     
-
-`ANTs`パッケージを用いれば、属性データ(年齢や順位などの情報)と結合することができる。  
-2018年時点の属性データは以下の通り。  
+Rでは、`igraph`パッケージの`modularity()`関数で求めることができる。まず`graph_from_adjacency_matrix()`で`igraph`クラスに変換した後に算出する。modularityは小さく(0.06)、毛づくろいネットワークは順位カテゴリごとにはあまりクラスター化されていないことが分かった(計算結果少しおかしい？)。  
 ```{r}
-attribute <- read_csv("data/attributes_demo.csv")
+## 順位カテゴリごとに番号を振る
+rank <- c(2,2,1,1,3,3,3,3,3,3,1,1,1,2,2,2,2)
 
-attribute
+## igraphに変換
+graph_groom <- graph_from_adjacency_matrix(groom_mat_b,
+                                           ## 有向グラフなら "directed"
+                                           mode= "undirected", 
+                                           ## 重みなしなら NULL
+                                           weighted = TRUE) 
+
+modularity(graph_groom,
+           ## コミュニティーの分け方
+           membership = rank,
+           ## deltaの値
+           resolution = 1,
+           ## 有向グラフなら TRUE
+           directed = FALSE,
+           weights = NULL)
 ```
 
-ここでは、上記で作成したの毛づくろいネットワーク(`groom_mat`)を用いる。  
-以下のように属性に次々と指標を付け足していくことができる。
+### 応用例(下位集団の検出)  
+ネットワーク内に下位集団(クラスター)が存在するかを調べる方法はたくさんあるが[詳細は @Suzuki2017]、一つの方法として<u>modularityが最大になるような分け方</u>がある。`igraph`パッケージでは、`cluster_optimal()`でそのようなクラスタの分け方を算出してくれる。  
+
+例として、毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))について算出する。その結果、4つのクラスターに分類され、そのときのmodularityは0.40だった[^foot4]。概ね順位ごとに分かれていることが分かる(同じアルファベットから始まる個体が同一家系である)。高順位、中順位(2つに分かれている)、低順位にほぼ綺麗に分かれた。  
+
+[^foot4]: `modularity()`で同じメンバーシップにしても再現できないので要検討。算出方法が違う？  
+
 ```{r}
-## 重みづけ中心性(strength)
-met.strength(groom_mat, 
-             df = attribute,
-             ## 個体IDの列番号
-             dfid = 1) -> female_metrics
+## 算出
+cluster_optimal(graph_groom,
+                weights = NULL) -> cluster_groom
 
-## 固有ベクトル中心性  
-met.eigen(groom_mat, 
-             df = female_metrics,
-             ## 個体IDの列番号
-             dfid = 1) -> female_metrics
+## 結果
+cluster_groom
 
-female_metrics
+## modularity
+cluster_groom$modularity
+
+## なぜか一緒にならない
+modularity(graph_groom,
+           ## コミュニティーの分け方
+           membership = membership(cluster_groom),
+           ## deltaの値
+           resolution = 1,
+           ## 有向グラフなら TRUE
+           directed = FALSE,
+           weights = NULL)
 ```
 
+クラスターごとに色分けして図示すると図\@ref(fig:fig-cluster)のようになる。  
+```{r fig-cluster, fig.cap = "クラスターごとに色分けした毛づくろい頻度のグラフ", echo = FALSE, fig.dim = c(6,5)}
+set.seed(123)
+
+graph_groom %>% 
+  as_tbl_graph(directed = FALSE) %>% 
+  mutate(member = as.factor(cluster_groom$membership)) %>% 
+  ggraph(layout = "nicely")+
+  geom_mark_hull(aes(x=x,y=y,fill = member),
+                 concavity = 10)+
+  geom_node_point(aes(color = member),shape = 16, size = 12)+
+  geom_edge_link(start_cap = circle(0.5,"cm"),
+                 end_cap = circle(0.5,"cm"),
+                 color = "grey55",
+                 aes(width = weight))+
+  scale_edge_width(range = c(0,3))+
+  geom_node_text(aes(label = name), color = "white")+
+  theme_graph()+
+  scale_color_nejm()+
+  scale_fill_nejm()+
+  theme(aspect.ratio = 0.9)+
+  scale_x_continuous(expand = c(0.1,0.1))+
+  scale_y_continuous(expand = c(0.1,0.1))
+```
+
+### その他  
+個体間の敵対的交渉の隣接行列を用いた順位序列についての各指標の算出については、筆者の[別稿](https://tsubasayamaguchi-jinrui.github.io/Dominance_Analysis/)を参照。ここで紹介しきれなかった他の指標やクラスター分析の手法については、@Whitehead2008 , @Croft2019 , @Suzuki2017 などを参照。  

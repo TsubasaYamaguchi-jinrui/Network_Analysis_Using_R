@@ -21,7 +21,7 @@ csl: apa.csl
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(echo = TRUE, message = FALSE,
-                      warning = FALSE, fig.align = "left",
+                      warning = FALSE, fig.align = "center",
                       cache = TRUE)
 ```
 
@@ -34,12 +34,11 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE,
 - 各ネットワーク指標の解説と算出法(第\@ref(c3)章)   
 - ネットワークデータでの統計分析（第\@ref(c4)章)  
 
-<br/>  
-
 参考にしたのは主に以下の文献である。  
 なお、本稿の作成に使用したファイルとRのコードは筆者の[Github](https://github.com/TsubasaYamaguchi-jinrui/Network_Analysis_Using_R)ですべて閲覧できる。  
 
 - 鈴木努(2017) ネットワーク分析 第2版 [@Suzuki2017]  
+- Whitehead(2008) Analyzing Animal Societies [@Whitehead2008]  
 - Croft et al. (2008) Exploring Animal Social Network [@Croft2019]  
 - Farine & Whitehead (2015) Constructing, conducting and interpreting animal social network analysis [@Farine2015]  
 - Farine (2017) A guide to null models for animal social network analysis [@Farine2017]  

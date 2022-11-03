@@ -1,4 +1,5 @@
 fig:fig-graph
+tab:unnamed-chunk-3
 fig:fig-ggraph
 tab:tab-groom
 tab:tab-groom-b
@@ -13,8 +14,13 @@ fig:fig-eigen
 tab:tab-pagerank
 fig:fig-pagerank
 fig:fig-between
+fig:fig-info-exam
+fig:fig-info
+fig:fig-perm
+fig:fig-perm2
 fig:fig-trans
 fig:fig-trans2
+fig:fig-cluster
 c1
 社会ネットワーク分析snaとは
 社会ネットワークの基礎
@@ -36,12 +42,9 @@ pagerank
 情報中心性information-centrality
 ネットワーク構造の諸指標
 密度density
+同類性assortativity
 推移性transitivity
-section
-c4
-なぜrandomizationが必要か
-node-label-randomization
-線形回帰分析
-ネットワーク同士の関連の検討
-data-stream-randomization
+modularity
+応用例下位集団の検出
+その他
 おまけ.-csiの算出

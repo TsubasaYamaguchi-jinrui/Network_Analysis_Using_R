@@ -11,6 +11,7 @@
 - [sna](https://rdrr.io/cran/sna/)[@Butts2008]   
 
 ```{r}
+## ネットワーク分析関連
 library(tidygraph)
 library(ggraph)
 library(asnipe)  
@@ -20,20 +21,22 @@ library(igraph)
 ## データハンドリング
 library(tidyverse)
 library(easystats)
+## グラフや表関連
+library(patchwork)
 library(DT)
 library(knitr)
 library(kableExtra)
 library(dagitty)
 library(ggdag)
-## グラフを並べるために
-library(patchwork)
+library(ggforce)
+library(concaveman)
+library(ggsci)
 ## フォント関連
 library(extrafont)
 require(systemfonts)
 ```
 
-なお、本稿はRの基本操作と`tidyverse`パッケージによるデータハンドリングができることを前提としている。  
-`tidyverse`パッケージを用いたデータ処理については、以下を参照。  
+なお、本稿はRの基本操作と`tidyverse`パッケージによるデータハンドリングができることを前提としている。`tidyverse`パッケージを用いたデータ処理については、以下の書籍などを参照。  
 
 - R for Data Science [@Wickham2016]  
 [電子書籍](https://r4ds.had.co.nz/), [日本語](https://www.oreilly.co.jp/books/9784873118147/)  

@@ -33,7 +33,7 @@ groom %>%
 
 追跡したメスのIDは以下のとおりである。  
 ```{r}
-adult <- adult <- c("Kil","Kit","Koh","Kur","Kun","Kor","Ntr",
+adult <-  c("Kil","Kit","Koh","Kur","Kun","Kor","Ntr",
            "Ten","Aka","Ako","Tam","Tot","Hen","Hot",
            "Mal","Mik","Mei")
 ```
@@ -89,7 +89,7 @@ groom_mat <- df.to.mat(groom_G,
 ```{r tab-groom, echo = FALSE}
 groom_mat %>% 
   kable(digits = 2, align = "c", caption = "方向性を考慮した毛づくろい頻度の隣接行列") %>% 
-  kable_styling(font_size = 6, full_width = FALSE)
+  kable_styling(font_size = 5, full_width = FALSE)
 ```
 <br/>  
 
@@ -110,13 +110,12 @@ groom_mat_b <- df.to.mat(groom_G,
 ```{r tab-groom-b, echo = FALSE}
 groom_mat_b %>% 
   kable(digits = 2, align = "c",caption = "方向性を考慮しない毛づくろい頻度の隣接行列") %>% 
-  kable_styling(font_size = 6, full_width = FALSE)
+  kable_styling(font_size = 5, full_width = FALSE)
 ```
 <br/>  
 
-グラフを描画すると図\@ref(fig:fig-groom)のようになる。ノードの大きさは順位を、辺の太さは毛づくろい頻度を表す。    
-血縁個体同士(同じアルファベットで始まる個体)は交渉頻度が高く、近くに配置されていることが分かる。順位の低い個体がネットワークの周辺にいることが多いことも分かるだろう。
-```{r fig-groom, fig.dim = c(6,4), fig.cap = "毛づくろい頻度ネットワークのグラフ"}
+グラフを描画すると図\@ref(fig:fig-groom)のようになる。ノードの大きさは順位を、辺の太さは毛づくろい頻度を表す。血縁個体同士(同じアルファベットで始まる個体)は交渉頻度が高く、近くに配置されていることが分かる。順位の低い個体がネットワークの周辺にいることが多いことも分かるだろう。
+```{r fig-groom, fig.dim = c(6,5), fig.cap = "毛づくろい頻度ネットワークのグラフ"}
 ## 順位
 rank <- c(9,10,13,14,1,2,3,6,5,4,15,17,16,7,11,8,12)
 
@@ -194,9 +193,8 @@ presence_mat %>%
 ```
 <br/>  
 
-グラフを描画すると図\@ref(fig:fig-gbi)のようになる。ノードの大きさは年齢、色は順位を、辺の太さはSRIを表す。    
-MikとAkaは他の個体と一緒にいることが少ないことが分かるだろう(年齢も影響しそう？)。 順位の高い個体はネットワークの中心にいることが多い?   
-```{r fig-gbi, fig.dim = c(6,6), fig.cap = "SRIネットワークのグラフ"}
+グラフを描画すると図\@ref(fig:fig-gbi)のようになる。ノードの大きさは年齢、色は順位を、辺の太さはSRIを表す。MikとAkaは他の個体と一緒にいることが少ないことが分かるだろう(年齢も影響しそう？)。順位の高い個体はネットワークの中心にいることが多い?   
+```{r fig-gbi, fig.dim = c(6,5), fig.cap = "SRIネットワークのグラフ"}
 age <- c(18,17,15,15,13,13,13,13,13,13,12,11,11,10,9)
 rank2 <- c(16,1,3,9,7,8,12,13,14,17,10,6,15,2,5)
 
@@ -212,7 +210,7 @@ presence_mat %>%
   ## 四角のノード。大きさは年齢によって変化するとする。  
   geom_node_point(aes(size = age, color = rank2),shape = 16)+
   ## ノードのラベルは個体名  
-  scale_size(range = c(0.5,5))+
+  scale_size(range = c(1,5))+
   geom_node_text(aes(label = name), 
                  ## ノードと重ならないようにする 
                  repel=TRUE, size =6)+

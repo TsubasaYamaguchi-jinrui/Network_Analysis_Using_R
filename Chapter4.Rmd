@@ -3,7 +3,7 @@
 マトリックス内の数値やそこから算出されたネットワーク指標は他の個体の指標と互いに関連しあっているため、独立ではない[@Farine2015; @Farine2017]。  
 そのため、統計的検定を行う場合には、randomizationテストを行う必要がある。randomizationには、いくつかの方法がある。  
 
-## node label randomization  
+## node label randomization  {#s3-2}
 ネットワークのnode(点)のラベルをランダムにシャッフルし、そうしてできた多数のランダムなネットワークにおける分析結果(例えば、相関係数や回帰分析の係数)を帰無モデルとし、それと実際に得られたネットワークにおける分析結果と比較することで、有意性を判定する方法である[@Farine2015; @Farine2017]。  
 ![node label randomizationの説明1](image/nl1.png)  
 ![node label randomizationの説明2](image/nl2.png)
@@ -21,18 +21,18 @@
 それでは、node label permutationを行う  
 ここでは、従属変数のラベルをランダム化する。
 ```{r, warning = FALSE, message = FALSE}
-perm_glm <- perm.net.nl(female_metrics,
-                        ## ランダマイゼーションするラベル  
-                        labels = "eigen",
-                        ## 回数  
-                        nperm = 10000)
+#perm_glm <- perm.net.nl(female_metrics,
+ #                       ## ランダマイゼーションするラベル  
+  #                      labels = "eigen",
+   #                     ## 回数  
+    #                    nperm = 10000)
 ```
 
 分析は以下の通り。  
 ```{r}
-r <- stat.glm(perm_glm,
-              formula = eigen ~ age + rank,
-              family = "gaussian")
+#r <- stat.glm(perm_glm,
+ #             formula = eigen ~ age + rank,
+  #            family = "gaussian")
 ```
 
 ランダムなネットワークにおける係数と実際のネットワークにおける係数の比較。  
@@ -92,13 +92,13 @@ denom <- denom[rownames(kin_mat),colnames(kin_mat)]
 
 分析は以下の通り。  
 ```{r, message = FALSE, cache = TRUE}
-r_qap <- glmqap(presence_mat ~ rank_mat + kin_mat,
-                ## 分母のマトリクス
-                weights = denom,
-                family = "binomial",
-                nperm = 10000,
-                permutation = "DSP"
-              )
+#r_qap <- glmqap(presence_mat ~ rank_mat + kin_mat,
+ #               ## 分母のマトリクス
+  #              weights = denom,
+   #             family = "binomial",
+    #            nperm = 10000,
+     #           permutation = "DSP"
+      #        )
 ```
 
 結果は以下の通り。  
@@ -135,10 +135,10 @@ presence_df <- gbi.to.df(presence_mat)
 `perm.ds.grp()`でdata stream randomizationを行うことができる。  
 ここでは、観察日ごとに個体の出欠を10000回シャッフルするが、もしあれば時間や場所などの情報も`ctrlf`という引数で加えることが可能である。詳しくは、Farine (2017)を参照。
 ```{r}
-perm_ds <- perm.ds.grp(presence_df,
-                       scan = "scan",
-                       nperm = 10000,
-                       index = "sri")
+#perm_ds <- perm.ds.grp(presence_df,
+ #                      scan = "scan",
+  #                     nperm = 10000,
+   #                    index = "sri")
 ```
 
 生成された10001(実データ1 + ランダマイゼーション×10000)それぞれについて、ネットワーク指標を算出して、メスの属性データと結合する。やり方は、第2節と同様であるが、`map()`を用いることで10001個のマトリクスそれぞれについて算出できる。    
