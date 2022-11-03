@@ -36,3 +36,6 @@ knitr
 kableExtra
 dagitty
 ggdag
+ggforce
+concaveman
+ggsci
