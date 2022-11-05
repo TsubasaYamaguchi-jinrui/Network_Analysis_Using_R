@@ -432,7 +432,7 @@ C_b(i) = \sum_{i \neq j \neq k} \frac {g_{jk}(i)}{g_{jk}}
 $$
 <br/>  
 
-`ANTs`パッケージでは`met.betweeness()`関数で、`sna`パッケージでは`sna::betweeness()`関数で媒介中心性を求められる。表\@ref(tab:tab-pagerank)の隣接行列(`mat_dir_b`)について算出すると、以下のようになる。  
+`ANTs`パッケージでは`met.betweeness()`関数で、`sna`パッケージでは`sna::betweeness()`関数で媒介中心性を求められる。表\@ref(tab:tab-pagerank)の隣接行列(`mat_dir_b`)について算出すると、以下のようになる。   
 
 ```{r}
 ## ANTs
@@ -764,8 +764,9 @@ graph_groom <- graph_from_adjacency_matrix(groom_mat_b,
                                            ## 重みなしなら NULL
                                            weighted = TRUE) 
 
+
 modularity(graph_groom,
-           ## コミュニティーの分け方
+           ## クラスターの分け方
            membership = rank,
            ## deltaの値
            resolution = 1,
@@ -775,7 +776,10 @@ modularity(graph_groom,
 ```
 
 ### 応用例(下位集団の検出)  
-ネットワーク内に下位集団(クラスター)が存在するかを調べる方法はたくさんあるが[詳細は @Suzuki2017]、一つの方法として<u>modularityが最大になるような分け方</u>がある。`igraph`パッケージでは、`cluster_optimal()`でそのようなクラスタの分け方を算出してくれる。  
+ネットワーク内に下位集団(クラスター)が存在するかを調べる方法はたくさんあるが[詳細は @Suzuki2017]、ここでは主に2つの方法に焦点を当てて紹介する。  
+
+#### Modularityを用いる方法    
+一つの方法として<u>modularityが最大になるような分け方</u>がある。`igraph`パッケージでは、`cluster_optimal()`でそのようなクラスタの分け方を算出してくれる。  
 
 例として、毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))について算出する。その結果、4つのクラスターに分類され、そのときのmodularityは0.40だった[^foot4]。概ね順位ごとに分かれていることが分かる(同じアルファベットから始まる個体が同一家系である)。高順位、中順位(2つに分かれている)、低順位にほぼ綺麗に分かれた。  
 
@@ -790,21 +794,21 @@ cluster_optimal(graph_groom,
 cluster_groom
 
 ## modularity
-cluster_groom$modularity
+modularity(cluster_groom,directed = FALSE, weights = NULL)
 
-## なぜか一緒にならない
+## なぜか値が一致しない
 modularity(graph_groom,
-           ## コミュニティーの分け方
+           ## クラスターの分け方
            membership = membership(cluster_groom),
            ## deltaの値
            resolution = 1,
            ## 有向グラフなら TRUE
            directed = FALSE,
-           weights = NULL)
+           weights = NULL)                                                                                   
 ```
 
 クラスターごとに色分けして図示すると図\@ref(fig:fig-cluster)のようになる。  
-```{r fig-cluster, fig.cap = "クラスターごとに色分けした毛づくろい頻度のグラフ", echo = FALSE, fig.dim = c(6,5)}
+```{r fig-cluster, fig.cap = "Modularityに基づいてクラスターごとに色分けした毛づくろい頻度のグラフ", echo = FALSE, fig.dim = c(6,5)}
 set.seed(123)
 
 graph_groom %>% 
@@ -827,6 +831,126 @@ graph_groom %>%
   scale_x_continuous(expand = c(0.1,0.1))+
   scale_y_continuous(expand = c(0.1,0.1))
 ```
+
+#### 構造類似性を用いる方法  
+他の方法として、ノード間でネットワーク内での構造的な位置が類似している程度(= **構造類似性**)を用いる方法がある。構造類似性の指標として良く用いられるのが**ユークリッド距離**や**相関係数**である。このような構造類似性の指標を用い、ネットワーク上における位置の似た頂点をひとまとめにし、ネットワークをより少ないいくつかの**ブロック**同士の関係に分けることを**ブロックモデリング**という。  
+  
+<u>**ユークリッド距離**</u>   
+ノード$i$と$j$のユークリッド距離($d_{ij}$)は隣接行列$A = (a_{ij})$について以下のように定式化される。$d_{ij}$が大きいほど類似性は低い。  
+
+$$
+d_{ij} = \sqrt {\sum_{k =1}^{n}(a_{ij}-a_{jk})^2 + (a_{ki}-a_{kj})^2 }
+$$
+<u>**相関係数**</u>  
+ノード$i$とノード$j$の相関係数($r_{ij}$は隣接行列$A = (a_{ij})$について以下のように定式化される。$r_{ij}$が大きいほど類似性は高い。  
+
+$$
+r_{ij} = \frac{(i列とj列の共分散) + (i行とj行の共分散)}{(i列とi行の標準偏差) \times (j列とj行の標準偏差)}
+$$
+<br/>  
+
+`sna`パッケージの`equiv.clust()`関数を用いることで、構造同値性に基づいたクラスター分析ができる。ここでは、毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))のユークリッド距離を用いて分析を行う。`method =`で使用する構造類似性の指標を、`clust.method =`で階層クラスター分析の方法を指定する(方法の詳細は[こちら](https://www.kamishima.net/jp/clustering/)) 。   
+
+```{r}
+## ユークリッド距離
+cluster_groom_euc <- equiv.clust(groom_mat_b,
+                            ## 相関係数なら "correlation"
+                             method = "euclidean",
+                            ## 海藻クラスター分析の方法
+                             cluster.method = "complete")
+```
+
+クラスター分析に基づくデンドログラムは図\@ref(fig:fig-dendro)のようになる。縦軸が互いのユークリッド距離を表す。  
+```{r fig-dendro, fig.cap = "クラスター分析結果に基づくデンドログラム", echo = FALSE, fig.dim = c(5.5,4.5)}
+plot(cluster_groom_euc)
+```
+
+この結果から`blockmodel()`関数でブロックモデルを作る。引数`h =`でクラスター(= ブロック)を作る基準となる高さを、もしくは引数`k =`でブロック数を指定できる。ここでは、ブロックを3つにしたときの結果を調べる。各個体がどのブロックに振り分けられたかは、表\@ref(tab:tab-cluster3)の通りである。      
+
+```{r tab-cluster3}
+blockmodel_groom_3 <- blockmodel(## 隣接行列
+                    groom_mat_b, 
+                    ## クラスター分析結果
+                    cluster_groom_euc, 
+                    ## `k =`でクラスター数の指定。`h = `でクラスターの基準の高さも指定できる。
+                    k = 3) 
+
+## メンバーシップ
+data.frame(femaleID = blockmodel_groom_3$plabels,
+           block = blockmodel_groom_3$block.membership) %>% 
+  arrange(femaleID) -> membership_3
+
+membership_3 %>% 
+  pivot_wider(names_from = femaleID, values_from = block) %>% 
+  kable(align = "c") %>% 
+  kable_styling(font_size = 8, full_width = FALSE)
+```
+<br/>  
+
+
+ブロック数を2から5に変化させたときにmodularityがどうなるかを調べたところ(\@ref(tab:tab-cluster-modularity))、`k = 3`の時に最大になるよう(かなり値は小さいが...)。  
+```{r tab-cluster-modularity}
+k = 2:5
+
+map(k, ~blockmodel(## 隣接行列
+                    groom_mat_b, 
+                    ## クラスター分析結果
+                    cluster_groom_euc, 
+                    ## `k =`でクラスター数の指定。`h = `でクラスターの基準の高さも指定できる。
+                    k = .)$block.membership) -> member_list
+
+
+data.frame(k = rep(k,each = 17),femaleID = blockmodel_groom_3$plabels,
+           member = c(member_list[[1]],member_list[[2]],member_list[[3]],member_list[[4]])) %>% 
+  group_by(k) %>% 
+  nest() %>% 
+  mutate(member2 = map(data,~arrange(., femaleID)$member)) %>% 
+  select(k, member2) %>% 
+  group_by(k) %>% 
+  mutate(modularity = map(member2, ~modularity(graph_groom, membership = as.factor(.)))) %>% 
+  select(k, modularity) %>% 
+  unnest(cols = c(modularity)) %>% 
+  kable(align = "c") %>% 
+  kable_styling(font_size = 13, full_width = FALSE)
+```
+<br/>  
+
+`clValid`パッケージの`clValid()`関数では、様々な指標を用いてクラスター分けが妥当か算出してくれるよう。詳しくは、 @Brock2008 もしくは[こちら](http://www.sthda.com/english/wiki/wiki.php?id_contents=7932)を参照。よく使用される指標であるDunn indexと silhouette widthの結果を見ると、3つのクラスターに分けるのが妥当だと示唆される。     
+```{r}
+clValid(obj = groom_mat_b,
+        nClust = 2:5,
+        clMethods = "hierarchical",
+        validation = "internal",
+        Metric = "euclidean") -> result
+
+summary(result)
+```
+
+３つのクラスターごとに色分けして図示すると図\@ref(fig:fig-cluster2)のようになる。  
+```{r fig-cluster2, fig.cap = "構造類似性に基づいてクラスターごとに色分けした毛づくろい頻度のグラフ", echo = FALSE, fig.dim = c(6,5)}
+set.seed(132)
+
+graph_groom %>% 
+  as_tbl_graph(directed = FALSE) %>% 
+  mutate(member = as.factor(membership_3$block)) %>% 
+  ggraph(layout = "nicely")+
+  geom_mark_hull(aes(x=x,y=y,fill = member),
+                 concavity = 10)+
+  geom_node_point(aes(color = member),shape = 16, size = 12)+
+  geom_edge_link(start_cap = circle(0.5,"cm"),
+                 end_cap = circle(0.5,"cm"),
+                 color = "grey55",
+                 aes(width = weight))+
+  scale_edge_width(range = c(0,3))+
+  geom_node_text(aes(label = name), color = "white")+
+  theme_graph()+
+  scale_color_nejm()+
+  scale_fill_nejm()+
+  theme(aspect.ratio = 0.9)+
+  scale_x_continuous(expand = c(0.1,0.1))+
+  scale_y_continuous(expand = c(0.1,0.1))
+```
+
 
 ### その他  
 個体間の敵対的交渉の隣接行列を用いた順位序列についての各指標の算出については、筆者の[別稿](https://tsubasayamaguchi-jinrui.github.io/Dominance_Analysis/)を参照。ここで紹介しきれなかった他の指標やクラスター分析の手法については、@Whitehead2008 , @Croft2019 , @Suzuki2017 などを参照。  

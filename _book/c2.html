@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2022-11-04" />
+<meta name="date" content="2022-11-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -224,8 +224,11 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="c2" class="section level1 hasAnchor" number="2">
 <h1><span class="header-section-number">2</span> データの読み込みとマトリックスの作成<a href="c2.html#c2" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>普通、個体間のassociationの生データは隣接行列になっていないことが多い。例えば個体追跡のデータでは、以下のように1分ごとに毛づくろい相手のIDを記録したものをまずExcelファイルなどに記入する、というようなことが多いだろう。ここでは、このような生データからRで隣接行列を作成する方法を学ぶ。</p>
-<table>
+<p>R上でSNAを行うためには、個体間の関係データを隣接行列にしなければならないことが多い。しかし多くの場合、個体間のassociationの生データは隣接行列の形では表されていない。例えば個体追跡のデータでは、以下(表<a href="#tab:tab-focal-example"><strong>??</strong></a>)のように1分ごとに毛づくろい相手のIDを記録したものをまずExcelファイルなどに記入する、というようなことが多いだろう。ここでは、R上でこのような生データから隣接行列を作成する方法を学ぶ。</p>
+<table class="table" style="font-size: 11px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:tab-f0cal-example">表2.1: </span>生データの例
+</caption>
 <thead>
 <tr>
 <th style="text-align:center;">
@@ -369,10 +372,10 @@ G_{AB} = \frac{x_{AB}}{y_{A} + y_{B}}
 <span id="cb15-8"><a href="c2.html#cb15-8" aria-hidden="true" tabindex="-1"></a>                       <span class="do">## 交渉の方向を考慮するか。FALSEでする。</span></span>
 <span id="cb15-9"><a href="c2.html#cb15-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">sym =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <p><br/></p>
-隣接行列は以下のようになる(表<a href="c2.html#tab:tab-groom">2.1</a>)。<br />
+隣接行列は以下のようになる(表<a href="c2.html#tab:tab-groom">2.2</a>)。<br />
 <table class="table" style="font-size: 5px; width: auto !important; margin-left: auto; margin-right: auto;">
 <caption style="font-size: initial !important;">
-<span id="tab:tab-groom">表2.1: </span>方向性を考慮した毛づくろい頻度の隣接行列
+<span id="tab:tab-groom">表2.2: </span>方向性を考慮した毛づくろい頻度の隣接行列
 </caption>
 <thead>
 <tr>
@@ -1397,10 +1400,10 @@ Tot
 <span id="cb16-7"><a href="c2.html#cb16-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">tobs =</span> duration<span class="sc">$</span>duration,</span>
 <span id="cb16-8"><a href="c2.html#cb16-8" aria-hidden="true" tabindex="-1"></a>                       <span class="at">sym =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p><br/></p>
-その場合の隣接行列は以下の通り(表<a href="c2.html#tab:tab-groom-b">2.2</a>)。<br />
+その場合の隣接行列は以下の通り(表<a href="c2.html#tab:tab-groom-b">2.3</a>)。<br />
 <table class="table" style="font-size: 5px; width: auto !important; margin-left: auto; margin-right: auto;">
 <caption style="font-size: initial !important;">
-<span id="tab:tab-groom-b">表2.2: </span>方向性を考慮しない毛づくろい頻度の隣接行列
+<span id="tab:tab-groom-b">表2.3: </span>方向性を考慮しない毛づくろい頻度の隣接行列
 </caption>
 <thead>
 <tr>
@@ -2415,8 +2418,7 @@ Tot
 </tbody>
 </table>
 <p><br/></p>
-<p>グラフを描画すると図<a href="c2.html#fig:fig-groom">2.1</a>のようになる。ノードの大きさは順位を、辺の太さは毛づくろい頻度を表す。<br />
-血縁個体同士(同じアルファベットで始まる個体)は交渉頻度が高く、近くに配置されていることが分かる。順位の低い個体がネットワークの周辺にいることが多いことも分かるだろう。</p>
+<p>グラフを描画すると図<a href="c2.html#fig:fig-groom">2.1</a>のようになる。ノードの大きさは順位を、辺の太さは毛づくろい頻度を表す。血縁個体同士(同じアルファベットで始まる個体)は交渉頻度が高く、近くに配置されていることが分かる。順位の低い個体がネットワークの周辺にいることが多いことも分かるだろう。</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="c2.html#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 順位</span></span>
 <span id="cb17-2"><a href="c2.html#cb17-2" aria-hidden="true" tabindex="-1"></a>rank <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">13</span>,<span class="dv">14</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">15</span>,<span class="dv">17</span>,<span class="dv">16</span>,<span class="dv">7</span>,<span class="dv">11</span>,<span class="dv">8</span>,<span class="dv">12</span>)</span>
 <span id="cb17-3"><a href="c2.html#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2488,10 +2490,10 @@ Tot
 <span id="cb19-4"><a href="c2.html#cb19-4" aria-hidden="true" tabindex="-1"></a>                            <span class="do">## &quot;HWI&quot;の場合は、&quot;HWI&quot;</span></span>
 <span id="cb19-5"><a href="c2.html#cb19-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">association_index =</span> <span class="st">&quot;SRI&quot;</span>)</span></code></pre></div>
 <pre><code>## Generating  15  x  15  matrix</code></pre>
-得られた隣接行列は以下の通り(表<a href="c2.html#tab:tab-SRI">2.3</a>)。<br />
+得られた隣接行列は以下の通り(表<a href="c2.html#tab:tab-SRI">2.4</a>)。<br />
 <table class="table" style="font-size: 6px; width: auto !important; margin-left: auto; margin-right: auto;">
 <caption style="font-size: initial !important;">
-<span id="tab:tab-SRI">表2.3: </span>SRIの隣接行列
+<span id="tab:tab-SRI">表2.4: </span>SRIの隣接行列
 </caption>
 <thead>
 <tr>
@@ -3314,7 +3316,7 @@ Kun
 <span id="cb21-13"><a href="c2.html#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 四角のノード。大きさは年齢によって変化するとする。  </span></span>
 <span id="cb21-14"><a href="c2.html#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> age, <span class="at">color =</span> rank2),<span class="at">shape =</span> <span class="dv">16</span>)<span class="sc">+</span></span>
 <span id="cb21-15"><a href="c2.html#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="do">## ノードのラベルは個体名  </span></span>
-<span id="cb21-16"><a href="c2.html#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="fl">0.5</span>,<span class="dv">5</span>))<span class="sc">+</span></span>
+<span id="cb21-16"><a href="c2.html#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>))<span class="sc">+</span></span>
 <span id="cb21-17"><a href="c2.html#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), </span>
 <span id="cb21-18"><a href="c2.html#cb21-18" aria-hidden="true" tabindex="-1"></a>                 <span class="do">## ノードと重ならないようにする </span></span>
 <span id="cb21-19"><a href="c2.html#cb21-19" aria-hidden="true" tabindex="-1"></a>                 <span class="at">repel=</span><span class="cn">TRUE</span>, <span class="at">size =</span><span class="dv">6</span>)<span class="sc">+</span></span>

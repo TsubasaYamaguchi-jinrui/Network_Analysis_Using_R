@@ -18,6 +18,7 @@ library(asnipe)
 library(sna)
 library(ANTs)
 library(igraph)
+library(clValid)
 ## データハンドリング
 library(tidyverse)
 library(easystats)

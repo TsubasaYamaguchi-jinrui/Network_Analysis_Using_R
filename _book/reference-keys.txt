@@ -1,6 +1,7 @@
 fig:fig-graph
 tab:unnamed-chunk-3
 fig:fig-ggraph
+tab:tab-f0cal-example
 tab:tab-groom
 tab:tab-groom-b
 fig:fig-groom
@@ -21,6 +22,8 @@ fig:fig-perm2
 fig:fig-trans
 fig:fig-trans2
 fig:fig-cluster
+fig:fig-dendro
+fig:fig-cluster2
 c1
 社会ネットワーク分析snaとは
 社会ネットワークの基礎
@@ -46,5 +49,7 @@ pagerank
 推移性transitivity
 modularity
 応用例下位集団の検出
+modularityを用いる方法
+構造類似性を用いる方法
 その他
 おまけ.-csiの算出

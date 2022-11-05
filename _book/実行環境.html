@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2022-11-04" />
+<meta name="date" content="2022-11-05" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -224,7 +224,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="実行環境" class="section level1 unnumbered hasAnchor">
 <h1>実行環境<a href="実行環境.html#実行環境" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="実行環境.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="実行環境.html#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
 <pre><code>## R version 4.2.0 (2022-04-22 ucrt)
 ## Platform: x86_64-w64-mingw32/x64 (64-bit)
 ## Running under: Windows 10 x64 (build 19045)
@@ -240,50 +240,64 @@ div.csl-indent {
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] ggsci_2.9            concaveman_1.1.0     ggforce_0.3.3       
-##  [4] ggdag_0.2.4          dagitty_0.3-1        kableExtra_1.3.4    
-##  [7] knitr_1.39           DT_0.23              fontregisterer_0.3  
-## [10] systemfonts_1.0.4    extrafont_0.18       patchwork_1.1.1     
-## [13] ggraph_2.0.5         igraph_1.3.1         tidygraph_1.2.1     
-## [16] report_0.5.1         see_0.7.2            correlation_0.8.2   
-## [19] modelbased_0.8.5     effectsize_0.7.0.5   parameters_0.18.2   
-## [22] performance_0.9.2    bayestestR_0.12.1    datawizard_0.5.1    
-## [25] insight_0.18.2       easystats_0.5.2      aninet_0.0.0.9000   
-## [28] forcats_0.5.1        stringr_1.4.0        dplyr_1.0.9         
-## [31] purrr_0.3.4          readr_2.1.2          tidyr_1.2.0         
-## [34] tibble_3.1.7         ggplot2_3.3.6        tidyverse_1.3.1     
-## [37] sna_2.6              network_1.17.1       statnet.common_4.6.0
-## [40] ANTs_0.0.1           asnipe_1.1.16       
+##  [1] clValid_0.7          cluster_2.1.3        ggsci_2.9           
+##  [4] concaveman_1.1.0     ggforce_0.3.3        ggdag_0.2.4         
+##  [7] dagitty_0.3-1        kableExtra_1.3.4     knitr_1.39          
+## [10] DT_0.23              fontregisterer_0.3   systemfonts_1.0.4   
+## [13] extrafont_0.18       patchwork_1.1.1      ggraph_2.0.5        
+## [16] igraph_1.3.1         tidygraph_1.2.1      report_0.5.1        
+## [19] see_0.7.2            correlation_0.8.2    modelbased_0.8.5    
+## [22] effectsize_0.7.0.5   parameters_0.18.2    performance_0.9.2   
+## [25] bayestestR_0.12.1    datawizard_0.5.1     insight_0.18.2      
+## [28] easystats_0.5.2      aninet_0.0.0.9000    forcats_0.5.1       
+## [31] stringr_1.4.0        dplyr_1.0.9          purrr_0.3.4         
+## [34] readr_2.1.2          tidyr_1.2.0          tibble_3.1.7        
+## [37] ggplot2_3.3.6        tidyverse_1.3.1      sna_2.6             
+## [40] network_1.17.1       statnet.common_4.6.0 ANTs_0.0.1          
+## [43] asnipe_1.1.16       
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] readxl_1.4.0       backports_1.4.1    splines_4.2.0      TH.data_1.1-1     
-##  [5] digest_0.6.29      htmltools_0.5.2    viridis_0.6.2      fansi_1.0.3       
-##  [9] magrittr_2.0.3     tzdb_0.3.0         graphlayouts_0.8.0 modelr_0.1.8      
-## [13] Kendall_2.2.1      sandwich_3.0-1     extrafontdb_1.0    svglite_2.1.0     
-## [17] colorspace_2.0-3   rvest_1.0.2        ggrepel_0.9.1      haven_2.5.0       
-## [21] xfun_0.31          tcltk_4.2.0        crayon_1.5.1       jsonlite_1.8.0    
-## [25] lme4_1.1-29        survival_3.3-1     zoo_1.8-10         glue_1.6.2        
-## [29] polyclip_1.10-0    gtable_0.3.0       emmeans_1.7.4-1    webshot_0.5.3     
-## [33] V8_4.2.0           Rttf2pt1_1.3.8     scales_1.2.0       mvtnorm_1.1-3     
-## [37] DBI_1.1.2          Rcpp_1.0.8.3       viridisLite_0.4.0  xtable_1.8-4      
-## [41] htmlwidgets_1.5.4  httr_1.4.3         ellipsis_0.3.2     pkgconfig_2.0.3   
-## [45] farver_2.1.0       sass_0.4.1         dbplyr_2.1.1       utf8_1.2.2        
-## [49] tidyselect_1.1.2   labeling_0.4.2     rlang_1.0.2        munsell_0.5.0     
-## [53] cellranger_1.1.0   tools_4.2.0        visNetwork_2.1.0   cli_3.3.0         
-## [57] generics_0.1.2     broom_0.8.0        evaluate_0.15      fastmap_1.1.0     
-## [61] yaml_2.3.5         fs_1.5.2           nlme_3.1-157       xml2_1.3.3        
-## [65] compiler_4.2.0     rstudioapi_0.13    curl_4.3.2         reprex_2.0.1      
-## [69] tweenr_1.0.2       bslib_0.3.1        stringi_1.7.6      highr_0.9         
-## [73] lattice_0.20-45    Matrix_1.4-1       nloptr_2.0.1       vctrs_0.4.1       
-## [77] pillar_1.7.0       lifecycle_1.0.1    jquerylib_0.1.4    estimability_1.3  
-## [81] R6_2.5.1           bookdown_0.29      gridExtra_2.3      codetools_0.2-18  
-## [85] boot_1.3-28        MASS_7.3-56        gtools_3.9.2       assertthat_0.2.1  
-## [89] withr_2.5.0        multcomp_1.4-19    hms_1.1.1          grid_4.2.0        
-## [93] coda_0.19-4        minqa_1.2.4        rmarkdown_2.14     lubridate_1.8.0</code></pre>
+##   [1] readxl_1.4.0       backports_1.4.1    splines_4.2.0     
+##   [4] crosstalk_1.2.0    TH.data_1.1-1      digest_0.6.29     
+##   [7] htmltools_0.5.2    viridis_0.6.2      fansi_1.0.3       
+##  [10] magrittr_2.0.3     tzdb_0.3.0         graphlayouts_0.8.0
+##  [13] modelr_0.1.8       Kendall_2.2.1      vroom_1.5.7       
+##  [16] sandwich_3.0-1     extrafontdb_1.0    svglite_2.1.0     
+##  [19] colorspace_2.0-3   rvest_1.0.2        ggrepel_0.9.1     
+##  [22] haven_2.5.0        xfun_0.31          tcltk_4.2.0       
+##  [25] crayon_1.5.1       jsonlite_1.8.0     lme4_1.1-29       
+##  [28] survival_3.3-1     zoo_1.8-10         glue_1.6.2        
+##  [31] polyclip_1.10-0    gtable_0.3.0       emmeans_1.7.4-1   
+##  [34] webshot_0.5.3      V8_4.2.0           Rttf2pt1_1.3.8    
+##  [37] scales_1.2.0       mvtnorm_1.1-3      DBI_1.1.2         
+##  [40] Rcpp_1.0.8.3       viridisLite_0.4.0  xtable_1.8-4      
+##  [43] bit_4.0.4          htmlwidgets_1.5.4  httr_1.4.3        
+##  [46] ellipsis_0.3.2     pkgconfig_2.0.3    farver_2.1.0      
+##  [49] sass_0.4.1         dbplyr_2.1.1       utf8_1.2.2        
+##  [52] tidyselect_1.1.2   rlang_1.0.2        munsell_0.5.0     
+##  [55] cellranger_1.1.0   tools_4.2.0        visNetwork_2.1.0  
+##  [58] cli_3.3.0          generics_0.1.2     broom_0.8.0       
+##  [61] evaluate_0.15      fastmap_1.1.0      yaml_2.3.5        
+##  [64] bit64_4.0.5        fs_1.5.2           nlme_3.1-157      
+##  [67] xml2_1.3.3         compiler_4.2.0     rstudioapi_0.13   
+##  [70] curl_4.3.2         reprex_2.0.1       tweenr_1.0.2      
+##  [73] bslib_0.3.1        stringi_1.7.6      highr_0.9         
+##  [76] lattice_0.20-45    Matrix_1.4-1       nloptr_2.0.1      
+##  [79] vctrs_0.4.1        pillar_1.7.0       lifecycle_1.0.1   
+##  [82] jquerylib_0.1.4    estimability_1.3   R6_2.5.1          
+##  [85] bookdown_0.29      gridExtra_2.3      codetools_0.2-18  
+##  [88] boot_1.3-28        MASS_7.3-56        gtools_3.9.2      
+##  [91] assertthat_0.2.1   withr_2.5.0        multcomp_1.4-19   
+##  [94] parallel_4.2.0     hms_1.1.1          grid_4.2.0        
+##  [97] class_7.3-20       coda_0.19-4        minqa_1.2.4       
+## [100] rmarkdown_2.14     lubridate_1.8.0</code></pre>
 
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div class="csl-entry">
 Balasubramaniam, K. N., Beisner, B. A., Berman, C. M., De Marco, A., Duboscq, J., Koirala, S., Majolo, B., Macintosh, A. J. J. J., McFarland, R., Molesti, S., Ogawa, H., Petit, O., Schino, G., Sosa, S., Sueur, C., Thierry, B., Waal, F. B. M. M. de, &amp; McCowan, B. (2018). The influence of phylogeny, social style, and sociodemographic factors on macaque social network structure. <em>Am. J. Primatol.</em>, <em>80</em>(1), e22727.
+</div>
+<div class="csl-entry">
+Brock, G., Pihur, V., Datta, S., &amp; Datta, S. (2008). clValid: An <span>R</span> package for cluster validation. <em>J. Stat. Softw.</em>, <em>25</em>, 1–22.
 </div>
 <div class="csl-entry">
 Butts, C. T. (2008). Social network analysis with sna. <em>J. Stat. Softw.</em>, <em>24</em>, 1–51.
