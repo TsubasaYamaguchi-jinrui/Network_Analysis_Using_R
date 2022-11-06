@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2022-11-05" />
+<meta name="date" content="2022-11-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -3304,25 +3304,27 @@ Kun
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="c2.html#cb21-1" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">18</span>,<span class="dv">17</span>,<span class="dv">15</span>,<span class="dv">15</span>,<span class="dv">13</span>,<span class="dv">13</span>,<span class="dv">13</span>,<span class="dv">13</span>,<span class="dv">13</span>,<span class="dv">13</span>,<span class="dv">12</span>,<span class="dv">11</span>,<span class="dv">11</span>,<span class="dv">10</span>,<span class="dv">9</span>)</span>
 <span id="cb21-2"><a href="c2.html#cb21-2" aria-hidden="true" tabindex="-1"></a>rank2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">16</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">9</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">12</span>,<span class="dv">13</span>,<span class="dv">14</span>,<span class="dv">17</span>,<span class="dv">10</span>,<span class="dv">6</span>,<span class="dv">15</span>,<span class="dv">2</span>,<span class="dv">5</span>)</span>
 <span id="cb21-3"><a href="c2.html#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="c2.html#cb21-4" aria-hidden="true" tabindex="-1"></a>presence_mat <span class="sc">%&gt;%</span> </span>
-<span id="cb21-5"><a href="c2.html#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tbl_graph</span>(<span class="at">directed =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb21-6"><a href="c2.html#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggraph</span>(<span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>)<span class="sc">+</span></span>
-<span id="cb21-7"><a href="c2.html#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 曲線のエッジ、weightを太さに</span></span>
-<span id="cb21-8"><a href="c2.html#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="fu">aes</span>(<span class="at">width =</span> weight),</span>
-<span id="cb21-9"><a href="c2.html#cb21-9" aria-hidden="true" tabindex="-1"></a>                <span class="do">## 透明度(alpha)と色(color)指定</span></span>
-<span id="cb21-10"><a href="c2.html#cb21-10" aria-hidden="true" tabindex="-1"></a>                <span class="at">alpha =</span><span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">&quot;grey67&quot;</span>)<span class="sc">+</span></span>
-<span id="cb21-11"><a href="c2.html#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># エッジの太さの範囲を決める  </span></span>
-<span id="cb21-12"><a href="c2.html#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_edge_width</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">2</span>))<span class="sc">+</span></span>
-<span id="cb21-13"><a href="c2.html#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 四角のノード。大きさは年齢によって変化するとする。  </span></span>
-<span id="cb21-14"><a href="c2.html#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> age, <span class="at">color =</span> rank2),<span class="at">shape =</span> <span class="dv">16</span>)<span class="sc">+</span></span>
-<span id="cb21-15"><a href="c2.html#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="do">## ノードのラベルは個体名  </span></span>
-<span id="cb21-16"><a href="c2.html#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>))<span class="sc">+</span></span>
-<span id="cb21-17"><a href="c2.html#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), </span>
-<span id="cb21-18"><a href="c2.html#cb21-18" aria-hidden="true" tabindex="-1"></a>                 <span class="do">## ノードと重ならないようにする </span></span>
-<span id="cb21-19"><a href="c2.html#cb21-19" aria-hidden="true" tabindex="-1"></a>                 <span class="at">repel=</span><span class="cn">TRUE</span>, <span class="at">size =</span><span class="dv">6</span>)<span class="sc">+</span></span>
-<span id="cb21-20"><a href="c2.html#cb21-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_graph</span>()<span class="sc">+</span></span>
-<span id="cb21-21"><a href="c2.html#cb21-21" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 縦横比</span></span>
-<span id="cb21-22"><a href="c2.html#cb21-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="fl">0.7</span>)</span></code></pre></div>
+<span id="cb21-4"><a href="c2.html#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">129</span>)</span>
+<span id="cb21-5"><a href="c2.html#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="c2.html#cb21-6" aria-hidden="true" tabindex="-1"></a>presence_mat <span class="sc">%&gt;%</span> </span>
+<span id="cb21-7"><a href="c2.html#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tbl_graph</span>(<span class="at">directed =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-8"><a href="c2.html#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggraph</span>(<span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>)<span class="sc">+</span></span>
+<span id="cb21-9"><a href="c2.html#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 曲線のエッジ、weightを太さに</span></span>
+<span id="cb21-10"><a href="c2.html#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="fu">aes</span>(<span class="at">width =</span> weight),</span>
+<span id="cb21-11"><a href="c2.html#cb21-11" aria-hidden="true" tabindex="-1"></a>                <span class="do">## 透明度(alpha)と色(color)指定</span></span>
+<span id="cb21-12"><a href="c2.html#cb21-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">alpha =</span><span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">&quot;grey67&quot;</span>)<span class="sc">+</span></span>
+<span id="cb21-13"><a href="c2.html#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># エッジの太さの範囲を決める  </span></span>
+<span id="cb21-14"><a href="c2.html#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_edge_width</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.5</span>))<span class="sc">+</span></span>
+<span id="cb21-15"><a href="c2.html#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 四角のノード。大きさは年齢によって変化するとする。  </span></span>
+<span id="cb21-16"><a href="c2.html#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> age, <span class="at">color =</span> rank2),<span class="at">shape =</span> <span class="dv">16</span>)<span class="sc">+</span></span>
+<span id="cb21-17"><a href="c2.html#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="do">## ノードのラベルは個体名  </span></span>
+<span id="cb21-18"><a href="c2.html#cb21-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>))<span class="sc">+</span></span>
+<span id="cb21-19"><a href="c2.html#cb21-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), </span>
+<span id="cb21-20"><a href="c2.html#cb21-20" aria-hidden="true" tabindex="-1"></a>                 <span class="do">## ノードと重ならないようにする </span></span>
+<span id="cb21-21"><a href="c2.html#cb21-21" aria-hidden="true" tabindex="-1"></a>                 <span class="at">repel=</span><span class="cn">TRUE</span>, <span class="at">size =</span><span class="dv">6</span>)<span class="sc">+</span></span>
+<span id="cb21-22"><a href="c2.html#cb21-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_graph</span>()<span class="sc">+</span></span>
+<span id="cb21-23"><a href="c2.html#cb21-23" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 縦横比</span></span>
+<span id="cb21-24"><a href="c2.html#cb21-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="fl">0.7</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-gbi"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/fig-gbi-1.png" alt="SRIネットワークのグラフ" width="576" />
 <p class="caption">

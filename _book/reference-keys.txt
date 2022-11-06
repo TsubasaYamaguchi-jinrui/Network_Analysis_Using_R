@@ -23,6 +23,8 @@ fig:fig-trans
 fig:fig-trans2
 fig:fig-cluster
 fig:fig-dendro
+tab:tab-cluster3
+tab:tab-cluster-modularity
 fig:fig-cluster2
 c1
 社会ネットワーク分析snaとは

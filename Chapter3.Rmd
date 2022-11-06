@@ -359,7 +359,7 @@ p_strength + p_eigen
 
 
 ### PageRank  
-固有ベクトル中心性は、分離したグラフや有向グラフの中心性分析には使えない。**PageRankは**固有ベクトルに基づきながら、これらのグラフにも摘要できる中心性指標である。もともとはウェブページの評価法として、Googleの創業者であるラリー・ペイジやセルゲイ・ブリンらによって開発され[@Page1999]、他ページからのリンクが多いページほどランキングが高く、ランキングの高いページからのリンクや、他のページへのリンクが少ないページからのリンクを高く評価するというアルゴリズムに従う。詳細な算出方法は複雑なので、ここでは説明しない。詳しくは @Suzuki2017 を参照。  
+固有ベクトル中心性は、分離したグラフや有向グラフの中心性分析には使えない。**PageRankは**固有ベクトルに基づきながら、これらのグラフにも適用できる中心性指標である。もともとはウェブページの評価法として、Google創業者であるラリー・ペイジとセルゲイ・ブリンらによって開発され[@Page1999]、他ページからのリンクが多いページほどランキングが高く、ランキングの高いページからのリンクや、他のページへのリンクが少ないページからのリンクを高く評価するというアルゴリズムに従う。詳細な算出方法は複雑なので、ここでは説明しない。詳しくは @Suzuki2017 を参照。  
 
 PageRankは`igraph`パッケージを用いて算出できる。表\@ref(tab:tab-pagerank)の隣接行列(`mat_dir_b`)のPageRankを算出する。  
 
@@ -613,7 +613,7 @@ gden(list_mat)
 
 ```{r}
 met.assortativity(groom_mat_b,
-                  ## 各ノードの固有ベクトル中心性  
+                  ## 各ノードの媒介中心性  
                   attr = met.betweenness(groom_mat_b, binary = FALSE, sym = FALSE),
                   ## 重みなしの場合 FALSE
                   weighted = TRUE)$assortativity.cat -> assortativity_bet
@@ -749,10 +749,10 @@ $Q = \frac{1}{2m} \sum_{i,j} (A_{ij} - \gamma \frac{k_i k_j}{2m}) \delta(c_i,c_j
 
 なお、$m$は辺の数、$A_{ij}$は隣接行列の$i$行目$j$列目の成分、$k_i$と$k_j$はノード$i$と$j$の重み付き中心性を表す($k_i$と$k_j$に固有ベクトル中心性を使っている論文もある[@Bala2018])。また、$\delta(c_i,c_j)$はノード$i$と$j$が同じクラスターに属しているときは1、そうでないときは0になる。なお、$\gamma \frac{k_i k_j}{2m}$の部分は、ランダムに交渉が行割れていると仮定したときの$A_{ij}$の値である。$\delta$はデフォルトでは1だが変化させることができ、大きい値をとるほどクラスター数が多くなる。  
 
-ここでは例として、毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom))を用いて、各順位カテゴリ内(低順位・中順位・高順位)の交渉がカテゴリ間の交渉よりどの程度多いかを、$Q$を算出することで求める。 
+ここでは例として、毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))を用いて、各順位カテゴリ内(低順位・中順位・高順位)の交渉がカテゴリ間の交渉よりどの程度多いかを、$Q$を算出することで求める。 
 
 
-Rでは、`igraph`パッケージの`modularity()`関数で求めることができる。まず`graph_from_adjacency_matrix()`で`igraph`クラスに変換した後に算出する。modularityは小さく(0.06)、毛づくろいネットワークは順位カテゴリごとにはあまりクラスター化されていないことが分かった(計算結果少しおかしい？)。  
+Rでは、`igraph`パッケージの`modularity()`関数で求めることができる。まず`graph_from_adjacency_matrix()`で`igraph`クラスに変換した後に算出する。また、`weight =`で明示的に各エッジのweightを与えてあげる必要があるよう。modularityは0.315...とそこそこ大きい値であるので、順位カテゴリ内に毛づくろいが偏っていることを示している。  
 ```{r}
 ## 順位カテゴリごとに番号を振る
 rank <- c(2,2,1,1,3,3,3,3,3,3,1,1,1,2,2,2,2)
@@ -772,23 +772,22 @@ modularity(graph_groom,
            resolution = 1,
            ## 有向グラフなら TRUE
            directed = FALSE,
-           weights = NULL)
+           ## グラフのweightを与える
+           weights = E(graph_groom, directed = FALSE)$weight)
 ```
 
 ### 応用例(下位集団の検出)  
 ネットワーク内に下位集団(クラスター)が存在するかを調べる方法はたくさんあるが[詳細は @Suzuki2017]、ここでは主に2つの方法に焦点を当てて紹介する。  
 
 #### Modularityを用いる方法    
-一つの方法として<u>modularityが最大になるような分け方</u>がある。`igraph`パッケージでは、`cluster_optimal()`でそのようなクラスタの分け方を算出してくれる。  
+一つの方法として<u>modularityが最大になるような分け方</u>がある。`igraph`パッケージでは、`cluster_optimal()`でそのようなクラスタの分け方を算出してくれる。なお、ノード数が多い場合には時間がかかるため、様々な近似計算法が考案されている(`cluster_fast_greedy()`、`cluster_walktrap()`など)。  
 
-例として、毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))について算出する。その結果、4つのクラスターに分類され、そのときのmodularityは0.40だった[^foot4]。概ね順位ごとに分かれていることが分かる(同じアルファベットから始まる個体が同一家系である)。高順位、中順位(2つに分かれている)、低順位にほぼ綺麗に分かれた。  
-
-[^foot4]: `modularity()`で同じメンバーシップにしても再現できないので要検討。算出方法が違う？  
+例として、毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))について算出する。その結果、4つのクラスターに分類され、そのときのmodularityは0.40だった。概ね順位ごとに分かれていることが分かる(同じアルファベットから始まる個体が同一家系である)。高順位、中順位(2つに分かれている)、低順位にほぼ綺麗に分かれた。  
 
 ```{r}
 ## 算出
 cluster_optimal(graph_groom,
-                weights = NULL) -> cluster_groom
+                weights = E(graph_groom)$weight) -> cluster_groom
 
 ## 結果
 cluster_groom
@@ -796,7 +795,7 @@ cluster_groom
 ## modularity
 modularity(cluster_groom,directed = FALSE, weights = NULL)
 
-## なぜか値が一致しない
+## 確認   
 modularity(graph_groom,
            ## クラスターの分け方
            membership = membership(cluster_groom),
@@ -804,17 +803,19 @@ modularity(graph_groom,
            resolution = 1,
            ## 有向グラフなら TRUE
            directed = FALSE,
-           weights = NULL)                                                                                   
+           weights = E(graph_groom)$weight)                                                                       
 ```
 
 クラスターごとに色分けして図示すると図\@ref(fig:fig-cluster)のようになる。  
-```{r fig-cluster, fig.cap = "Modularityに基づいてクラスターごとに色分けした毛づくろい頻度のグラフ", echo = FALSE, fig.dim = c(6,5)}
-set.seed(123)
+```{r fig-cluster, fig.cap = "Modularityに基づいてクラスターごとに色分けした毛づくろい頻度のグラフ", fig.dim = c(6,5)}
+set.seed(125)
 
 graph_groom %>% 
   as_tbl_graph(directed = FALSE) %>% 
+  ## 各個体がどのクラスターに属するかを指定
   mutate(member = as.factor(cluster_groom$membership)) %>% 
   ggraph(layout = "nicely")+
+  ## クラスターごとに囲う
   geom_mark_hull(aes(x=x,y=y,fill = member),
                  concavity = 10)+
   geom_node_point(aes(color = member),shape = 16, size = 12)+
@@ -828,7 +829,7 @@ graph_groom %>%
   scale_color_nejm()+
   scale_fill_nejm()+
   theme(aspect.ratio = 0.9)+
-  scale_x_continuous(expand = c(0.1,0.1))+
+  scale_x_continuous(expand = c(0.12,0.12))+
   scale_y_continuous(expand = c(0.1,0.1))
 ```
 
@@ -856,7 +857,7 @@ $$
 cluster_groom_euc <- equiv.clust(groom_mat_b,
                             ## 相関係数なら "correlation"
                              method = "euclidean",
-                            ## 海藻クラスター分析の方法
+                            ## 階層クラスター分析の方法
                              cluster.method = "complete")
 ```
 
@@ -865,7 +866,7 @@ cluster_groom_euc <- equiv.clust(groom_mat_b,
 plot(cluster_groom_euc)
 ```
 
-この結果から`blockmodel()`関数でブロックモデルを作る。引数`h =`でクラスター(= ブロック)を作る基準となる高さを、もしくは引数`k =`でブロック数を指定できる。ここでは、ブロックを3つにしたときの結果を調べる。各個体がどのブロックに振り分けられたかは、表\@ref(tab:tab-cluster3)の通りである。      
+この結果から`blockmodel()`関数でブロックモデルを作る。引数`h =`でクラスター(= ブロック)を作る基準となる高さを、もしくは引数`k =`でブロック数を指定できる。ここでは、ブロック数を3つに指定したときの結果を調べる。各個体がどのブロックに振り分けられたかは、表\@ref(tab:tab-cluster3)の通りである。      
 
 ```{r tab-cluster3}
 blockmodel_groom_3 <- blockmodel(## 隣接行列
@@ -878,20 +879,21 @@ blockmodel_groom_3 <- blockmodel(## 隣接行列
 ## メンバーシップ
 data.frame(femaleID = blockmodel_groom_3$plabels,
            block = blockmodel_groom_3$block.membership) %>% 
-  arrange(femaleID) -> membership_3
+  arrange(femaleID) -> membership_3 
 
 membership_3 %>% 
   pivot_wider(names_from = femaleID, values_from = block) %>% 
-  kable(align = "c") %>% 
+  kable(align = "c", caption = "ブロック数が3のときに各個体が属するブロック") %>% 
   kable_styling(font_size = 8, full_width = FALSE)
 ```
 <br/>  
 
 
-ブロック数を2から5に変化させたときにmodularityがどうなるかを調べたところ(\@ref(tab:tab-cluster-modularity))、`k = 3`の時に最大になるよう(かなり値は小さいが...)。  
+ブロック数を2から5に変化させたときにmodularityがどうなるかを調べたところ、`k = 3`のときに最大になるよう(表\@ref(tab:tab-cluster-modularity))。  
 ```{r tab-cluster-modularity}
 k = 2:5
 
+## kを2~5にしたときに各個体が属するブロックを計算
 map(k, ~blockmodel(## 隣接行列
                     groom_mat_b, 
                     ## クラスター分析結果
@@ -900,6 +902,7 @@ map(k, ~blockmodel(## 隣接行列
                     k = .)$block.membership) -> member_list
 
 
+## modularityを算出  
 data.frame(k = rep(k,each = 17),femaleID = blockmodel_groom_3$plabels,
            member = c(member_list[[1]],member_list[[2]],member_list[[3]],member_list[[4]])) %>% 
   group_by(k) %>% 
@@ -907,10 +910,11 @@ data.frame(k = rep(k,each = 17),femaleID = blockmodel_groom_3$plabels,
   mutate(member2 = map(data,~arrange(., femaleID)$member)) %>% 
   select(k, member2) %>% 
   group_by(k) %>% 
-  mutate(modularity = map(member2, ~modularity(graph_groom, membership = as.factor(.)))) %>% 
+  mutate(modularity = map(member2, ~modularity(graph_groom, membership = as.factor(.),
+                                               weights = E(graph_groom, directed = FALSE)$weight))) %>% 
   select(k, modularity) %>% 
   unnest(cols = c(modularity)) %>% 
-  kable(align = "c") %>% 
+  kable(align = "c", caption = "ブロック数を2~5にしたときのmodularity") %>% 
   kable_styling(font_size = 13, full_width = FALSE)
 ```
 <br/>  
@@ -927,13 +931,15 @@ summary(result)
 ```
 
 ３つのクラスターごとに色分けして図示すると図\@ref(fig:fig-cluster2)のようになる。  
-```{r fig-cluster2, fig.cap = "構造類似性に基づいてクラスターごとに色分けした毛づくろい頻度のグラフ", echo = FALSE, fig.dim = c(6,5)}
-set.seed(132)
+```{r fig-cluster2, fig.cap = "構造類似性に基づいてクラスターごとに色分けした毛づくろい頻度のグラフ",  fig.dim = c(6,5)}
+set.seed(125)
 
 graph_groom %>% 
   as_tbl_graph(directed = FALSE) %>% 
+  ## 各個体がどのブロックに属するかを指定
   mutate(member = as.factor(membership_3$block)) %>% 
   ggraph(layout = "nicely")+
+  ## ブロックごとに囲む
   geom_mark_hull(aes(x=x,y=y,fill = member),
                  concavity = 10)+
   geom_node_point(aes(color = member),shape = 16, size = 12)+
@@ -950,7 +956,6 @@ graph_groom %>%
   scale_x_continuous(expand = c(0.1,0.1))+
   scale_y_continuous(expand = c(0.1,0.1))
 ```
-
 
 ### その他  
 個体間の敵対的交渉の隣接行列を用いた順位序列についての各指標の算出については、筆者の[別稿](https://tsubasayamaguchi-jinrui.github.io/Dominance_Analysis/)を参照。ここで紹介しきれなかった他の指標やクラスター分析の手法については、@Whitehead2008 , @Croft2019 , @Suzuki2017 などを参照。  

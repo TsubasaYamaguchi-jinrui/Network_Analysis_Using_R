@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2022-11-05" />
+<meta name="date" content="2022-11-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1171,7 +1171,7 @@ $$<br />
 </div>
 <div id="pagerank" class="section level3 hasAnchor" number="3.1.4">
 <h3><span class="header-section-number">3.1.4</span> PageRank<a href="c3.html#pagerank" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>固有ベクトル中心性は、分離したグラフや有向グラフの中心性分析には使えない。<strong>PageRankは</strong>固有ベクトルに基づきながら、これらのグラフにも摘要できる中心性指標である。もともとはウェブページの評価法として、Googleの創業者であるラリー・ペイジやセルゲイ・ブリンらによって開発され<span class="citation">(<a href="#ref-Page1999" role="doc-biblioref">Page et al., 1999</a>)</span>、他ページからのリンクが多いページほどランキングが高く、ランキングの高いページからのリンクや、他のページへのリンクが少ないページからのリンクを高く評価するというアルゴリズムに従う。詳細な算出方法は複雑なので、ここでは説明しない。詳しくは <span class="citation">鈴木 (<a href="#ref-Suzuki2017" role="doc-biblioref">2017</a>)</span> を参照。</p>
+<p>固有ベクトル中心性は、分離したグラフや有向グラフの中心性分析には使えない。<strong>PageRankは</strong>固有ベクトルに基づきながら、これらのグラフにも適用できる中心性指標である。もともとはウェブページの評価法として、Google創業者であるラリー・ペイジとセルゲイ・ブリンらによって開発され<span class="citation">(<a href="#ref-Page1999" role="doc-biblioref">Page et al., 1999</a>)</span>、他ページからのリンクが多いページほどランキングが高く、ランキングの高いページからのリンクや、他のページへのリンクが少ないページからのリンクを高く評価するというアルゴリズムに従う。詳細な算出方法は複雑なので、ここでは説明しない。詳しくは <span class="citation">鈴木 (<a href="#ref-Suzuki2017" role="doc-biblioref">2017</a>)</span> を参照。</p>
 <p>PageRankは<code>igraph</code>パッケージを用いて算出できる。表<a href="c3.html#tab:tab-pagerank">3.2</a>の隣接行列(<code>mat_dir_b</code>)のPageRankを算出する。</p>
 <table class="table" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
 <caption style="font-size: initial !important;">
@@ -1730,7 +1730,7 @@ H
 <p>ネットワーク内において、<u>次数などの中心性指標の似ているノード同士が結びつきやすい/結びつきにくいか</u>を表したのが<strong>同類性</strong>である。ネットワーク内の辺の両端にあるノードの中心性指標の相関係数を算出したものであり、-1から1の値をとる(重み付きグラフの場合は、それで重み付けされているよう)。計算方法の詳細は <span class="citation">Farine (<a href="#ref-Farine2014" role="doc-biblioref">2014</a>)</span> を参照。</p>
 <p>ここでは例として、第<a href="c2.html#c2">2</a>章で算出した毛づくろい頻度ネットワーク<code>groom_mat_b</code>(表<a href="c2.html#tab:tab-groom-b">2.3</a>)の媒介中心性について次数相関を調べる。<code>ANTs</code>パッケージでは、<code>met.assortativity()</code>関数で算出できる。引数<code>attr =</code>で調べたいノードの中心性指標などを指定する。</p>
 <div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="c3.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">met.assortativity</span>(groom_mat_b,</span>
-<span id="cb51-2"><a href="c3.html#cb51-2" aria-hidden="true" tabindex="-1"></a>                  <span class="do">## 各ノードの固有ベクトル中心性  </span></span>
+<span id="cb51-2"><a href="c3.html#cb51-2" aria-hidden="true" tabindex="-1"></a>                  <span class="do">## 各ノードの媒介中心性  </span></span>
 <span id="cb51-3"><a href="c3.html#cb51-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">attr =</span> <span class="fu">met.betweenness</span>(groom_mat_b, <span class="at">binary =</span> <span class="cn">FALSE</span>, <span class="at">sym =</span> <span class="cn">FALSE</span>),</span>
 <span id="cb51-4"><a href="c3.html#cb51-4" aria-hidden="true" tabindex="-1"></a>                  <span class="do">## 重みなしの場合 FALSE</span></span>
 <span id="cb51-5"><a href="c3.html#cb51-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">weighted =</span> <span class="cn">TRUE</span>)<span class="sc">$</span>assortativity.cat <span class="ot">-&gt;</span> assortativity_bet</span>
@@ -1814,8 +1814,8 @@ H
 <p><span class="math inline">\(Q = \frac{1}{2m} \sum_{i,j} (A_{ij} - \gamma \frac{k_i k_j}{2m}) \delta(c_i,c_j)\)</span><br />
 <br/></p>
 <p>なお、<span class="math inline">\(m\)</span>は辺の数、<span class="math inline">\(A_{ij}\)</span>は隣接行列の<span class="math inline">\(i\)</span>行目<span class="math inline">\(j\)</span>列目の成分、<span class="math inline">\(k_i\)</span>と<span class="math inline">\(k_j\)</span>はノード<span class="math inline">\(i\)</span>と<span class="math inline">\(j\)</span>の重み付き中心性を表す(<span class="math inline">\(k_i\)</span>と<span class="math inline">\(k_j\)</span>に固有ベクトル中心性を使っている論文もある<span class="citation">(<a href="#ref-Bala2018" role="doc-biblioref">Balasubramaniam et al., 2018</a>)</span>)。また、<span class="math inline">\(\delta(c_i,c_j)\)</span>はノード<span class="math inline">\(i\)</span>と<span class="math inline">\(j\)</span>が同じクラスターに属しているときは1、そうでないときは0になる。なお、<span class="math inline">\(\gamma \frac{k_i k_j}{2m}\)</span>の部分は、ランダムに交渉が行割れていると仮定したときの<span class="math inline">\(A_{ij}\)</span>の値である。<span class="math inline">\(\delta\)</span>はデフォルトでは1だが変化させることができ、大きい値をとるほどクラスター数が多くなる。</p>
-<p>ここでは例として、毛づくろい頻度ネットワーク<code>groom_mat_b</code>(表<a href="c2.html#tab:tab-groom">2.2</a>)を用いて、各順位カテゴリ内(低順位・中順位・高順位)の交渉がカテゴリ間の交渉よりどの程度多いかを、<span class="math inline">\(Q\)</span>を算出することで求める。</p>
-<p>Rでは、<code>igraph</code>パッケージの<code>modularity()</code>関数で求めることができる。まず<code>graph_from_adjacency_matrix()</code>で<code>igraph</code>クラスに変換した後に算出する。modularityは小さく(0.06)、毛づくろいネットワークは順位カテゴリごとにはあまりクラスター化されていないことが分かった(計算結果少しおかしい？)。</p>
+<p>ここでは例として、毛づくろい頻度ネットワーク<code>groom_mat_b</code>(表<a href="c2.html#tab:tab-groom-b">2.3</a>)を用いて、各順位カテゴリ内(低順位・中順位・高順位)の交渉がカテゴリ間の交渉よりどの程度多いかを、<span class="math inline">\(Q\)</span>を算出することで求める。</p>
+<p>Rでは、<code>igraph</code>パッケージの<code>modularity()</code>関数で求めることができる。まず<code>graph_from_adjacency_matrix()</code>で<code>igraph</code>クラスに変換した後に算出する。また、<code>weight =</code>で明示的に各エッジのweightを与えてあげる必要があるよう。modularityは0.315…とそこそこ大きい値であるので、順位カテゴリ内に毛づくろいが偏っていることを示している。</p>
 <div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="c3.html#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 順位カテゴリごとに番号を振る</span></span>
 <span id="cb59-2"><a href="c3.html#cb59-2" aria-hidden="true" tabindex="-1"></a>rank <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">2</span>)</span>
 <span id="cb59-3"><a href="c3.html#cb59-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -1834,19 +1834,20 @@ H
 <span id="cb59-16"><a href="c3.html#cb59-16" aria-hidden="true" tabindex="-1"></a>           <span class="at">resolution =</span> <span class="dv">1</span>,</span>
 <span id="cb59-17"><a href="c3.html#cb59-17" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 有向グラフなら TRUE</span></span>
 <span id="cb59-18"><a href="c3.html#cb59-18" aria-hidden="true" tabindex="-1"></a>           <span class="at">directed =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb59-19"><a href="c3.html#cb59-19" aria-hidden="true" tabindex="-1"></a>           <span class="at">weights =</span> <span class="cn">NULL</span>)</span></code></pre></div>
-<pre><code>## [1] 0.06140238</code></pre>
+<span id="cb59-19"><a href="c3.html#cb59-19" aria-hidden="true" tabindex="-1"></a>           <span class="do">## グラフのweightを与える</span></span>
+<span id="cb59-20"><a href="c3.html#cb59-20" aria-hidden="true" tabindex="-1"></a>           <span class="at">weights =</span> <span class="fu">E</span>(graph_groom, <span class="at">directed =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>weight)</span></code></pre></div>
+<pre><code>## [1] 0.3152957</code></pre>
 </div>
 <div id="応用例下位集団の検出" class="section level3 hasAnchor" number="3.2.5">
 <h3><span class="header-section-number">3.2.5</span> 応用例(下位集団の検出)<a href="c3.html#応用例下位集団の検出" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>ネットワーク内に下位集団(クラスター)が存在するかを調べる方法はたくさんあるが<span class="citation">(詳細は <a href="#ref-Suzuki2017" role="doc-biblioref">鈴木, 2017</a>)</span>、ここでは主に2つの方法に焦点を当てて紹介する。</p>
 <div id="modularityを用いる方法" class="section level4 hasAnchor" number="3.2.5.1">
 <h4><span class="header-section-number">3.2.5.1</span> Modularityを用いる方法<a href="c3.html#modularityを用いる方法" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>一つの方法として<u>modularityが最大になるような分け方</u>がある。<code>igraph</code>パッケージでは、<code>cluster_optimal()</code>でそのようなクラスタの分け方を算出してくれる。</p>
-<p>例として、毛づくろい頻度ネットワーク<code>groom_mat_b</code>(表<a href="c2.html#tab:tab-groom-b">2.3</a>)について算出する。その結果、4つのクラスターに分類され、そのときのmodularityは0.40だった<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>。概ね順位ごとに分かれていることが分かる(同じアルファベットから始まる個体が同一家系である)。高順位、中順位(2つに分かれている)、低順位にほぼ綺麗に分かれた。</p>
+<p>一つの方法として<u>modularityが最大になるような分け方</u>がある。<code>igraph</code>パッケージでは、<code>cluster_optimal()</code>でそのようなクラスタの分け方を算出してくれる。なお、ノード数が多い場合には時間がかかるため、様々な近似計算法が考案されている(<code>cluster_fast_greedy()</code>、<code>cluster_walktrap()</code>など)。</p>
+<p>例として、毛づくろい頻度ネットワーク<code>groom_mat_b</code>(表<a href="c2.html#tab:tab-groom-b">2.3</a>)について算出する。その結果、4つのクラスターに分類され、そのときのmodularityは0.40だった。概ね順位ごとに分かれていることが分かる(同じアルファベットから始まる個体が同一家系である)。高順位、中順位(2つに分かれている)、低順位にほぼ綺麗に分かれた。</p>
 <div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="c3.html#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 算出</span></span>
 <span id="cb61-2"><a href="c3.html#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cluster_optimal</span>(graph_groom,</span>
-<span id="cb61-3"><a href="c3.html#cb61-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">weights =</span> <span class="cn">NULL</span>) <span class="ot">-&gt;</span> cluster_groom</span>
+<span id="cb61-3"><a href="c3.html#cb61-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">weights =</span> <span class="fu">E</span>(graph_groom)<span class="sc">$</span>weight) <span class="ot">-&gt;</span> cluster_groom</span>
 <span id="cb61-4"><a href="c3.html#cb61-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb61-5"><a href="c3.html#cb61-5" aria-hidden="true" tabindex="-1"></a><span class="do">## 結果</span></span>
 <span id="cb61-6"><a href="c3.html#cb61-6" aria-hidden="true" tabindex="-1"></a>cluster_groom</span></code></pre></div>
@@ -1866,7 +1867,7 @@ H
 <div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="c3.html#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="do">## modularity</span></span>
 <span id="cb63-2"><a href="c3.html#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="fu">modularity</span>(cluster_groom,<span class="at">directed =</span> <span class="cn">FALSE</span>, <span class="at">weights =</span> <span class="cn">NULL</span>)</span></code></pre></div>
 <pre><code>## [1] 0.4020546</code></pre>
-<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="c3.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="do">## なぜか値が一致しない</span></span>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="c3.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 確認   </span></span>
 <span id="cb65-2"><a href="c3.html#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">modularity</span>(graph_groom,</span>
 <span id="cb65-3"><a href="c3.html#cb65-3" aria-hidden="true" tabindex="-1"></a>           <span class="do">## クラスターの分け方</span></span>
 <span id="cb65-4"><a href="c3.html#cb65-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">membership =</span> <span class="fu">membership</span>(cluster_groom),</span>
@@ -1874,9 +1875,32 @@ H
 <span id="cb65-6"><a href="c3.html#cb65-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">resolution =</span> <span class="dv">1</span>,</span>
 <span id="cb65-7"><a href="c3.html#cb65-7" aria-hidden="true" tabindex="-1"></a>           <span class="do">## 有向グラフなら TRUE</span></span>
 <span id="cb65-8"><a href="c3.html#cb65-8" aria-hidden="true" tabindex="-1"></a>           <span class="at">directed =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb65-9"><a href="c3.html#cb65-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">weights =</span> <span class="cn">NULL</span>)</span></code></pre></div>
-<pre><code>## [1] 0.06437242</code></pre>
-クラスターごとに色分けして図示すると図<a href="c3.html#fig:fig-cluster">3.13</a>のようになる。<br />
+<span id="cb65-9"><a href="c3.html#cb65-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">weights =</span> <span class="fu">E</span>(graph_groom)<span class="sc">$</span>weight)                                                                       </span></code></pre></div>
+<pre><code>## [1] 0.4020546</code></pre>
+<p>クラスターごとに色分けして図示すると図<a href="c3.html#fig:fig-cluster">3.13</a>のようになる。</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="c3.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">125</span>)</span>
+<span id="cb67-2"><a href="c3.html#cb67-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-3"><a href="c3.html#cb67-3" aria-hidden="true" tabindex="-1"></a>graph_groom <span class="sc">%&gt;%</span> </span>
+<span id="cb67-4"><a href="c3.html#cb67-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tbl_graph</span>(<span class="at">directed =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb67-5"><a href="c3.html#cb67-5" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 各個体がどのクラスターに属するかを指定</span></span>
+<span id="cb67-6"><a href="c3.html#cb67-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">member =</span> <span class="fu">as.factor</span>(cluster_groom<span class="sc">$</span>membership)) <span class="sc">%&gt;%</span> </span>
+<span id="cb67-7"><a href="c3.html#cb67-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggraph</span>(<span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>)<span class="sc">+</span></span>
+<span id="cb67-8"><a href="c3.html#cb67-8" aria-hidden="true" tabindex="-1"></a>  <span class="do">## クラスターごとに囲う</span></span>
+<span id="cb67-9"><a href="c3.html#cb67-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_mark_hull</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y,<span class="at">fill =</span> member),</span>
+<span id="cb67-10"><a href="c3.html#cb67-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">concavity =</span> <span class="dv">10</span>)<span class="sc">+</span></span>
+<span id="cb67-11"><a href="c3.html#cb67-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> member),<span class="at">shape =</span> <span class="dv">16</span>, <span class="at">size =</span> <span class="dv">12</span>)<span class="sc">+</span></span>
+<span id="cb67-12"><a href="c3.html#cb67-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">start_cap =</span> <span class="fu">circle</span>(<span class="fl">0.5</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb67-13"><a href="c3.html#cb67-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">end_cap =</span> <span class="fu">circle</span>(<span class="fl">0.5</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb67-14"><a href="c3.html#cb67-14" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> <span class="st">&quot;grey55&quot;</span>,</span>
+<span id="cb67-15"><a href="c3.html#cb67-15" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">aes</span>(<span class="at">width =</span> weight))<span class="sc">+</span></span>
+<span id="cb67-16"><a href="c3.html#cb67-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_edge_width</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">3</span>))<span class="sc">+</span></span>
+<span id="cb67-17"><a href="c3.html#cb67-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), <span class="at">color =</span> <span class="st">&quot;white&quot;</span>)<span class="sc">+</span></span>
+<span id="cb67-18"><a href="c3.html#cb67-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_graph</span>()<span class="sc">+</span></span>
+<span id="cb67-19"><a href="c3.html#cb67-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_nejm</span>()<span class="sc">+</span></span>
+<span id="cb67-20"><a href="c3.html#cb67-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_nejm</span>()<span class="sc">+</span></span>
+<span id="cb67-21"><a href="c3.html#cb67-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="fl">0.9</span>)<span class="sc">+</span></span>
+<span id="cb67-22"><a href="c3.html#cb67-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="fl">0.12</span>,<span class="fl">0.12</span>))<span class="sc">+</span></span>
+<span id="cb67-23"><a href="c3.html#cb67-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="fl">0.1</span>,<span class="fl">0.1</span>))</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-cluster"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/fig-cluster-1.png" alt="Modularityに基づいてクラスターごとに色分けした毛づくろい頻度のグラフ" width="576" />
 <p class="caption">
@@ -1899,37 +1923,40 @@ r_{ij} = \frac{(i列とj列の共分散) + (i行とj行の共分散)}{(i列とi�
 \]</span>
 <br/></p>
 <p><code>sna</code>パッケージの<code>equiv.clust()</code>関数を用いることで、構造同値性に基づいたクラスター分析ができる。ここでは、毛づくろい頻度ネットワーク<code>groom_mat_b</code>(表<a href="c2.html#tab:tab-groom-b">2.3</a>)のユークリッド距離を用いて分析を行う。<code>method =</code>で使用する構造類似性の指標を、<code>clust.method =</code>で階層クラスター分析の方法を指定する(方法の詳細は<a href="https://www.kamishima.net/jp/clustering/">こちら</a>) 。</p>
-<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="c3.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ユークリッド距離</span></span>
-<span id="cb67-2"><a href="c3.html#cb67-2" aria-hidden="true" tabindex="-1"></a>cluster_groom_euc <span class="ot">&lt;-</span> <span class="fu">equiv.clust</span>(groom_mat_b,</span>
-<span id="cb67-3"><a href="c3.html#cb67-3" aria-hidden="true" tabindex="-1"></a>                            <span class="do">## 相関係数なら &quot;correlation&quot;</span></span>
-<span id="cb67-4"><a href="c3.html#cb67-4" aria-hidden="true" tabindex="-1"></a>                             <span class="at">method =</span> <span class="st">&quot;euclidean&quot;</span>,</span>
-<span id="cb67-5"><a href="c3.html#cb67-5" aria-hidden="true" tabindex="-1"></a>                            <span class="do">## 海藻クラスター分析の方法</span></span>
-<span id="cb67-6"><a href="c3.html#cb67-6" aria-hidden="true" tabindex="-1"></a>                             <span class="at">cluster.method =</span> <span class="st">&quot;complete&quot;</span>)</span></code></pre></div>
-クラスター分析に基づくデンドログラムは図<a href="c3.html#fig:fig-dendro">3.14</a>のようになる。<br />
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="c3.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="do">## ユークリッド距離</span></span>
+<span id="cb68-2"><a href="c3.html#cb68-2" aria-hidden="true" tabindex="-1"></a>cluster_groom_euc <span class="ot">&lt;-</span> <span class="fu">equiv.clust</span>(groom_mat_b,</span>
+<span id="cb68-3"><a href="c3.html#cb68-3" aria-hidden="true" tabindex="-1"></a>                            <span class="do">## 相関係数なら &quot;correlation&quot;</span></span>
+<span id="cb68-4"><a href="c3.html#cb68-4" aria-hidden="true" tabindex="-1"></a>                             <span class="at">method =</span> <span class="st">&quot;euclidean&quot;</span>,</span>
+<span id="cb68-5"><a href="c3.html#cb68-5" aria-hidden="true" tabindex="-1"></a>                            <span class="do">## 階層クラスター分析の方法</span></span>
+<span id="cb68-6"><a href="c3.html#cb68-6" aria-hidden="true" tabindex="-1"></a>                             <span class="at">cluster.method =</span> <span class="st">&quot;complete&quot;</span>)</span></code></pre></div>
+クラスター分析に基づくデンドログラムは図<a href="c3.html#fig:fig-dendro">3.14</a>のようになる。縦軸が互いのユークリッド距離を表す。<br />
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-dendro"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/fig-dendro-1.png" alt="クラスター分析結果に基づくデンドログラム" width="528" />
 <p class="caption">
 図3.14: クラスター分析結果に基づくデンドログラム
 </p>
 </div>
-<p>この結果から<code>blockmodel()</code>関数でブロックモデルを作る。引数<code>h =</code>でクラスター(= ブロック)を作る基準となる高さを、もしくは引数<code>k =</code>でブロック数を指定できる。ここでは、ブロックを3つにしたときの結果を調べる。各個体がどのブロックに振り分けられたかは、表<a href="#tab:tab-cluster3"><strong>??</strong></a>の通りである。</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="c3.html#cb68-1" aria-hidden="true" tabindex="-1"></a>blockmodel_groom_3 <span class="ot">&lt;-</span> <span class="fu">blockmodel</span>(<span class="do">## 隣接行列</span></span>
-<span id="cb68-2"><a href="c3.html#cb68-2" aria-hidden="true" tabindex="-1"></a>                    groom_mat_b, </span>
-<span id="cb68-3"><a href="c3.html#cb68-3" aria-hidden="true" tabindex="-1"></a>                    <span class="do">## クラスター分析結果</span></span>
-<span id="cb68-4"><a href="c3.html#cb68-4" aria-hidden="true" tabindex="-1"></a>                    cluster_groom_euc, </span>
-<span id="cb68-5"><a href="c3.html#cb68-5" aria-hidden="true" tabindex="-1"></a>                    <span class="do">## `k =`でクラスター数の指定。`h = `でクラスターの基準の高さも指定できる。</span></span>
-<span id="cb68-6"><a href="c3.html#cb68-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">k =</span> <span class="dv">3</span>) </span>
-<span id="cb68-7"><a href="c3.html#cb68-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb68-8"><a href="c3.html#cb68-8" aria-hidden="true" tabindex="-1"></a><span class="do">## メンバーシップ</span></span>
-<span id="cb68-9"><a href="c3.html#cb68-9" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">femaleID =</span> blockmodel_groom_3<span class="sc">$</span>plabels,</span>
-<span id="cb68-10"><a href="c3.html#cb68-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">block =</span> blockmodel_groom_3<span class="sc">$</span>block.membership) <span class="sc">%&gt;%</span> </span>
-<span id="cb68-11"><a href="c3.html#cb68-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(femaleID) <span class="ot">-&gt;</span> membership_3</span>
-<span id="cb68-12"><a href="c3.html#cb68-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb68-13"><a href="c3.html#cb68-13" aria-hidden="true" tabindex="-1"></a>membership_3 <span class="sc">%&gt;%</span> </span>
-<span id="cb68-14"><a href="c3.html#cb68-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> femaleID, <span class="at">values_from =</span> block) <span class="sc">%&gt;%</span> </span>
-<span id="cb68-15"><a href="c3.html#cb68-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&quot;c&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb68-16"><a href="c3.html#cb68-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">font_size =</span> <span class="dv">8</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>この結果から<code>blockmodel()</code>関数でブロックモデルを作る。引数<code>h =</code>でクラスター(= ブロック)を作る基準となる高さを、もしくは引数<code>k =</code>でブロック数を指定できる。ここでは、ブロック数を3つに指定したときの結果を調べる。各個体がどのブロックに振り分けられたかは、表<a href="c3.html#tab:tab-cluster3">3.3</a>の通りである。</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="c3.html#cb69-1" aria-hidden="true" tabindex="-1"></a>blockmodel_groom_3 <span class="ot">&lt;-</span> <span class="fu">blockmodel</span>(<span class="do">## 隣接行列</span></span>
+<span id="cb69-2"><a href="c3.html#cb69-2" aria-hidden="true" tabindex="-1"></a>                    groom_mat_b, </span>
+<span id="cb69-3"><a href="c3.html#cb69-3" aria-hidden="true" tabindex="-1"></a>                    <span class="do">## クラスター分析結果</span></span>
+<span id="cb69-4"><a href="c3.html#cb69-4" aria-hidden="true" tabindex="-1"></a>                    cluster_groom_euc, </span>
+<span id="cb69-5"><a href="c3.html#cb69-5" aria-hidden="true" tabindex="-1"></a>                    <span class="do">## `k =`でクラスター数の指定。`h = `でクラスターの基準の高さも指定できる。</span></span>
+<span id="cb69-6"><a href="c3.html#cb69-6" aria-hidden="true" tabindex="-1"></a>                    <span class="at">k =</span> <span class="dv">3</span>) </span>
+<span id="cb69-7"><a href="c3.html#cb69-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-8"><a href="c3.html#cb69-8" aria-hidden="true" tabindex="-1"></a><span class="do">## メンバーシップ</span></span>
+<span id="cb69-9"><a href="c3.html#cb69-9" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">femaleID =</span> blockmodel_groom_3<span class="sc">$</span>plabels,</span>
+<span id="cb69-10"><a href="c3.html#cb69-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">block =</span> blockmodel_groom_3<span class="sc">$</span>block.membership) <span class="sc">%&gt;%</span> </span>
+<span id="cb69-11"><a href="c3.html#cb69-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(femaleID) <span class="ot">-&gt;</span> membership_3 </span>
+<span id="cb69-12"><a href="c3.html#cb69-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-13"><a href="c3.html#cb69-13" aria-hidden="true" tabindex="-1"></a>membership_3 <span class="sc">%&gt;%</span> </span>
+<span id="cb69-14"><a href="c3.html#cb69-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> femaleID, <span class="at">values_from =</span> block) <span class="sc">%&gt;%</span> </span>
+<span id="cb69-15"><a href="c3.html#cb69-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&quot;c&quot;</span>, <span class="at">caption =</span> <span class="st">&quot;ブロック数が3のときに各個体が属するブロック&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb69-16"><a href="c3.html#cb69-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">font_size =</span> <span class="dv">8</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <table class="table" style="font-size: 8px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:tab-cluster3">表3.3: </span>ブロック数が3のときに各個体が属するブロック
+</caption>
 <thead>
 <tr>
 <th style="text-align:center;">
@@ -2042,30 +2069,36 @@ Tot
 </tbody>
 </table>
 <p><br/></p>
-<p>ブロック数を2から5に変化させたときにmodularityがどうなるかを調べたところ(<a href="#tab:tab-cluster-modularity"><strong>??</strong></a>)、<code>k = 3</code>の時に最大になるよう(かなり値は小さいが…)。</p>
-<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="c3.html#cb69-1" aria-hidden="true" tabindex="-1"></a>k <span class="ot">=</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span></span>
-<span id="cb69-2"><a href="c3.html#cb69-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb69-3"><a href="c3.html#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(k, <span class="sc">~</span><span class="fu">blockmodel</span>(<span class="do">## 隣接行列</span></span>
-<span id="cb69-4"><a href="c3.html#cb69-4" aria-hidden="true" tabindex="-1"></a>                    groom_mat_b, </span>
-<span id="cb69-5"><a href="c3.html#cb69-5" aria-hidden="true" tabindex="-1"></a>                    <span class="do">## クラスター分析結果</span></span>
-<span id="cb69-6"><a href="c3.html#cb69-6" aria-hidden="true" tabindex="-1"></a>                    cluster_groom_euc, </span>
-<span id="cb69-7"><a href="c3.html#cb69-7" aria-hidden="true" tabindex="-1"></a>                    <span class="do">## `k =`でクラスター数の指定。`h = `でクラスターの基準の高さも指定できる。</span></span>
-<span id="cb69-8"><a href="c3.html#cb69-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">k =</span> .)<span class="sc">$</span>block.membership) <span class="ot">-&gt;</span> member_list</span>
-<span id="cb69-9"><a href="c3.html#cb69-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb69-10"><a href="c3.html#cb69-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb69-11"><a href="c3.html#cb69-11" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">k =</span> <span class="fu">rep</span>(k,<span class="at">each =</span> <span class="dv">17</span>),<span class="at">femaleID =</span> blockmodel_groom_3<span class="sc">$</span>plabels,</span>
-<span id="cb69-12"><a href="c3.html#cb69-12" aria-hidden="true" tabindex="-1"></a>           <span class="at">member =</span> <span class="fu">c</span>(member_list[[<span class="dv">1</span>]],member_list[[<span class="dv">2</span>]],member_list[[<span class="dv">3</span>]],member_list[[<span class="dv">4</span>]])) <span class="sc">%&gt;%</span> </span>
-<span id="cb69-13"><a href="c3.html#cb69-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(k) <span class="sc">%&gt;%</span> </span>
-<span id="cb69-14"><a href="c3.html#cb69-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb69-15"><a href="c3.html#cb69-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">member2 =</span> <span class="fu">map</span>(data,<span class="sc">~</span><span class="fu">arrange</span>(., femaleID)<span class="sc">$</span>member)) <span class="sc">%&gt;%</span> </span>
-<span id="cb69-16"><a href="c3.html#cb69-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(k, member2) <span class="sc">%&gt;%</span> </span>
-<span id="cb69-17"><a href="c3.html#cb69-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(k) <span class="sc">%&gt;%</span> </span>
-<span id="cb69-18"><a href="c3.html#cb69-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">modularity =</span> <span class="fu">map</span>(member2, <span class="sc">~</span><span class="fu">modularity</span>(graph_groom, <span class="at">membership =</span> <span class="fu">as.factor</span>(.)))) <span class="sc">%&gt;%</span> </span>
-<span id="cb69-19"><a href="c3.html#cb69-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(k, modularity) <span class="sc">%&gt;%</span> </span>
-<span id="cb69-20"><a href="c3.html#cb69-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(<span class="at">cols =</span> <span class="fu">c</span>(modularity)) <span class="sc">%&gt;%</span> </span>
-<span id="cb69-21"><a href="c3.html#cb69-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&quot;c&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb69-22"><a href="c3.html#cb69-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">font_size =</span> <span class="dv">13</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>ブロック数を2から5に変化させたときにmodularityがどうなるかを調べたところ、<code>k = 3</code>のときに最大になるよう(表<a href="c3.html#tab:tab-cluster-modularity">3.4</a>)。</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="c3.html#cb70-1" aria-hidden="true" tabindex="-1"></a>k <span class="ot">=</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span></span>
+<span id="cb70-2"><a href="c3.html#cb70-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-3"><a href="c3.html#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="do">## kを2~5にしたときに各個体が属するブロックを計算</span></span>
+<span id="cb70-4"><a href="c3.html#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(k, <span class="sc">~</span><span class="fu">blockmodel</span>(<span class="do">## 隣接行列</span></span>
+<span id="cb70-5"><a href="c3.html#cb70-5" aria-hidden="true" tabindex="-1"></a>                    groom_mat_b, </span>
+<span id="cb70-6"><a href="c3.html#cb70-6" aria-hidden="true" tabindex="-1"></a>                    <span class="do">## クラスター分析結果</span></span>
+<span id="cb70-7"><a href="c3.html#cb70-7" aria-hidden="true" tabindex="-1"></a>                    cluster_groom_euc, </span>
+<span id="cb70-8"><a href="c3.html#cb70-8" aria-hidden="true" tabindex="-1"></a>                    <span class="do">## `k =`でクラスター数の指定。`h = `でクラスターの基準の高さも指定できる。</span></span>
+<span id="cb70-9"><a href="c3.html#cb70-9" aria-hidden="true" tabindex="-1"></a>                    <span class="at">k =</span> .)<span class="sc">$</span>block.membership) <span class="ot">-&gt;</span> member_list</span>
+<span id="cb70-10"><a href="c3.html#cb70-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-11"><a href="c3.html#cb70-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-12"><a href="c3.html#cb70-12" aria-hidden="true" tabindex="-1"></a><span class="do">## modularityを算出  </span></span>
+<span id="cb70-13"><a href="c3.html#cb70-13" aria-hidden="true" tabindex="-1"></a><span class="fu">data.frame</span>(<span class="at">k =</span> <span class="fu">rep</span>(k,<span class="at">each =</span> <span class="dv">17</span>),<span class="at">femaleID =</span> blockmodel_groom_3<span class="sc">$</span>plabels,</span>
+<span id="cb70-14"><a href="c3.html#cb70-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">member =</span> <span class="fu">c</span>(member_list[[<span class="dv">1</span>]],member_list[[<span class="dv">2</span>]],member_list[[<span class="dv">3</span>]],member_list[[<span class="dv">4</span>]])) <span class="sc">%&gt;%</span> </span>
+<span id="cb70-15"><a href="c3.html#cb70-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(k) <span class="sc">%&gt;%</span> </span>
+<span id="cb70-16"><a href="c3.html#cb70-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">nest</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb70-17"><a href="c3.html#cb70-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">member2 =</span> <span class="fu">map</span>(data,<span class="sc">~</span><span class="fu">arrange</span>(., femaleID)<span class="sc">$</span>member)) <span class="sc">%&gt;%</span> </span>
+<span id="cb70-18"><a href="c3.html#cb70-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(k, member2) <span class="sc">%&gt;%</span> </span>
+<span id="cb70-19"><a href="c3.html#cb70-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(k) <span class="sc">%&gt;%</span> </span>
+<span id="cb70-20"><a href="c3.html#cb70-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">modularity =</span> <span class="fu">map</span>(member2, <span class="sc">~</span><span class="fu">modularity</span>(graph_groom, <span class="at">membership =</span> <span class="fu">as.factor</span>(.),</span>
+<span id="cb70-21"><a href="c3.html#cb70-21" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">weights =</span> <span class="fu">E</span>(graph_groom, <span class="at">directed =</span> <span class="cn">FALSE</span>)<span class="sc">$</span>weight))) <span class="sc">%&gt;%</span> </span>
+<span id="cb70-22"><a href="c3.html#cb70-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(k, modularity) <span class="sc">%&gt;%</span> </span>
+<span id="cb70-23"><a href="c3.html#cb70-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(<span class="at">cols =</span> <span class="fu">c</span>(modularity)) <span class="sc">%&gt;%</span> </span>
+<span id="cb70-24"><a href="c3.html#cb70-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">align =</span> <span class="st">&quot;c&quot;</span>, <span class="at">caption =</span> <span class="st">&quot;ブロック数を2~5にしたときのmodularity&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb70-25"><a href="c3.html#cb70-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">font_size =</span> <span class="dv">13</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <table class="table" style="font-size: 13px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:tab-cluster-modularity">表3.4: </span>ブロック数を2~5にしたときのmodularity
+</caption>
 <thead>
 <tr>
 <th style="text-align:center;">
@@ -2082,7 +2115,7 @@ modularity
 2
 </td>
 <td style="text-align:center;">
--0.0057464
+0.2279996
 </td>
 </tr>
 <tr>
@@ -2090,7 +2123,7 @@ modularity
 3
 </td>
 <td style="text-align:center;">
-0.0377712
+0.3592285
 </td>
 </tr>
 <tr>
@@ -2098,7 +2131,7 @@ modularity
 4
 </td>
 <td style="text-align:center;">
--0.0034220
+0.3317726
 </td>
 </tr>
 <tr>
@@ -2106,20 +2139,20 @@ modularity
 5
 </td>
 <td style="text-align:center;">
--0.0344137
+0.2642927
 </td>
 </tr>
 </tbody>
 </table>
 <p><br/></p>
 <p><code>clValid</code>パッケージの<code>clValid()</code>関数では、様々な指標を用いてクラスター分けが妥当か算出してくれるよう。詳しくは、 <span class="citation">Brock et al. (<a href="#ref-Brock2008" role="doc-biblioref">2008</a>)</span> もしくは<a href="http://www.sthda.com/english/wiki/wiki.php?id_contents=7932">こちら</a>を参照。よく使用される指標であるDunn indexと silhouette widthの結果を見ると、3つのクラスターに分けるのが妥当だと示唆される。</p>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="c3.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">clValid</span>(<span class="at">obj =</span> groom_mat_b,</span>
-<span id="cb70-2"><a href="c3.html#cb70-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">nClust =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>,</span>
-<span id="cb70-3"><a href="c3.html#cb70-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">clMethods =</span> <span class="st">&quot;hierarchical&quot;</span>,</span>
-<span id="cb70-4"><a href="c3.html#cb70-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">validation =</span> <span class="st">&quot;internal&quot;</span>,</span>
-<span id="cb70-5"><a href="c3.html#cb70-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">Metric =</span> <span class="st">&quot;euclidean&quot;</span>) <span class="ot">-&gt;</span> result</span>
-<span id="cb70-6"><a href="c3.html#cb70-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-7"><a href="c3.html#cb70-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="c3.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">clValid</span>(<span class="at">obj =</span> groom_mat_b,</span>
+<span id="cb71-2"><a href="c3.html#cb71-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">nClust =</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>,</span>
+<span id="cb71-3"><a href="c3.html#cb71-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">clMethods =</span> <span class="st">&quot;hierarchical&quot;</span>,</span>
+<span id="cb71-4"><a href="c3.html#cb71-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">validation =</span> <span class="st">&quot;internal&quot;</span>,</span>
+<span id="cb71-5"><a href="c3.html#cb71-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">Metric =</span> <span class="st">&quot;euclidean&quot;</span>) <span class="ot">-&gt;</span> result</span>
+<span id="cb71-6"><a href="c3.html#cb71-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb71-7"><a href="c3.html#cb71-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(result)</span></code></pre></div>
 <pre><code>## 
 ## Clustering Methods:
 ##  hierarchical 
@@ -2140,7 +2173,30 @@ modularity
 ## Connectivity 2.9290 hierarchical 2       
 ## Dunn         1.3325 hierarchical 3       
 ## Silhouette   0.5632 hierarchical 3</code></pre>
-３つのクラスターごとに色分けして図示すると図<a href="c3.html#fig:fig-cluster2">3.15</a>のようになる。<br />
+<p>３つのクラスターごとに色分けして図示すると図<a href="c3.html#fig:fig-cluster2">3.15</a>のようになる。</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="c3.html#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">125</span>)</span>
+<span id="cb73-2"><a href="c3.html#cb73-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-3"><a href="c3.html#cb73-3" aria-hidden="true" tabindex="-1"></a>graph_groom <span class="sc">%&gt;%</span> </span>
+<span id="cb73-4"><a href="c3.html#cb73-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tbl_graph</span>(<span class="at">directed =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb73-5"><a href="c3.html#cb73-5" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 各個体がどのブロックに属するかを指定</span></span>
+<span id="cb73-6"><a href="c3.html#cb73-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">member =</span> <span class="fu">as.factor</span>(membership_3<span class="sc">$</span>block)) <span class="sc">%&gt;%</span> </span>
+<span id="cb73-7"><a href="c3.html#cb73-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggraph</span>(<span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>)<span class="sc">+</span></span>
+<span id="cb73-8"><a href="c3.html#cb73-8" aria-hidden="true" tabindex="-1"></a>  <span class="do">## ブロックごとに囲む</span></span>
+<span id="cb73-9"><a href="c3.html#cb73-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_mark_hull</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y,<span class="at">fill =</span> member),</span>
+<span id="cb73-10"><a href="c3.html#cb73-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">concavity =</span> <span class="dv">10</span>)<span class="sc">+</span></span>
+<span id="cb73-11"><a href="c3.html#cb73-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> member),<span class="at">shape =</span> <span class="dv">16</span>, <span class="at">size =</span> <span class="dv">12</span>)<span class="sc">+</span></span>
+<span id="cb73-12"><a href="c3.html#cb73-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">start_cap =</span> <span class="fu">circle</span>(<span class="fl">0.5</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb73-13"><a href="c3.html#cb73-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">end_cap =</span> <span class="fu">circle</span>(<span class="fl">0.5</span>,<span class="st">&quot;cm&quot;</span>),</span>
+<span id="cb73-14"><a href="c3.html#cb73-14" aria-hidden="true" tabindex="-1"></a>                 <span class="at">color =</span> <span class="st">&quot;grey55&quot;</span>,</span>
+<span id="cb73-15"><a href="c3.html#cb73-15" aria-hidden="true" tabindex="-1"></a>                 <span class="fu">aes</span>(<span class="at">width =</span> weight))<span class="sc">+</span></span>
+<span id="cb73-16"><a href="c3.html#cb73-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_edge_width</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">3</span>))<span class="sc">+</span></span>
+<span id="cb73-17"><a href="c3.html#cb73-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), <span class="at">color =</span> <span class="st">&quot;white&quot;</span>)<span class="sc">+</span></span>
+<span id="cb73-18"><a href="c3.html#cb73-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_graph</span>()<span class="sc">+</span></span>
+<span id="cb73-19"><a href="c3.html#cb73-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_nejm</span>()<span class="sc">+</span></span>
+<span id="cb73-20"><a href="c3.html#cb73-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_nejm</span>()<span class="sc">+</span></span>
+<span id="cb73-21"><a href="c3.html#cb73-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="fl">0.9</span>)<span class="sc">+</span></span>
+<span id="cb73-22"><a href="c3.html#cb73-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="fl">0.1</span>,<span class="fl">0.1</span>))<span class="sc">+</span></span>
+<span id="cb73-23"><a href="c3.html#cb73-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="fl">0.1</span>,<span class="fl">0.1</span>))</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-cluster2"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/fig-cluster2-1.png" alt="構造類似性に基づいてクラスターごとに色分けした毛づくろい頻度のグラフ" width="576" />
 <p class="caption">
@@ -2204,7 +2260,6 @@ Whitehead, H. (2008). <em>Analyzing animal societies</em>. The University of Chi
 <span class="math display">\[
 \frac{3}{\frac{1}{1} + \frac{1}{2} + \frac{1}{4}} = \frac{1}{\frac{7}{12}} = \frac{12}{7}
 \]</span><a href="c3.html#fnref3" class="footnote-back">↩︎</a></p></li>
-<li id="fn4"><p><code>modularity()</code>で同じメンバーシップにしても再現できないので要検討。算出方法が違う？<a href="c3.html#fnref4" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>
