@@ -17,8 +17,9 @@ fig:fig-pagerank
 fig:fig-between
 fig:fig-info-exam
 fig:fig-info
+fig:fig-centr
+tab:tab-cor
 fig:fig-perm
-fig:fig-perm2
 fig:fig-trans
 fig:fig-trans2
 fig:fig-cluster
@@ -46,8 +47,11 @@ pagerank
 媒介中心性betweeness-centrality
 情報中心性information-centrality
 ネットワーク構造の諸指標
+集中度centralization
 密度density
 同類性assortativity
+連続的な属性の場合
+離散的な属性の場合
 推移性transitivity
 modularity
 応用例下位集団の検出

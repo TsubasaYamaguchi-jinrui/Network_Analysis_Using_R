@@ -573,6 +573,119 @@ mat_dir_b %>%
 ## ネットワーク構造の諸指標  
 ここでは、ネットワーク全体の構造の特徴を表す指標についてまとめる。  
 
+### 集中度(Centralization)  
+前節では、各ノードがグラフ内でどの程度中心的かを表す指標として中心性指標を扱ってきた。それらを用いて<u>グラフにおいて特定のノードに高い中心性がどの程度集中しているのか</u>を示す指標が**集中度**である。グラフの集中度($C_x$)は以下の式によって定式化され、0から1の値をとる。ただし、各ノードの中心性指標を$C_x(i)$、グラフにおけるその中心性指標の最大値を$C_x(i^*)$とする。また、そのグラフと同数のノード(n個)を持つグラフにおける$\sum_{i=1}^n [C_x(i^*)-C_x(i)]$の最大値を$max\sum_{i=1}^n [C_x(i^*)-C_x(i)]$とする。  
+
+$C_x = \frac {\sum_{i=1}^n [C_x(i^*)-C_x(i)]}{max\sum_{i=1}^n [C_x(i^*)-C_x(i)]}$  
+
+例として、第\@ref(c2)章で算出した毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))の集中度を求める。`igraph`パッケージでは、様々な中心性指標についての中心度を求められる。`graph_from_adjacency_matrix()`で`igraph`クラスに変換した後に算出する。  
+```{r}
+
+## igraphクラスに変換
+graph_groom <- graph_from_adjacency_matrix(groom_mat_b,
+                                           ## 有向グラフなら "directed"
+                                           mode= "undirected", 
+                                           ## 重みなしなら NULL
+                                           weighted = TRUE) 
+
+
+## 次数中心性  
+centr_degree(graph_groom,
+             ## 入次数、出次数ならそれぞれ "in"と"out
+             mode = "all")$centralization -> cent_deg
+
+cent_deg
+
+## 固有ベクトル中心性  
+centr_eigen(graph_groom,
+            ## 有向グラフならTRUE
+            directed = FALSE)$centralization -> cent_eig
+
+cent_eig
+
+## 媒介中心性  
+centr_betw(graph_groom,
+           directed = TRUE)$centralization -> cent_bet
+
+cent_bet
+```
+
+各指標の大きさをノードサイズに反映したグラフを以下に示した(図\@ref(fig:fig-centr))。集中度はそこまで高くないといえそう(特に媒介中心性は)?
+```{r fig-centr, fig.cap = "次数中心性・固有ベクトル中心性・媒介中心性の値をノードの大きさに反映したグラフと各指標における集中度。\n ノードが赤い個体が各指標の最も大きい個体を示す", echo = FALSE, fig.align = "center", fig.dim = c(13,13)}
+
+graph_groom %>% 
+  as_tbl_graph(directed = FALSE) %>% 
+  mutate(deg = met.degree(groom_mat_b)) %>% 
+  ggraph(layout = "nicely")+
+  geom_node_point(aes(size = deg, color = name == "Ako"),shape = 16)+
+  geom_edge_link(start_cap = circle(0.6,"cm"),
+                 end_cap = circle(0.6,"cm"),
+                 color = "grey55",
+                 aes(width = weight))+
+  scale_edge_width(range = c(0,3))+
+  scale_size(range = c(13,18))+
+  geom_node_text(aes(label = name), color = "white", size = 5)+
+  scale_color_manual(values = c("black","red4"))+
+  theme_graph(base_size = 12)+
+  theme(aspect.ratio = 0.9,
+        legend.position = "none")+
+  guides(color = "none")+
+  labs(title = "次数中心性")+
+  geom_text(aes(x = 4, y = 12, label = str_c("集中度: ", sprintf("%.2f",cent_deg))),
+            size = 9)+
+  scale_x_continuous(expand = c(0.12,0.12))+
+  scale_y_continuous(expand = c(0.1,0.1)) -> p_deg
+
+graph_groom %>% 
+  as_tbl_graph(directed = FALSE) %>% 
+  mutate(eigen = met.eigen(groom_mat_b, sym = FALSE)) %>% 
+  ggraph(layout = "nicely")+
+  geom_node_point(aes(size = eigen, color = name == "Ako"),shape = 16)+
+  geom_edge_link(start_cap = circle(0.6,"cm"),
+                 end_cap = circle(0.6,"cm"),
+                 color = "grey55",
+                 aes(width = weight))+
+  scale_edge_width(range = c(0,3))+
+  scale_size(range = c(13,18))+
+  geom_node_text(aes(label = name), color = "white",size = 5)+
+  scale_color_manual(values = c("black","red4"))+
+  theme_graph(base_size = 12)+
+  theme(aspect.ratio = 0.9,
+        legend.position = "none")+
+  guides(color = "none")+
+  labs(title = "固有ベクトル中心性")+
+  geom_text(aes(x = 4, y = 11, label = str_c("集中度: ", sprintf("%.2f",cent_eig))),
+            size = 9)+
+  scale_x_continuous(expand = c(0.12,0.12))+
+  scale_y_continuous(expand = c(0.1,0.1)) -> p_eigen
+
+graph_groom %>% 
+  as_tbl_graph(directed = FALSE) %>% 
+  mutate(bet = met.betweenness(groom_mat_b, sym = FALSE, shortest.weight = TRUE)) %>% 
+  ggraph(layout = "nicely")+
+  geom_node_point(aes(size = bet, color = name == "Hot"),shape = 16)+
+  geom_edge_link(start_cap = circle(0.6,"cm"),
+                 end_cap = circle(0.6,"cm"),
+                 color = "grey55",
+                 aes(width = weight))+
+  scale_edge_width(range = c(0,3))+
+  scale_size(range = c(13,18))+
+  geom_node_text(aes(label = name), color = "white", size = 5)+
+  scale_color_manual(values = c("black","red4"))+
+  theme_graph(base_size = 12)+
+  theme(aspect.ratio = 0.9,
+        legend.position = "none")+
+  guides(color = "none")+
+  labs(title = "媒介中心性")+
+  geom_text(aes(x = 4, y = 11, label = str_c("集中度: ", sprintf("%.2f",cent_bet))),
+            size = 9)+
+  scale_x_continuous(expand = c(0.12,0.12))+
+  scale_y_continuous(expand = c(0.1,0.1)) -> p_bet
+
+set.seed(123)
+p_deg + p_eigen + p_bet + plot_layout(ncol = 2)  
+```
+
 ### 密度(Density)  
 密度は、社会ネットワークにおける関係の緊密さの指標になりうる。密度が低いとき、社会ネットワーク内の個体間の直接的な関係は少なく、両者の関係は媒介者を通じた間接的なものが多いということができる[@Croft2019]。    
 
@@ -607,79 +720,73 @@ gden(list_mat)
 ```
 
 ### 同類性(Assortativity)  
-ネットワーク内において、<u>次数などの中心性指標の似ているノード同士が結びつきやすい/結びつきにくいか</u>を表したのが**同類性**である。ネットワーク内の辺の両端にあるノードの中心性指標の相関係数を算出したものであり、-1から1の値をとる(重み付きグラフの場合は、それで重み付けされているよう)。計算方法の詳細は @Farine2014 を参照。    
+ネットワーク内において、<u>似ているノード同士が結びつきやすい/結びつきにくいか</u>を表したのが**同類性**である。ネットワーク内の辺の両端にあるノードの中心性指標や属性の相関係数を算出したものであり、-1から1の値をとる(重み付きグラフの場合は、それで重み付けされているよう)。<u>各ノードの離散的な属性(性別、順位カテゴリなど)と連続的な属性(中心性指標、年齢など)のいずれにも適用できる</u>。計算方法の詳細は @Farine2014 を参照。    
 
-ここでは例として、第\@ref(c2)章で算出した毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))の媒介中心性について次数相関を調べる。`ANTs`パッケージでは、`met.assortativity()`関数で算出できる。引数`attr = `で調べたいノードの中心性指標などを指定する。  
+ここでは例として、再び毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))を使用する。同類性は`assortnet`パッケージ[@Farine2014]の関数群を用いて算出できる。  
+
+#### 連続的な属性の場合  
+年齢が近い個体同士が結びつきやすいかを調べる。連続的な属性の同類性は`assortment.continuous()`関数で算出できる。係数は-0.397...となり、**年齢の近い個体同士は結びつきにくい**という結果になった。
 
 ```{r}
-met.assortativity(groom_mat_b,
-                  ## 各ノードの媒介中心性  
-                  attr = met.betweenness(groom_mat_b, binary = FALSE, sym = FALSE),
-                  ## 重みなしの場合 FALSE
-                  weighted = TRUE)$assortativity.cat -> assortativity_bet
+## 年齢(2019年時点)
+age <- age <- c(13,10,11,11,15,8,13,9,7,18,9,11,16,11,14,11,11)
 
-assortativity_bet
+## 同類性
+assortment.continuous(groom_mat_b,
+                      ## 各ノードの属性
+                      vertex_values = age,
+                      ## 重みなしなら FALSE
+                      weighted = TRUE)
 ```
 
-係数は`r sprintf("%.3f", assortativity_bet)`なので、**媒介中心性の似ているノード同士は結びつきにくい**という弱い傾向が得られた。なお、以下のようにするとnode label permutation(詳細は\@ref(s3-2))で生成したランダムなネットワークの同類性を指定した数だけ生成してくれる。それらの何%より実際の同類性の数値が大きい/小さいかを検討することで、統計的な検定が行える。今回の例では、実測値はランダムな値の97%より小さいので、片側検定の場合はランダムな場合より<u>有意に小さいと言える</u>(図\@ref(fig:fig-perm))。
-  
+#### 離散的な属性の場合    
+同じ年齢カテゴリ(低順位: m、中順位: m、高順位: h)の個体同士が結びつきやすいかを調べる。離散的な属性の同類性は`assortment.discrete()`関数で算出できる。係数はかなり高く(0.484...)、**同順位カテゴリ―の個体同士がよく結びつく傾向**がある。  
+
+```{r}
+## 順位カテゴリ
+rank <-  c("m","m","l","l","h","h","h","h","h","h","l","l","l","m","m","m","m")
+
+## 同類性
+assortment.discrete(groom_mat_b,
+                  ## 各ノードの属性
+                  types = rank,
+                  ## 重みなしなら FALSE
+                  weighted = TRUE) -> assort_rank
+
+assort_rank$r
+```
+
+各カテゴリ間のノードのweightの合計を計算した隣接行列も出力してくれる(表\@ref(tab:tab-cor))。この表からも、同順位カテゴリ間での交渉が多いことが分かる。    
+```{r tab-cor}
+assort_rank$mixing_matrix %>% 
+  kable(digits = 2, align = "c",caption = "各カテゴリ間のweightの合計") %>% 
+  kable_styling(font_size = 12, full_width = FALSE)
+```
+<br/>  
+
+なお離散的な属性については、`ANTs`パッケージの`met.assortativity()`関数を用いると、node label permutation(詳細は\@ref(s3-2))で生成したランダムなネットワークにおける同類性を指定した数だけ生成してくれる。<u>それらの何%より実際の同類性の数値が大きい/小さいかを検討することで、統計的な検定が行える</u>。今回の例では、実測値はランダムな値の全てより小さいので、ランダムな場合より<u>有意に小さいと言える</u>(図\@ref(fig:fig-perm))。  
 ```{r}
 ## node label permutationで生成したランダムなネットワーク100個についてassortativityを算出
 met.assortativity(groom_mat_b,
                   ## 各ノードの固有ベクトル中心性  
-                  attr = met.betweenness(groom_mat_b, binary = FALSE, sym = FALSE),
+                  attr = rank,
                   ## 重みなしの場合 FALSE
                   weighted = TRUE,
                   ## node label permutationをするか
                   perm.nl = TRUE,
                   ## permutationの数
-                  nperm = 10000) -> nlperm_bet
+                  nperm = 10000) -> nlperm_rank
 
 ### ランダムなassortativityの何%より小さい？
-sum(nlperm_bet > assortativity_bet)/10000
+sum(nlperm_rank > assort_rank$r)/10000
 ```
 
 ```{r fig-perm, fig.cap = "ランダムなネットワークの同類性の分布(灰色)と実測値(赤)", echo = FALSE, fig.dim = c(4,4)}
-data.frame(random =nlperm_bet) %>% 
-  ggplot(aes(x = random))+
-  geom_histogram(binwidth = 0.001) +
-  geom_vline(xintercept = assortativity_bet, size = 1, color = "red")+
-  geom_text(aes(x = -0.12,y= 175, label = str_c("実測値 = ",round(assortativity_bet,3),"\n p < 0.05")),
-            hjust =0, vjust = 0.7)+
-  theme_bw()+
-  theme(aspect.ratio=1)+
-  labs(x = "assortativity", y = "frequency")
-```
-<br />  
-
-`attr = `には、中心性指標だけでなく、順位や性別などの様々な個体の属性(連続値・離散値どちらも可)を指定することができる。例えば、同じ順位カテゴリ(低順位: m、中順位: m、高順位: h)の個体同士が結びつきやすいかを調べる場合は、以下のように個体ごとのカテゴリを指定してあげればよい。係数はかなり高く(0.48)、**有意に同順位カテゴリ―の個体同士がよく結びつく傾向がある**。  
-
-```{r}
-rank <-  c("m","m","l","l","h","h","h","h","h","h","l","l","l","m","m","m","m")
-
-met.assortativity(groom_mat_b,
-                  ## 各ノードの固有ベクトル中心性  
-                  attr = rank,
-                  ## 重みなしの場合 FALSE
-                  weighted = TRUE)$assortativity.cat -> assortativity_rank
-
-assortativity_rank
-```
-
-```{r fig-perm2, fig.cap = "ランダムなネットワークの同類性の分布(灰色)と実測値(赤)", echo = FALSE, fig.dim = c(4,4)}
-met.assortativity(groom_mat_b,
-                  ## 各ノードの固有ベクトル中心性  
-                  attr = rank,
-                  ## 重みなしの場合 FALSE
-                  weighted = TRUE,
-                  perm.nl = TRUE,
-                  nperm = 10000) -> nlperm_rank
-
 data.frame(random =nlperm_rank) %>% 
   ggplot(aes(x = random))+
   geom_histogram(binwidth = 0.001) +
-  geom_vline(xintercept = assortativity_rank, size = 1, color = "red")+
-  geom_text(aes(x = 0.23,y= 30, label = str_c("実測値 = ",round(assortativity_rank,3),"\n p < 0.001")),
+  geom_vline(xintercept = assort_rank$r, size = 1, color = "red")+
+  geom_text(aes(x = 0.2,y= 50, label = str_c("実測値 = ",round(assort_rank$r,3),"\n p < 0.001")),
             hjust =0, vjust = 0.7)+
   theme_bw()+
   theme(aspect.ratio=1)+
@@ -727,13 +834,6 @@ dagify(j~i,
 例として、毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))の推移性を算出する。推移性は`igraph`パッケージの`transitivity()`関数で求められる。推移性は高い？      
 
 ```{r}
-## igraphクラスに変換
-graph_groom <- graph_from_adjacency_matrix(groom_mat_b,
-                                           ## 有向グラフなら "directed"
-                                           mode= "undirected", 
-                                           ## 重みなしなら NULL
-                                           weighted = TRUE) 
-
 transitivity(graph_groom,
              ## 有向グラフなら "directed"
              type = "undirected")
@@ -752,7 +852,7 @@ $Q = \frac{1}{2m} \sum_{i,j} (A_{ij} - \gamma \frac{k_i k_j}{2m}) \delta(c_i,c_j
 ここでは例として、毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))を用いて、各順位カテゴリ内(低順位・中順位・高順位)の交渉がカテゴリ間の交渉よりどの程度多いかを、$Q$を算出することで求める。 
 
 
-Rでは、`igraph`パッケージの`modularity()`関数で求めることができる。まず`graph_from_adjacency_matrix()`で`igraph`クラスに変換した後に算出する。また、`weight =`で明示的に各エッジのweightを与えてあげる必要があるよう。modularityは0.315...とそこそこ大きい値であるので、順位カテゴリ内に毛づくろいが偏っていることを示している。  
+Rでは、`igraph`パッケージの`modularity()`関数で求めることができる。`graph_from_adjacency_matrix()`で`igraph`クラスに変換した後に算出する。また、`weight =`で明示的に各エッジのweightを与えてあげる必要があるよう。modularityは0.315...とそこそこ大きい値であるので、順位カテゴリ内に毛づくろいが偏っていることを示している。  
 ```{r}
 ## 順位カテゴリごとに番号を振る
 rank <- c(2,2,1,1,3,3,3,3,3,3,1,1,1,2,2,2,2)

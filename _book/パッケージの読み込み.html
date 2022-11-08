@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2022-11-07" />
+<meta name="date" content="2022-11-09" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -195,12 +195,13 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="3.2" data-path="c3.html"><a href="c3.html#ネットワーク構造の諸指標"><i class="fa fa-check"></i><b>3.2</b> ネットワーク構造の諸指標</a>
 <ul>
-<li class="chapter" data-level="3.2.1" data-path="c3.html"><a href="c3.html#密度density"><i class="fa fa-check"></i><b>3.2.1</b> 密度(Density)</a></li>
-<li class="chapter" data-level="3.2.2" data-path="c3.html"><a href="c3.html#同類性assortativity"><i class="fa fa-check"></i><b>3.2.2</b> 同類性(Assortativity)</a></li>
-<li class="chapter" data-level="3.2.3" data-path="c3.html"><a href="c3.html#推移性transitivity"><i class="fa fa-check"></i><b>3.2.3</b> 推移性(Transitivity)</a></li>
-<li class="chapter" data-level="3.2.4" data-path="c3.html"><a href="c3.html#modularity"><i class="fa fa-check"></i><b>3.2.4</b> Modularity</a></li>
-<li class="chapter" data-level="3.2.5" data-path="c3.html"><a href="c3.html#応用例下位集団の検出"><i class="fa fa-check"></i><b>3.2.5</b> 応用例(下位集団の検出)</a></li>
-<li class="chapter" data-level="3.2.6" data-path="c3.html"><a href="c3.html#その他"><i class="fa fa-check"></i><b>3.2.6</b> その他</a></li>
+<li class="chapter" data-level="3.2.1" data-path="c3.html"><a href="c3.html#集中度centralization"><i class="fa fa-check"></i><b>3.2.1</b> 集中度(Centralization)</a></li>
+<li class="chapter" data-level="3.2.2" data-path="c3.html"><a href="c3.html#密度density"><i class="fa fa-check"></i><b>3.2.2</b> 密度(Density)</a></li>
+<li class="chapter" data-level="3.2.3" data-path="c3.html"><a href="c3.html#同類性assortativity"><i class="fa fa-check"></i><b>3.2.3</b> 同類性(Assortativity)</a></li>
+<li class="chapter" data-level="3.2.4" data-path="c3.html"><a href="c3.html#推移性transitivity"><i class="fa fa-check"></i><b>3.2.4</b> 推移性(Transitivity)</a></li>
+<li class="chapter" data-level="3.2.5" data-path="c3.html"><a href="c3.html#modularity"><i class="fa fa-check"></i><b>3.2.5</b> Modularity</a></li>
+<li class="chapter" data-level="3.2.6" data-path="c3.html"><a href="c3.html#応用例下位集団の検出"><i class="fa fa-check"></i><b>3.2.6</b> 応用例(下位集団の検出)</a></li>
+<li class="chapter" data-level="3.2.7" data-path="c3.html"><a href="c3.html#その他"><i class="fa fa-check"></i><b>3.2.7</b> その他</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="4" data-path="おまけ.-csiの算出.html"><a href="おまけ.-csiの算出.html"><i class="fa fa-check"></i><b>4</b> おまけ. CSIの算出</a></li>
@@ -247,22 +248,23 @@ div.csl-indent {
 <span id="cb1-6"><a href="パッケージの読み込み.html#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ANTs)</span>
 <span id="cb1-7"><a href="パッケージの読み込み.html#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(igraph)</span>
 <span id="cb1-8"><a href="パッケージの読み込み.html#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(clValid)</span>
-<span id="cb1-9"><a href="パッケージの読み込み.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="do">## データハンドリング</span></span>
-<span id="cb1-10"><a href="パッケージの読み込み.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb1-11"><a href="パッケージの読み込み.html#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
-<span id="cb1-12"><a href="パッケージの読み込み.html#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="do">## グラフや表関連</span></span>
-<span id="cb1-13"><a href="パッケージの読み込み.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb1-14"><a href="パッケージの読み込み.html#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
-<span id="cb1-15"><a href="パッケージの読み込み.html#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
-<span id="cb1-16"><a href="パッケージの読み込み.html#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
-<span id="cb1-17"><a href="パッケージの読み込み.html#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dagitty)</span>
-<span id="cb1-18"><a href="パッケージの読み込み.html#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdag)</span>
-<span id="cb1-19"><a href="パッケージの読み込み.html#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggforce)</span>
-<span id="cb1-20"><a href="パッケージの読み込み.html#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(concaveman)</span>
-<span id="cb1-21"><a href="パッケージの読み込み.html#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggsci)</span>
-<span id="cb1-22"><a href="パッケージの読み込み.html#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="do">## フォント関連</span></span>
-<span id="cb1-23"><a href="パッケージの読み込み.html#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(extrafont)</span>
-<span id="cb1-24"><a href="パッケージの読み込み.html#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(systemfonts)</span></code></pre></div>
+<span id="cb1-9"><a href="パッケージの読み込み.html#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(assortnet)</span>
+<span id="cb1-10"><a href="パッケージの読み込み.html#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="do">## データハンドリング</span></span>
+<span id="cb1-11"><a href="パッケージの読み込み.html#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-12"><a href="パッケージの読み込み.html#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(easystats)</span>
+<span id="cb1-13"><a href="パッケージの読み込み.html#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="do">## グラフや表関連</span></span>
+<span id="cb1-14"><a href="パッケージの読み込み.html#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb1-15"><a href="パッケージの読み込み.html#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
+<span id="cb1-16"><a href="パッケージの読み込み.html#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
+<span id="cb1-17"><a href="パッケージの読み込み.html#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra)</span>
+<span id="cb1-18"><a href="パッケージの読み込み.html#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dagitty)</span>
+<span id="cb1-19"><a href="パッケージの読み込み.html#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdag)</span>
+<span id="cb1-20"><a href="パッケージの読み込み.html#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggforce)</span>
+<span id="cb1-21"><a href="パッケージの読み込み.html#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(concaveman)</span>
+<span id="cb1-22"><a href="パッケージの読み込み.html#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggsci)</span>
+<span id="cb1-23"><a href="パッケージの読み込み.html#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="do">## フォント関連</span></span>
+<span id="cb1-24"><a href="パッケージの読み込み.html#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(extrafont)</span>
+<span id="cb1-25"><a href="パッケージの読み込み.html#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(systemfonts)</span></code></pre></div>
 <p>なお、本稿はRの基本操作と<code>tidyverse</code>パッケージによるデータハンドリングができることを前提としている。<code>tidyverse</code>パッケージを用いたデータ処理については、以下の書籍などを参照。</p>
 <ul>
 <li><p>R for Data Science <span class="citation">(<a href="#ref-Wickham2016" role="doc-biblioref">Wickham &amp; Grolemund, 2016</a>)</span><br />
