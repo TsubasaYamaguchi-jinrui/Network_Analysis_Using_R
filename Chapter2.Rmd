@@ -10,8 +10,8 @@ data.frame(min = c(1,2,3,4,5),
 ```
 
 
-## 2個体間のassociationを記録したデータフレーム  {#s2-1}  
-ここでは、2個体間のassociation(例えば、毛づくろいや近接)等を記録したデータフレームから隣接行列を作る。  
+## 2個体間の交渉を記録したデータフレーム  {#s2-1}  
+ここでは、2個体間の交渉(例えば、毛づくろいなど)を記録したデータフレームから隣接行列を作る。  
 例えば、以下は金華山島$B_1$群で2018年時点で6歳以上のメスを個体追跡した際のデータであり、1分間の瞬間サンプリングで以下を記録したデータフレームである。    
 
 - `no_focal`: 個体追跡セッション番号  
@@ -145,7 +145,7 @@ groom_mat_b %>%
 ```
 
 ## Group by individual  
-個体間のassociationを表したデータには、以下のようにある時点・場所において確認された個体を0/1で記録した"group by individual"と呼ばれる形式のものもある。  
+個体間のassociationを表したデータとして、以下のようにある時点・場所において確認された個体を0/1で記録した"group by individual"と呼ばれる形式のものがある。  
 
 例えば、以下は金華山島$B_1$群で2021年交尾期の各観察日に9歳以上のメスが観察されたか否かを示したものである。  
 ```{r}
@@ -177,7 +177,15 @@ $= x/(\frac{1}{2}(y_a + y_b) + y_{ab} + x)$
 ▶ 観察ミスが多いと考えられる場合、補正を行う。  
 <br/>  
 
-`asnipe`パッケージの`get_network()`関数では、こうしたデータかSRIやHWIを算出し、マトリックスを作成することが可能である。
+<u>**HWIG**</u> [@Godde2013]   
+$= HWI_{ab} \times \frac{\sum_i \sum_j HWI_{ij}}{\sum_i HWI_{ai} \times \sum_i HWI_{bi}}$  
+
+▶ それぞれの個体のgregariousnessを考慮したHWI。互いのgregariousnessを考慮したとき、ランダムにassociateしているのであれば1になり、１よりおおきければランダムの場合よりもよくassociateしていることになる。  
+
+<br/>  
+
+
+`asnipe`パッケージの`get_network()`関数では、こうしたデータからSRIとHWIを算出し、マトリックスを作成することが可能である。
 ```{r}
 presence_mat <- get_network(presence %>% dplyr::select(-date),
                             ## gambit of the group
@@ -194,7 +202,34 @@ presence_mat %>%
 ```
 <br/>  
 
-グラフを描画すると図\@ref(fig:fig-gbi)のようになる。ノードの大きさは年齢、色は順位を、辺の太さはSRIを表す。MikとAkaは他の個体と一緒にいることが少ないことが分かるだろう(年齢も影響しそう？)。順位の高い個体はネットワークの中心にいることが多い?   
+HWIGは`hwig`パッケージの`calc_hwig()`関数で算出することができる。  
+```{r}
+## まずHWIを算出  
+presence_mat_HWI <- get_network(presence %>% dplyr::select(-date),
+                              data_format = "GBI",
+                              association_index = "HWI")
+
+
+## HWIGの算出
+presence_mat_HWIG <- presence_mat_HWI %>% 
+                         ## data.table形式に直す必要
+                         as.data.table() %>% 
+                         calc_hwig() %>% 
+                         as.matrix()   
+
+rownames(presence_mat_HWIG)  <- rownames(presence_mat_HWI)
+```
+
+得られた隣接行列は以下の通り(表\@ref(tab:tab-HWIG))。  
+```{r tab-HWIG, echo = FALSE}
+presence_mat_HWIG %>% 
+  kable(digits = 2, align = "c", caption = "HWIGの隣接行列") %>% 
+  kable_styling(font_size = 6, full_width = FALSE)
+```
+<br/>  
+
+
+得られたSRIの隣接行列についてグラフを描画すると図\@ref(fig:fig-gbi)のようになる。ノードの大きさは年齢、色は順位を、辺の太さはHWIGを表す。MikとAkaは他の個体と一緒にいることが少ないことが分かるだろう(年齢も影響しそう？)。順位の高い個体はネットワークの中心にいることが多そう?   
 ```{r fig-gbi, fig.dim = c(6,5), fig.cap = "SRIネットワークのグラフ"}
 age <- c(18,17,15,15,13,13,13,13,13,13,12,11,11,10,9)
 rank2 <- c(16,1,3,9,7,8,12,13,14,17,10,6,15,2,5)

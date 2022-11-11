@@ -6,8 +6,9 @@ tab:tab-groom
 tab:tab-groom-b
 fig:fig-groom
 tab:tab-SRI
+tab:tab-HWIG
 fig:fig-gbi
-fig:fig-degree
+fig:fig-closeness
 fig:fig-degree2
 tab:tab-strength
 fig:fig-strength
@@ -27,6 +28,7 @@ fig:fig-dendro
 tab:tab-cluster3
 tab:tab-cluster-modularity
 fig:fig-cluster2
+fig:fig-ind
 c1
 社会ネットワーク分析snaとは
 社会ネットワークの基礎
@@ -40,6 +42,7 @@ s2-1
 group-by-individual
 c3
 ノードについての諸指標中心性指標
+近接中心性closeness-centrality
 次数中心性degree-centrality
 重み付き中心性strength-centrality
 固有ベクトル中心性eigenvector-centrality
@@ -58,4 +61,10 @@ modularity
 modularityを用いる方法
 構造類似性を用いる方法
 その他
+c4
+なぜランダム化検定が必要か
+s3-2
+線形回帰分析
+ネットワーク同士の関連の検討
+data-stream-randomization
 おまけ.-csiの算出

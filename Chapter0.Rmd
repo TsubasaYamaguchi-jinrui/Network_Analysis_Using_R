@@ -20,9 +20,11 @@ library(ANTs)
 library(igraph)
 library(clValid)
 library(assortnet)
+library(hwig)
 ## データハンドリング
 library(tidyverse)
 library(easystats)
+library(data.table)
 ## グラフや表関連
 library(patchwork)
 library(DT)

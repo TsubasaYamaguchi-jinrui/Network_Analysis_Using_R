@@ -1,13 +1,131 @@
-# 統計的検定  {#c4}
-## なぜrandomizationが必要か？  
-マトリックス内の数値やそこから算出されたネットワーク指標は他の個体の指標と互いに関連しあっているため、独立ではない[@Farine2015; @Farine2017]。そのため、統計的検定を行う場合には、randomizationテストを行う必要がある。randomizationには、いくつかの方法がある。  
+# 統計的検定  {#c4}  
 
-## node label randomization  {#s3-2}
-ネットワークのnode(点)のラベルをランダムにシャッフルし、そうしてできた多数のランダムなネットワークにおける分析結果(例えば、相関係数や回帰分析の係数)を帰無モデルとし、それと実際に得られたネットワークにおける分析結果と比較することで、有意性を判定する方法である[@Farine2015; @Farine2017]。  
-![node label randomizationの説明1](image/nl1.png)  
-![node label randomizationの説明2](image/nl2.png)
+## なぜランダム化検定が必要か？  
+**マトリックス内の数値やそこから算出されたネットワーク指標は互いに独立ではない**[@Croft2011; @Farine2015; @Farine2017]。例えば、図\@ref(fig:fig-ind)のグラフの重みづけ中心性について考える。ノードAとCの重みづけ中心性をそれぞれ計算するとき、どちらの計算にもAとCをつなぐ辺の重み(3)が入ってくる(A:1+1+2+<span style="color: red;">3</span>; C: 2+2+<span style="color: red;">3</span>)。つまり、<u>これらのノードの重みづけ中心性は独立ではない</u>。これは、辺で繋がっている全てのノード同士の重み付き中心性について言える。このように、ネットワーク内のデータや中心性指標のほとんどは互いに独立ではない。  
 
-`ANTs`パッケージを用いることで容易に求めることができる。  
+```{r fig-ind, fig.cap = "ネットワークデータの非独立性の説明のためのグラフ", echo = FALSE, fig.dim = c(6,4)}
+set.seed(145)
+
+mat_undir_b %>% 
+  as_tbl_graph(directed = FALSE) %>% 
+  ggraph(layout = "nicely")+
+  geom_node_point(shape = 16, size = 8, color = "black")+
+  geom_edge_link(aes(label = weight, width = weight),
+                 label_colour = "blue", color = "grey65",
+                 end_cap = circle(0.3,"cm"),
+                 start_cap = circle(0.3,"cm"))+
+  geom_node_text(aes(label = name), color = "white")+
+  scale_edge_width(range = c(1,3))+
+  theme_graph()
+```
+
+これは、統計的な分析を行おうとするときに大きな問題になる。なぜなら、ほとんどの統計分析(t検定、相関分析、GLMなどの回帰分析、...)ではデータが互いに独立していることが仮定されているからである[@Croft2011]。そのため、**ネットワークデータにそのままこのような分析を適用すると、誤った結果が得られる確率が高くなってしまう**のである。  
+
+この問題に対処するために最もよく用いられる方法が**ランダム化検定(randomization test)**である[@Croft2011; @Farine2015; @Farine2017]。ランダム化検定とは、「ランダムな」ネットワークを大量(少なくとも1000回以上)に生成した後、それらから得られた統計検定量(実際にはt検定量や回帰係数など)の分布を帰無分布[^foot4]として、実際の統計検定量の有意性を判定する方法である。    
+
+[^foot4]: 帰無仮説(今回の場合はランダムなネットワーク)が正しいとしたときの統計検定量の分布。  
+
+適切にランダム化検定を行うためには、検定の対象となる側面についてはランダム化する一方で、それ以外の側面(e.g., 各個体の観察回数、ノードと辺の数、ネットワークの構造など)については可能な限り一定になるようにランダムネットワークを生成することが重要である。この点を考慮するため、ネットワーク分析では実データをシャッフルすることでランダムなネットワークを生成する**パーミュテーション検定(permutation test)**がよく用いられる。パーミュテーション検定は、どの段階のデータをランダム化するかによって大きく2つに分けられる。以下では、それぞれについて詳しくみていく。より詳しい解説は @Croft2011、 @Farine2015、 @Farine2017 を参照。    
+
+- **Network permutation**: 既に作られたネットワーク上のノードや辺をシャッフルする。  
+- **Pre-network permutation** (Data stream permutation): ネットワークを作る前に、交渉やassociationの生データをシャッフルする。  
+
+
+## Network permutation  {#s3-2}  
+Network permutationには大きく分けて辺をシャッフルする**edge permutation**と、ノードをシャッフルする**node permutation**に分けられるが、本節ではより一般的に用いられている後者についてのみ解説を行う。前者は生物のネットワークではあまり用いられないため[@Croft2011; @Farine2017]、ここでは解説しない。  
+
+Node permutationでは、ノードの属性(性別、順位など)をランダムにシャッフルして生成したランダムなネットワークにおける統計検定量の分布を帰無分布とし、実際のデータの統計検定量をそれと比較することで有意性を判定する方法である。
+
+```{r}
+mat <- matrix(c(0,3,0,1,0,
+                3,0,1,0,0,
+                0,1,0,0,1.5,
+                1,0,0,0,0,
+                0,0,0,3,0),
+                ncol = 5, nrow = 5)
+
+colnames(mat) <- c("A","B","C","D","E")
+rownames(mat) <- c("A","B","C","D","E")
+
+mat %>% 
+  as_tbl_graph() %>% 
+  ggraph(layout = "circle")+
+  geom_node_point(shape = 16, size = 8, aes(color = name))+
+  geom_edge_link(aes(width = weight),
+                 start_cap = circle(0.3,"cm"),
+                 end_cap = circle(0.3,"cm"))+
+  scale_edge_width(range = c(0.5,2.5))+
+  geom_node_text(aes(label = name), color = "white")+
+  theme_graph()+
+  theme(legend.position = "none",
+        aspect.ratio = 1)+
+  annotate(geom = "text", x = 0.5,y=0.8, label = expression(paste(italic("r")," = 0.4")), parse = TRUE,
+           vjust = 0, hjust = 0, size = 7)+
+  labs(title = "ORIGINAL")-> p1
+
+colnames(mat) <- c("B","D","A","E","C")
+rownames(mat) <- c("B","D","A","E","C")
+
+mat %>% 
+  as_tbl_graph() %>% 
+  ggraph(layout = "circle")+
+  geom_node_point(shape = 16, size = 8, aes(color = name))+
+  geom_edge_link(aes(width = weight),
+                 start_cap = circle(0.3,"cm"),
+                 end_cap = circle(0.3,"cm"))+
+  scale_edge_width(range = c(0.5,2.5))+
+  geom_node_text(aes(label = name), color = "white")+
+  theme(legend.position = "none",
+        aspect.ratio = 1,
+        title = element_text(size = 13, face = "bold"))+
+  annotate(geom = "text", x = 0.5,y=0.8, label = expression(paste(italic("r")," = 0.23")), parse = TRUE,
+           vjust = 0, hjust = 0, size = 7)+
+  labs(title = "PERMUTATION 1")-> p2
+
+colnames(mat) <- c("C","A","E","B","D")
+rownames(mat) <- c("C","A","E","B","D")
+
+mat %>% 
+  as_tbl_graph() %>% 
+  ggraph(layout = "circle")+
+  geom_node_point(shape = 16, size = 8, aes(color = name))+
+  geom_edge_link(aes(width = weight),
+                 start_cap = circle(0.3,"cm"),
+                 end_cap = circle(0.3,"cm"))+
+  scale_edge_width(range = c(0.5,2.5))+
+  geom_node_text(aes(label = name), color = "white")+
+  theme(legend.position = "none",
+        aspect.ratio = 1,
+        title = element_text(size = 13, face = "bold"))+
+  annotate(geom = "text", x = 0.5,y=0.8, label = expression(paste(italic("r")," = 0.12")), parse = TRUE,
+           vjust = 0, hjust = 0, size = 7)+
+  labs(title = "PERMUTATION 2")-> p3
+
+p1+p2+p3
+```
+
+```{r}
+rank <-c(9,10,13,14,1,2,3,6,5,4,15,17,16,7,11,8,12)
+
+attr <- data.frame(femaleID = colnames(groom_mat_b),
+                   rank = rank)
+
+met.betweenness(groom_mat_b,
+          df = attr,
+          dfid = 1) -> eigen
+
+eigen %>% 
+  ggplot(aes(x=rank,y=norm.outbetweenness))+
+  geom_point()
+
+for(i in 1:1000){
+  random_net <- rmperm(groom_mat_b)
+  
+}
+```
+
+
+
 
 ### 線形回帰分析  
 例えば、上(1.1)で求めた毛づくろいネットワークにおいて、順位や年齢と固有ベクトル中心性に関連があるか知りたいとする。  
@@ -36,18 +154,18 @@
 
 ランダムなネットワークにおける係数と実際のネットワークにおける係数の比較。  
 ```{r}
-r_ant <- ant(r)
+#r_ant <- ant(r)
 ```
 
 結果は以下の通り。  
 有意な結果は得られなかった。
 ```{r}
-r_ant$model
+#r_ant$model
 ```
 
 モデル診断。
 ```{r}
-r_ant$model.diagnostic
+#r_ant$model.diagnostic
 ```
 
 GLM以外にも、t検定や相関分析、GLMM等を同様に行うことができる。  
@@ -102,16 +220,16 @@ denom <- denom[rownames(kin_mat),colnames(kin_mat)]
 
 結果は以下の通り。  
 ```{r, echo = FALSE}
-r_qap$coefficients %>% 
-  data.frame() %>% 
-  bind_cols(r_qap$stderr %>% data.frame()) %>% 
-  bind_cols(r_qap$z %>% data.frame()) %>% 
-  bind_cols(r_qap$p %>% data.frame()) %>% 
-  set_names("推定値","SE","z値","p値") %>% 
-  datawizard::rownames_as_column(var = "説明変数") %>% 
-  mutate(説明変数 = str_replace_all(説明変数, c("\\(Intercept\\)" = "切片",
-                                        "xkin_mat" = "血縁度",
-                                        "xrank_mat" = "順位差"))) 
+#r_qap$coefficients %>% 
+ # data.frame() %>% 
+ # bind_cols(r_qap$stderr %>% data.frame()) %>% 
+ # bind_cols(r_qap$z %>% data.frame()) %>% 
+#  bind_cols(r_qap$p %>% data.frame()) %>% 
+#  set_names("推定値","SE","z値","p値") %>% 
+#  datawizard::rownames_as_column(var = "説明変数") %>% 
+#  mutate(説明変数 = str_replace_all(説明変数, c("\\(Intercept\\)" = "切片",
+ #                                       "xkin_mat" = "血縁度",
+  #                                      "xrank_mat" = "順位差"))) 
 ```
 
 ## data stream randomization  
@@ -124,7 +242,7 @@ ANTsパッケージでdata stream randomizationを行うことができる。
 ランダマイゼーションを行うためには、縦長のデータフレームにする必要がある。  
 ```{r}
 ## まずはデータフレームの形に直す。
-resence_mat <- presence %>% column_to_rownames("date") %>% 
+presence_mat <- presence %>% column_to_rownames("date") %>% 
   as.matrix()
 
 ## gbi.to.df関数でデータフレーム形式に  
@@ -143,11 +261,11 @@ presence_df <- gbi.to.df(presence_mat)
 生成された10001(実データ1 + ランダマイゼーション×10000)それぞれについて、ネットワーク指標を算出して、メスの属性データと結合する。やり方は、第2節と同様であるが、`map()`を用いることで10001個のマトリクスそれぞれについて算出できる。    
 ```{r}
 ## メスの属性データ
-attribute_b <- attribute %>% 
-  filter(femaleID != "Tam"&femaleID != "Kur") %>% 
-  arrange(femaleID)
+#attribute_b <- attribute %>% 
+  #filter(femaleID != "Tam"&femaleID != "Kur") %>% 
+  #arrange(femaleID)
 
-list <- map(perm_ds,met.eigen, df = attribute_b, dfid = 1)
+#list <- map(perm_ds,met.eigen, df = attribute_b, dfid = 1)
 ```
 
 それでは、算出した値を用いて統計的検定を行う。  
@@ -160,87 +278,87 @@ list <- map(perm_ds,met.eigen, df = attribute_b, dfid = 1)
 
 まず、算出したネットワーク指標を一つのデータフレームにまとめ、マトリクスごとにネスト化する。  
 ```{r}
-for(i in 2:10001){
-    if(i == 2){
-    female_met <- bind_rows(list[[i-1]],list[[i]])
-    } else{
-    female_met <- bind_rows(female_met,list[[i]])
-  }
- }
+#for(i in 2:10001){
+#    if(i == 2){
+ #   female_met <- bind_rows(list[[i-1]],list[[i]])
+ #   } else{
+ #   female_met <- bind_rows(female_met,list[[i]])
+ # }
+# }
 
-female_met %>% 
-  mutate(perm.no = rep(1:10001,each = 15)) %>% 
-  group_by(perm.no) %>% 
-  nest() -> female_met_nest
+#female_met %>% 
+#  mutate(perm.no = rep(1:10001,each = 15)) %>% 
+#  group_by(perm.no) %>% 
+#  nest() -> female_met_nest
 ```
 
 `map()`を用いて、それぞれのマトリクスごとにGLMを行う。  
 ```{r}
-r_ds <- map(female_met_nest$data, ~ glm(formula = eigen ~ rank + age, data = .,family = "Gamma"))
+#r_ds <- map(female_met_nest$data, ~ glm(formula = eigen ~ rank + age, data = .,family = "Gamma"))
 ```
 
 例えば、1つめのマトリクス(ここでは実測値)の結果は以下のようになる。   
 ここで算出されているp値はこんかいは用いることができない(データの独立性を仮定した結果なので)。  
 得られた係数(Coefficient)をランダム化されたマトリクスを用いた分析の係数と比較することで有意性を判定する。
 ```{r}
-model_parameters(r_ds[[1]])
+#model_parameters(r_ds[[1]])
 
-coef_rank_r <- r_ds[[1]]$coefficients[[2]]
-coef_age_r <-  r_ds[[1]]$coefficients[[3]]  
+#coef_rank_r <- r_ds[[1]]$coefficients[[2]]
+#coef_age_r <-  r_ds[[1]]$coefficients[[3]]  
 ```
 
 
 ランダム化された10000個のマトリクスで算出された順位と血縁の係数をまとめたデータフレームを作成する。  
 ```{r}
-coef <- data.frame(coef_rank = 0L,
-                   coef_age = 0L) 
+#coef <- data.frame(coef_rank = 0L,
+                #   coef_age = 0L) 
 
-for(i in 2:10001){
-  coef[i-1,1] <- r_ds[[i]]$coefficients[[2]]
-  coef[i-1,2] <- r_ds[[i]]$coefficients[[3]]
-}
+#for(i in 2:10001){
+#  coef[i-1,1] <- r_ds[[i]]$coefficients[[2]]
+#  coef[i-1,2] <- r_ds[[i]]$coefficients[[3]]
+#}
 ```
 
 実データの係数がランダム化されたマトリクスの係数のうち95%よりも大きい/小さいときに、実データの係数は有意に大きい/小さいとする。  
 
 **順位**については、以下のような結果になるので(p_upper = 0.0426)、順位の係数はランダムな場合よりも有意に大きい(＝固有ベクトル中心性に有意に正の関連がある)ということができる。    
 ```{r}
-p_upper1 <- sum(coef$coef_rank > coef_rank_r)/10000
-p_lower1 <- sum(coef$coef_rank < coef_rank_r)/10000
+#p_upper1 <- sum(coef$coef_rank > coef_rank_r)/10000
+#p_lower1 <- sum(coef$coef_rank < coef_rank_r)/10000
 
-p_upper1
-p_lower1
+#p_upper1
+#p_lower1
 ```
 
 ```{r}
-coef %>% 
-  ggplot(aes(x=coef_rank))+ 
-  geom_histogram(bins = 500)+
-  geom_vline(xintercept = coef_rank_r,
-              color = "red")+
-  geom_text(aes(x = 0.0053, y = 60),
-            label = str_c("実測値\n","p_upper =", p_upper1),
-            hjust=0)+
-  theme_bw()
+#coef %>% 
+ # ggplot(aes(x=coef_rank))+ 
+ # geom_histogram(bins = 500)+
+ # geom_vline(xintercept = coef_rank_r,
+ #             color = "red")+
+ # geom_text(aes(x = 0.0053, y = 60),
+  #          label = str_c("実測値\n","p_upper =", p_upper1),
+  #          hjust=0)+
+  #theme_bw()
 ```
 
 **年齢**については、以下のような結果になるので(p_upper = 0.057)、有意な影響はないとなる。     
 ```{r}
-p_upper2 <- sum(coef$coef_age > coef_age_r)/10000
-p_lower2 <- sum(coef$coef_age < coef_age_r)/10000
+#p_upper2 <- sum(coef$coef_age > coef_age_r)/10000
+#p_lower2 <- sum(coef$coef_age < coef_age_r)/10000
 
-p_upper2
-p_lower2
+#p_upper2
+#p_lower2
 ```
 
 ```{r}
-coef %>% 
-  ggplot(aes(x=coef_age))+ 
-  geom_histogram(bins = 500)+
-  geom_vline(xintercept = coef_age_r,
-              color = "red")+
-  geom_text(aes(x = 0.045, y = 65),
-            label = str_c("実測値\n","p_upper =", p_upper2),
-            hjust =0)+
-  theme_bw()
+#coef %>% 
+ # ggplot(aes(x=coef_age))+ 
+ # geom_histogram(bins = 500)+
+ # geom_vline(xintercept = coef_age_r,
+              #color = "red")+
+ # geom_text(aes(x = 0.045, y = 65),
+ #           label = str_c("実測値\n","p_upper =", p_upper2),
+ #           hjust =0)+
+ # theme_bw()
 ```
