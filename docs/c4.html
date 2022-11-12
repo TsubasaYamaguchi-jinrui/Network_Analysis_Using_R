@@ -207,12 +207,13 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="4" data-path="c4.html"><a href="c4.html"><i class="fa fa-check"></i><b>4</b> 統計的検定</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="c4.html"><a href="c4.html#なぜランダム化検定が必要か"><i class="fa fa-check"></i><b>4.1</b> なぜランダム化検定が必要か？</a>
+<li class="chapter" data-level="4.1" data-path="c4.html"><a href="c4.html#なぜランダム化検定が必要か"><i class="fa fa-check"></i><b>4.1</b> なぜランダム化検定が必要か？</a></li>
+<li class="chapter" data-level="4.2" data-path="c4.html"><a href="c4.html#s3-2"><i class="fa fa-check"></i><b>4.2</b> Network permutation</a>
 <ul>
-<li class="chapter" data-level="4.1.1" data-path="c4.html"><a href="c4.html#線形回帰分析"><i class="fa fa-check"></i><b>4.1.1</b> 線形回帰分析</a></li>
-<li class="chapter" data-level="4.1.2" data-path="c4.html"><a href="c4.html#ネットワーク同士の関連の検討"><i class="fa fa-check"></i><b>4.1.2</b> ネットワーク同士の関連の検討</a></li>
+<li class="chapter" data-level="4.2.1" data-path="c4.html"><a href="c4.html#線形回帰分析"><i class="fa fa-check"></i><b>4.2.1</b> 線形回帰分析</a></li>
+<li class="chapter" data-level="4.2.2" data-path="c4.html"><a href="c4.html#ネットワーク同士の関連の検討"><i class="fa fa-check"></i><b>4.2.2</b> ネットワーク同士の関連の検討</a></li>
 </ul></li>
-<li class="chapter" data-level="4.2" data-path="c4.html"><a href="c4.html#data-stream-randomization"><i class="fa fa-check"></i><b>4.2</b> data stream randomization</a></li>
+<li class="chapter" data-level="4.3" data-path="c4.html"><a href="c4.html#data-stream-randomization"><i class="fa fa-check"></i><b>4.3</b> data stream randomization</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="おまけ.-csiの算出.html"><a href="おまけ.-csiの算出.html"><i class="fa fa-check"></i><b>5</b> おまけ. CSIの算出</a></li>
 <li class="chapter" data-level="" data-path="実行環境.html"><a href="実行環境.html"><i class="fa fa-check"></i>実行環境</a></li>
@@ -252,9 +253,11 @@ div.csl-indent {
 </li>
 <li><strong>Pre-network permutation</strong> (Data stream permutation): ネットワークを作る前に、交渉やassociationの生データをシャッフルする。</li>
 </ul>
-<p>なお、検定の際にはいずれかのランダム化のみを施すことが多いが、どちらのランダム化も同時に適用した方がより頑強な結果が得られるという報告もある<span class="citation">(<a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>)</span>。<br />
-## Network permutation {#s3-2}<br />
-Network permutationには大きく分けて辺をシャッフルする<strong>edge permutation</strong>と、ノードをシャッフルする<strong>node permutation</strong>に分けられるが、本節ではより一般的に用いられている後者についてのみ解説を行う。前者は生物のネットワークではあまり用いられないため<span class="citation">(<a href="#ref-Croft2011" role="doc-biblioref">D. P. Croft et al., 2011</a>; <a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>)</span>、ここでは解説しない。</p>
+<p>なお、検定の際にはいずれかのランダム化のみを施すことが多いが、どちらのランダム化も同時に適用した方がより頑強な結果が得られるという報告もある<span class="citation">(<a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>)</span>。</p>
+</div>
+<div id="s3-2" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Network permutation<a href="c4.html#s3-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Network permutationには大きく分けて辺をシャッフルする<strong>edge permutation</strong>と、ノードをシャッフルする<strong>node permutation</strong>に分けられるが、本節ではより一般的に用いられている後者についてのみ解説を行う。前者は生物のネットワークではあまり用いられないため<span class="citation">(<a href="#ref-Croft2011" role="doc-biblioref">D. P. Croft et al., 2011</a>; <a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>)</span>、ここでは解説しない。</p>
 <p>Node permutationでは、ノードの属性(性別、順位など)をランダムにシャッフルして生成したランダムなネットワークにおける統計検定量の分布を帰無分布とし、実際のデータの統計検定量をそれと比較することで有意性を判定する方法である。</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-nlperm"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/fig-nlperm-1.png" alt="Node permutationの例" width="1296" />
@@ -270,8 +273,8 @@ Network permutationには大きく分けて辺をシャッフルする<strong>ed
 図4.3: Node permutationでの検定の例
 </p>
 </div>
-<div id="線形回帰分析" class="section level3 hasAnchor" number="4.1.1">
-<h3><span class="header-section-number">4.1.1</span> 線形回帰分析<a href="c4.html#線形回帰分析" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="線形回帰分析" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> 線形回帰分析<a href="c4.html#線形回帰分析" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>例えば、上(1.1)で求めた毛づくろいネットワークにおいて、順位や年齢と固有ベクトル中心性に関連があるか知りたいとする。<br />
 以下のような一般化線形モデルを考える。</p>
 <ul>
@@ -301,8 +304,8 @@ Network permutationには大きく分けて辺をシャッフルする<strong>ed
 <div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="c4.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co">#r_ant$model.diagnostic</span></span></code></pre></div>
 <p>GLM以外にも、t検定や相関分析、GLMM等を同様に行うことができる。</p>
 </div>
-<div id="ネットワーク同士の関連の検討" class="section level3 hasAnchor" number="4.1.2">
-<h3><span class="header-section-number">4.1.2</span> ネットワーク同士の関連の検討<a href="c4.html#ネットワーク同士の関連の検討" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="ネットワーク同士の関連の検討" class="section level3 hasAnchor" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> ネットワーク同士の関連の検討<a href="c4.html#ネットワーク同士の関連の検討" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>node label randomizationによってネットワーク同士の関連を調べることもできる。<br />
 例えば、上(1.2)で求めたメスが一緒に確認される割合が、個体間の血縁度や順位差と関連しているか調べるとする。<br />
 イメージとしては、以下のようにネットワーク同士で回帰分析を行うような感じである。<br />
@@ -341,8 +344,8 @@ SRIの分母を以下のようにして求める。</p>
 <p>結果は以下の通り。</p>
 </div>
 </div>
-<div id="data-stream-randomization" class="section level2 hasAnchor" number="4.2">
-<h2><span class="header-section-number">4.2</span> data stream randomization<a href="c4.html#data-stream-randomization" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="data-stream-randomization" class="section level2 hasAnchor" number="4.3">
+<h2><span class="header-section-number">4.3</span> data stream randomization<a href="c4.html#data-stream-randomization" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>マトリクスを作る前にランダマイゼーションを行うpre-network randomizationという方法もある。<br />
 代表的なものはdata stream randamizationと呼ばれるものである。詳しくは、Farine &amp; Whitehead (2015)参照。<br />
 <br /></p>

@@ -31,7 +31,8 @@ mat_undir_b %>%
 - **Pre-network permutation** (Data stream permutation): ネットワークを作る前に、交渉やassociationの生データをシャッフルする。 
 
 なお、検定の際にはいずれかのランダム化のみを施すことが多いが、どちらのランダム化も同時に適用した方がより頑強な結果が得られるという報告もある[@Farine2022]。      
-## Network permutation  {#s3-2}  
+
+## Network permutation  {#s3-2}   
 Network permutationには大きく分けて辺をシャッフルする**edge permutation**と、ノードをシャッフルする**node permutation**に分けられるが、本節ではより一般的に用いられている後者についてのみ解説を行う。前者は生物のネットワークではあまり用いられないため[@Croft2011; @Farine2017]、ここでは解説しない。  
 
 Node permutationでは、ノードの属性(性別、順位など)をランダムにシャッフルして生成したランダムなネットワークにおける統計検定量の分布を帰無分布とし、実際のデータの統計検定量をそれと比較することで有意性を判定する方法である。  
