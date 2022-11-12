@@ -149,7 +149,7 @@ p1+p2+p3+p4+p5 + plot_layout(ncol = 5)
 ```
 <br/>  
 
-検定は...
+有意性は以下のように実際の値がランダムに生成された1000このネットワークの値の何%より大きいかで判断する。  
 ```{r fig-nlperm2, fig.cap = "Node permutationでの検定の例", echo = FALSE, fig.align = "center", fig.dim = c(3.5,3.5)}
 ## ヒストグラムの例
 attr <- data.frame(ID = c("A","B","C","D","E","F","G","H"),
