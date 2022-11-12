@@ -207,13 +207,12 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="4" data-path="c4.html"><a href="c4.html"><i class="fa fa-check"></i><b>4</b> 統計的検定</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="c4.html"><a href="c4.html#なぜランダム化検定が必要か"><i class="fa fa-check"></i><b>4.1</b> なぜランダム化検定が必要か？</a></li>
-<li class="chapter" data-level="4.2" data-path="c4.html"><a href="c4.html#s3-2"><i class="fa fa-check"></i><b>4.2</b> Network permutation</a>
+<li class="chapter" data-level="4.1" data-path="c4.html"><a href="c4.html#なぜランダム化検定が必要か"><i class="fa fa-check"></i><b>4.1</b> なぜランダム化検定が必要か？</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="c4.html"><a href="c4.html#線形回帰分析"><i class="fa fa-check"></i><b>4.2.1</b> 線形回帰分析</a></li>
-<li class="chapter" data-level="4.2.2" data-path="c4.html"><a href="c4.html#ネットワーク同士の関連の検討"><i class="fa fa-check"></i><b>4.2.2</b> ネットワーク同士の関連の検討</a></li>
+<li class="chapter" data-level="4.1.1" data-path="c4.html"><a href="c4.html#線形回帰分析"><i class="fa fa-check"></i><b>4.1.1</b> 線形回帰分析</a></li>
+<li class="chapter" data-level="4.1.2" data-path="c4.html"><a href="c4.html#ネットワーク同士の関連の検討"><i class="fa fa-check"></i><b>4.1.2</b> ネットワーク同士の関連の検討</a></li>
 </ul></li>
-<li class="chapter" data-level="4.3" data-path="c4.html"><a href="c4.html#data-stream-randomization"><i class="fa fa-check"></i><b>4.3</b> data stream randomization</a></li>
+<li class="chapter" data-level="4.2" data-path="c4.html"><a href="c4.html#data-stream-randomization"><i class="fa fa-check"></i><b>4.2</b> data stream randomization</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="おまけ.-csiの算出.html"><a href="おまけ.-csiの算出.html"><i class="fa fa-check"></i><b>5</b> おまけ. CSIの算出</a></li>
 <li class="chapter" data-level="" data-path="実行環境.html"><a href="実行環境.html"><i class="fa fa-check"></i>実行環境</a></li>
@@ -238,13 +237,13 @@ div.csl-indent {
 <h1><span class="header-section-number">5</span> おまけ. CSIの算出<a href="おまけ.-csiの算出.html#おまけ.-csiの算出" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p><code>aninet</code>パッケージを用いれば、CSI<span class="citation">(<a href="#ref-Silk2006" role="doc-biblioref">Silk et al., 2006</a>)</span>を容易に算出できる。<br />
 上で算出すしたメス間の毛づくろいマトリクスと、以下の近接マトリクスを用いて算出する。</p>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="おまけ.-csiの算出.html#cb109-1" aria-hidden="true" tabindex="-1"></a>prox_mat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/prox_f.csv&quot;</span>,<span class="at">row.names=</span><span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb109-2"><a href="おまけ.-csiの算出.html#cb109-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span>
-<span id="cb109-3"><a href="おまけ.-csiの算出.html#cb109-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb109-4"><a href="おまけ.-csiの算出.html#cb109-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(prox_mat) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(prox_mat)</span>
-<span id="cb109-5"><a href="おまけ.-csiの算出.html#cb109-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb109-6"><a href="おまけ.-csiの算出.html#cb109-6" aria-hidden="true" tabindex="-1"></a>prox_mat <span class="sc">%&gt;%</span> </span>
-<span id="cb109-7"><a href="おまけ.-csiの算出.html#cb109-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="おまけ.-csiの算出.html#cb107-1" aria-hidden="true" tabindex="-1"></a>prox_mat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/prox_f.csv&quot;</span>,<span class="at">row.names=</span><span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb107-2"><a href="おまけ.-csiの算出.html#cb107-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span>
+<span id="cb107-3"><a href="おまけ.-csiの算出.html#cb107-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-4"><a href="おまけ.-csiの算出.html#cb107-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(prox_mat) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(prox_mat)</span>
+<span id="cb107-5"><a href="おまけ.-csiの算出.html#cb107-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-6"><a href="おまけ.-csiの算出.html#cb107-6" aria-hidden="true" tabindex="-1"></a>prox_mat <span class="sc">%&gt;%</span> </span>
+<span id="cb107-7"><a href="おまけ.-csiの算出.html#cb107-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>()</span></code></pre></div>
 <pre><code>##             Kil         Kit        Koh         Kun        Kor        Ntr
 ## Kil          NA 0.148601399 0.10733945 0.029467085 0.04553818 0.04176334
 ## Kit 0.148601399          NA 0.09505410 0.064403395 0.06003098 0.03628560
@@ -297,18 +296,18 @@ div.csl-indent {
 ## Mik 0.037482647 0.146341463         NA 0.030255403
 ## Mei 0.029187817 0.051620648 0.03025540          NA</code></pre>
 <p>毛づくろいマトリクスからKurのデータを除く(近接マトリクスと合わせるため)。</p>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="おまけ.-csiの算出.html#cb111-1" aria-hidden="true" tabindex="-1"></a>groom_mat_b <span class="ot">&lt;-</span> groom_mat_b[<span class="sc">-</span><span class="dv">10</span>,<span class="sc">-</span><span class="dv">10</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="おまけ.-csiの算出.html#cb109-1" aria-hidden="true" tabindex="-1"></a>groom_mat_b <span class="ot">&lt;-</span> groom_mat_b[<span class="sc">-</span><span class="dv">10</span>,<span class="sc">-</span><span class="dv">10</span>]</span></code></pre></div>
 <p>CSIは以下のように求められる。<br />
 3つ以上の数値を用いる場合でも、リストに追加していくだけで容易に求まる。</p>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="おまけ.-csiの算出.html#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 2つのマトリクスをリスト化</span></span>
-<span id="cb112-2"><a href="おまけ.-csiの算出.html#cb112-2" aria-hidden="true" tabindex="-1"></a>list <span class="ot">&lt;-</span> <span class="fu">list</span>(groom_mat_b, prox_mat)</span>
-<span id="cb112-3"><a href="おまけ.-csiの算出.html#cb112-3" aria-hidden="true" tabindex="-1"></a>CSI <span class="ot">&lt;-</span> <span class="fu">dyadic_csi</span>(list)</span></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="おまけ.-csiの算出.html#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 2つのマトリクスをリスト化</span></span>
+<span id="cb110-2"><a href="おまけ.-csiの算出.html#cb110-2" aria-hidden="true" tabindex="-1"></a>list <span class="ot">&lt;-</span> <span class="fu">list</span>(groom_mat_b, prox_mat)</span>
+<span id="cb110-3"><a href="おまけ.-csiの算出.html#cb110-3" aria-hidden="true" tabindex="-1"></a>CSI <span class="ot">&lt;-</span> <span class="fu">dyadic_csi</span>(list)</span></code></pre></div>
 <p>マトリクスは以下の通り。</p>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="おまけ.-csiの算出.html#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(CSI) <span class="ot">&lt;-</span> <span class="fu">rownames</span>(prox_mat)</span>
-<span id="cb113-2"><a href="おまけ.-csiの算出.html#cb113-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(CSI) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(prox_mat)</span>
-<span id="cb113-3"><a href="おまけ.-csiの算出.html#cb113-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb113-4"><a href="おまけ.-csiの算出.html#cb113-4" aria-hidden="true" tabindex="-1"></a>CSI <span class="sc">%&gt;%</span> </span>
-<span id="cb113-5"><a href="おまけ.-csiの算出.html#cb113-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="おまけ.-csiの算出.html#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(CSI) <span class="ot">&lt;-</span> <span class="fu">rownames</span>(prox_mat)</span>
+<span id="cb111-2"><a href="おまけ.-csiの算出.html#cb111-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(CSI) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(prox_mat)</span>
+<span id="cb111-3"><a href="おまけ.-csiの算出.html#cb111-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-4"><a href="おまけ.-csiの算出.html#cb111-4" aria-hidden="true" tabindex="-1"></a>CSI <span class="sc">%&gt;%</span> </span>
+<span id="cb111-5"><a href="おまけ.-csiの算出.html#cb111-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">data.frame</span>()</span></code></pre></div>
 <pre><code>##            Kil        Kit       Koh        Kun       Kor        Ntr       Ten
 ## Kil         NA 13.1042381 1.5443971 0.98428757 0.6552021 0.60088982 0.7643802
 ## Kit 13.1042381         NA 1.8809200 0.92663431 0.8915746 0.78716555 0.5420480

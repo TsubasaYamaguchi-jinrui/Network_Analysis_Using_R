@@ -65,7 +65,6 @@ modularityを用いる方法
 その他
 c4
 なぜランダム化検定が必要か
-s3-2
 線形回帰分析
 ネットワーク同士の関連の検討
 data-stream-randomization
