@@ -1,7 +1,7 @@
 # 統計的検定  {#c4}  
 
 ## なぜランダム化検定が必要か？  
-**マトリックス内の数値やそこから算出されたネットワーク指標は互いに独立ではない**[@Croft2011; @Farine2015; @Farine2017]。例えば、図\@ref(fig:fig-ind)のグラフの重みづけ中心性について考える。ノードAとCの重みづけ中心性をそれぞれ計算するとき、どちらの計算にもAとCをつなぐ辺の重み(3)が入ってくる(A:1+1+2+<span style="color: red;">3</span>; C: 2+2+<span style="color: red;">3</span>)。つまり、<u>これらのノードの重みづけ中心性は独立ではない</u>。これは、辺で繋がっている全てのノード同士の重み付き中心性について言える。このように、ネットワーク内のデータや中心性指標のほとんどは互いに独立ではない。  
+**マトリックス内の数値やそこから算出されたネットワーク指標は互いに独立ではない**[@Croft2011; @Farine2015; @Farine2017]。例えば、図\@ref(fig:fig-ind)のグラフの重みづけ中心性について考える。ノードAとCの重みづけ中心性をそれぞれ計算するとき、どちらの計算にもAとCをつなぐ辺の重み(3)が入ってくる(A:1+1+2+<span style="color: red;">3</span>; C: 2+2+<span style="color: red;">3</span>)。つまり、<u>これらのノードの重みづけ中心性は互いに関連しあっている(= 独立ではない)</u>。これは、辺で繋がっている全てのノード同士の重み付き中心性について言える。このように、ネットワーク内のデータや中心性指標のほとんどは互いに独立ではない。  
 
 ```{r fig-ind, fig.cap = "ネットワークデータの非独立性の説明のためのグラフ", echo = FALSE, fig.dim = c(6,4)}
 set.seed(145)
@@ -25,18 +25,19 @@ mat_undir_b %>%
 
 [^foot4]: 帰無仮説(今回の場合はランダムなネットワーク)が正しいとしたときの統計検定量の分布。  
 
-適切にランダム化検定を行うためには、検定の対象となる側面についてはランダム化する一方で、それ以外の側面(e.g., 各個体の観察回数、ノードと辺の数、ネットワークの構造など)については可能な限り一定になるようにランダムネットワークを生成することが重要である。この点を考慮するため、ネットワーク分析では実データをシャッフルすることでランダムなネットワークを生成する**パーミュテーション検定(permutation test)**がよく用いられる。パーミュテーション検定は、どの段階のデータをランダム化するかによって大きく2つに分けられる。以下では、それぞれについて詳しくみていく。より詳しい解説は @Croft2011、 @Farine2015、 @Farine2017 を参照。    
+適切にランダム化検定を行うためには、検定の対象となる側面についてはランダム化する一方で、それ以外の側面(e.g., 各個体の観察回数、ノードと辺の数、ネットワークの構造など)については可能な限り一定になるようにランダムネットワークを生成することが重要である。この点を考慮するため、ネットワーク分析では実データをシャッフルすることでランダムなネットワークを生成する**パーミュテーション検定(permutation test)**がよく用いられる。パーミュテーション検定は、どの段階のデータをランダム化するかによって大きく2つに分けられる。以下では、それぞれについて詳しくみていく。より詳しい解説は @Croft2011、 @Farine2015、 @Farine2017 を参照。なお、検定の際にはいずれかのランダム化のみを施すことが多いが、どちらのランダム化も同時に適用した方がより頑強な結果が得られるという報告もある[@Farine2022]。      
 
 - **Network permutation**: 既に作られたネットワーク上のノードや辺をシャッフルする。  
-- **Pre-network permutation** (Data stream permutation): ネットワークを作る前に、交渉やassociationの生データをシャッフルする。  
-
+- **Pre-network permutation** (Data stream permutation): ネットワークを作る前に、交渉やassociationの生データをシャッフルする。 
 
 ## Network permutation  {#s3-2}  
 Network permutationには大きく分けて辺をシャッフルする**edge permutation**と、ノードをシャッフルする**node permutation**に分けられるが、本節ではより一般的に用いられている後者についてのみ解説を行う。前者は生物のネットワークではあまり用いられないため[@Croft2011; @Farine2017]、ここでは解説しない。  
 
-Node permutationでは、ノードの属性(性別、順位など)をランダムにシャッフルして生成したランダムなネットワークにおける統計検定量の分布を帰無分布とし、実際のデータの統計検定量をそれと比較することで有意性を判定する方法である。
+Node permutationでは、ノードの属性(性別、順位など)をランダムにシャッフルして生成したランダムなネットワークにおける統計検定量の分布を帰無分布とし、実際のデータの統計検定量をそれと比較することで有意性を判定する方法である。  
 
-```{r}
+
+```{r fig-nlperm, fig.cap = "Node permutationの例", echo = FALSE, fig.align = "center", fig.dim = c(13.5,4)}
+
 mat <- matrix(c(0,3,0,1,0,
                 3,0,1,0,0,
                 0,1,0,0,1.5,
@@ -56,11 +57,14 @@ mat %>%
                  end_cap = circle(0.3,"cm"))+
   scale_edge_width(range = c(0.5,2.5))+
   geom_node_text(aes(label = name), color = "white")+
-  theme_graph()+
+  scale_x_continuous(expand = c(0.15,0.15))+
+  scale_y_continuous(expand = c(0.1,0.1))+
   theme(legend.position = "none",
-        aspect.ratio = 1)+
-  annotate(geom = "text", x = 0.5,y=0.8, label = expression(paste(italic("r")," = 0.4")), parse = TRUE,
-           vjust = 0, hjust = 0, size = 7)+
+        aspect.ratio = 1,
+        panel.background = element_rect(fill = "white"))+
+  annotate(geom = "text", x = 0.5,y=0.8, 
+           label = expression(paste(italic("r")," = -0.83")), parse = TRUE,
+           vjust = 0, hjust = 0, size = 5)+
   labs(title = "ORIGINAL")-> p1
 
 colnames(mat) <- c("B","D","A","E","C")
@@ -75,11 +79,14 @@ mat %>%
                  end_cap = circle(0.3,"cm"))+
   scale_edge_width(range = c(0.5,2.5))+
   geom_node_text(aes(label = name), color = "white")+
+  scale_x_continuous(expand = c(0.15,0.15))+
+  scale_y_continuous(expand = c(0.1,0.1))+
   theme(legend.position = "none",
         aspect.ratio = 1,
-        title = element_text(size = 13, face = "bold"))+
-  annotate(geom = "text", x = 0.5,y=0.8, label = expression(paste(italic("r")," = 0.23")), parse = TRUE,
-           vjust = 0, hjust = 0, size = 7)+
+        title = element_text(size = 10, face = "bold"))+
+  annotate(geom = "text", x = 0.5,y=0.8, 
+           label = expression(paste(italic("r")," = -0.23")), parse = TRUE,
+           vjust = 0, hjust = 0, size = 5)+
   labs(title = "PERMUTATION 1")-> p2
 
 colnames(mat) <- c("C","A","E","B","D")
@@ -94,15 +101,88 @@ mat %>%
                  end_cap = circle(0.3,"cm"))+
   scale_edge_width(range = c(0.5,2.5))+
   geom_node_text(aes(label = name), color = "white")+
+  scale_x_continuous(expand = c(0.15,0.15))+
+  scale_y_continuous(expand = c(0.1,0.1))+
   theme(legend.position = "none",
         aspect.ratio = 1,
-        title = element_text(size = 13, face = "bold"))+
-  annotate(geom = "text", x = 0.5,y=0.8, label = expression(paste(italic("r")," = 0.12")), parse = TRUE,
-           vjust = 0, hjust = 0, size = 7)+
+        title = element_text(size = 10, face = "bold"))+
+  annotate(geom = "text", x = 0.5,y=0.8, 
+           label = expression(paste(italic("r")," = 0.12")), parse = TRUE,
+           vjust = 0, hjust = 0, size = 5)+
   labs(title = "PERMUTATION 2")-> p3
 
-p1+p2+p3
+mat %>% 
+  as_tbl_graph() %>% 
+  ggraph(layout = "circle")+
+  theme_graph()+
+  annotate(geom = "text",
+           x = 0, y = 0, size = 10,
+           label = "・・・")+
+  theme(aspect.ratio = 1)+
+  labs(title = "・・・")+
+  theme(plot.title = element_text(hjust = 0.5))-> p4
+
+colnames(mat) <- c("B","A","C","E","D")
+rownames(mat) <- c("B","A","C","E","D")
+
+mat %>% 
+  as_tbl_graph() %>% 
+  ggraph(layout = "circle")+
+  geom_node_point(shape = 16, size = 8, aes(color = name))+
+  geom_edge_link(aes(width = weight),
+                 start_cap = circle(0.3,"cm"),
+                 end_cap = circle(0.3,"cm"))+
+  scale_edge_width(range = c(0.5,2.5))+
+  geom_node_text(aes(label = name), color = "white")+
+ scale_x_continuous(expand = c(0.15,0.15))+
+  scale_y_continuous(expand = c(0.1,0.1))+
+  theme(legend.position = "none",
+        aspect.ratio = 1,
+        title = element_text(size = 10, face = "bold"))+
+  annotate(geom = "text", x = 0.5,y=0.8, 
+           label =   expression(paste(italic("r")," = -0.45")), 
+           parse = TRUE,
+           vjust = 0, hjust = 0, size = 5)+
+  labs(title = "PERMUTATION 1000") -> p5
+
+p1+p2+p3+p4+p5 + plot_layout(ncol = 5)
 ```
+<br/>  
+
+検定は...
+```{r fig-nlperm2, fig.cap = "Node permutationでの検定の例", echo = FALSE, fig.align = "center", fig.dim = c(3.5,3.5)}
+## ヒストグラムの例
+attr <- data.frame(ID = c("A","B","C","D","E","F","G","H"),
+                   rank = c(2,5,4,3,1,7,8,6))
+
+attr_eigen <- met.eigen(mat_undir_b, df = attr, dfid = 1)
+r_real <- cor.test(attr_eigen$rank,attr_eigen$eigen, method = "s")$estimate
+
+r_rand <- rep(0,1000)
+
+for(i in 1:1000){
+  random_net <- rmperm(mat_undir_b)
+  r_rand[i] <- cor.test(attr$rank, met.eigen(random_net))$estimate
+}
+
+data.frame(x = r_rand) %>% 
+  ggplot(aes(x=x))+
+  geom_histogram(binwidth = 0.05)+
+  geom_vline(xintercept = r_real, color = "red4", size = 1.5)+
+  annotate(geom = "text", x = -0.8, y = 58,
+           label = "r(実測値) > r(ランダム): 5回/1000回 \nよって、p = 0.005",
+           hjust = 0)+
+  theme_bw()+
+  scale_x_continuous(expand = c(0,0.1,0,0.1))+
+  scale_y_continuous(expand = c(0.01,0,0.1,0))+
+  annotate(geom = "text", x = -0.8, y = 68,
+           label = "r(実測値): -0.83", hjust = 0, color = "red4")+
+  labs(x = "ランダムネットワークでの相関係数の値",
+       y = "frequency") -> p6
+
+p6
+```
+
 
 ```{r}
 rank <-c(9,10,13,14,1,2,3,6,5,4,15,17,16,7,11,8,12)
