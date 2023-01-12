@@ -35,6 +35,8 @@ tab:tab-prox
 fig:fig-cor
 fig:fig-npermtest
 fig:fig-npermtest-b
+tab:tab-example3
+fig:fig-npermtest-c
 c1
 社会ネットワーク分析snaとは
 社会ネットワークの基礎

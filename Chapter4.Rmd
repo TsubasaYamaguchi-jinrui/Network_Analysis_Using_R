@@ -435,6 +435,96 @@ r_lm_ants$model
 ```
 
 ##### 分析例2. 線形混合モデル  
+同様の分析は、モデルにランダム効果を入れたGLMMなどの混合モデルについても適用できる。GLMMについては、[こちら](chrome-extension://efaidnbmnnnibpcajpcglclefindmkaj/https://www.socialpsychology.jp/sympo/pdf/2015SS_Takezawa.pdf)  などを参照。複数の調査期間に/複数の集団でデータを収集した場合などにすべてのデータをまとめて分析する際には、GLMMが適用される[@Sosa2020]。    
+
+例えば、ニホンザルの7つの集団(A~F)である年におけるメスの毛づくろいのデータを収集し、ダイアッドごとの毛づくろい頻度を算出したとしよう。以下の`list_mat`には、list形式で7つの隣接行列が収納されている(架空のデータである)。      
+
+```{r}
+list_mat <- readRDS("data/list_mat.obj")
+```
+
+例えば、3つ目の集団(C)の隣接行列は以下のようになっている(表\@ref(tab:tab-example3)。  
+```{r tab-example3}
+list_mat[[3]] %>% 
+  kable(digits = 2, align = "c", caption = "3つめの隣接行列") %>% 
+  kable_styling(font_size = 5, full_width = FALSE)
+```
+
+これらの集団において、各個体の**固有ベクトル中心性が、その後10年間の産子数に影響しているか**調べたいとする。各集団における各メスの順位・年齢・産子数・集団名が以下の`list_att`に入っている(もちろん架空のデータである)。    
+```{r}
+list_att <- readRDS("data/list_att.obj")
+```
+
+例えば、C集団の属性テーブルは以下のようになる。  
+```{r}
+list_att[[3]] %>% 
+  data.table()
+```
+
+さて、これらのデータに対して仮説(**固有ベクトル中心性が、産子数に影響するか**)を検証するために以下のモデルを考える。ただし、添え字の$ji$はそれが$j$番目の集団の$i$番目の個体のデータであることを表す。なお、`eigen`、`rank`、`age`、`no_birth`はそれぞれ固有ベクトル中心性、順位、年齢、産子数を表す。  
+
+$r_j$はランダム切片を表し、集団による産子数(`no_birth`)のばらつきがあることを示している。3行目の数式は、$j$番目の集団の$i$番目の個体の産子数($no\_birth_{ji}$)が、平均$\lambda_{ji}$のポワソン分布から得られることを表す。 
+
+$$
+
+\begin{aligned}
+
+r_j &\sim Normal(0, \sigma)\\
+
+\lambda_{ji} &= exp(\beta_0 + \beta_1 \times eigen_{ji} + \beta_2 \times rank_{ji} + \beta_3 \times age_{ji} + r_j)  \\
+
+no\_birth_{ji} &\sim Poisson(\lambda_{ji})
+
+\end{aligned}
+
+$$
+
+それでは、分析に移ろう。各集団ごとに固有ベクトル中心性を算出する(**Step2**)。`ANTs`パッケージで以下のように求められる。  
+```{r}
+list_att <- met.eigen(list_mat,
+                      list_att)
+```
+
+C集団ついての算出結果は以下のようになった。  
+```{r}
+list_att[[3]] %>% 
+  datatable(rownames = FALSE)
+```
+<br/>  
+
+続いて、`perm.net.nl`関数を用いてnode permutationを行う(**Step3**)。今回のように複数のグループが含まれる集団では、各グループ内でnode permutationを行う。`rf = "group"`と指定してあげる。  
+
+```{r}
+perm_glmm <- perm.net.nl(list_att, 
+                         ## 応答変数をシャッフルすることが多い  
+                         labels = "no_birth",
+                         nperm = 1000,
+                         rf = "group",
+                         progress = FALSE)
+```
+
+続いて、`stat.glmm`関数を用い、実データとランダムネットワークにおけるデータに対してモデリングを行い、パラメータの推定値を算出する(**Step4**)。ランダム切片は、`(1|group)`のように書いてformulaに加える。   
+
+```{r}
+r_glmm <- stat.glmm(perm_glmm,
+              ## 式
+              formula = no_birth ~ eigen + rank + age + (1|group),
+              ## 応答変数が従う分布を指定。二項分布なら"binomial"、ポワソン分布なら"poisson"
+              family = poisson(link = "log"),
+              progress = FALSE)
+```
+
+分析結果は、`ant`パッケージを用いることで確認できる(**Step5**)。  
+実データの回帰係数とランダムネットワークの回帰係数の分布の比較は以下のようになる(図\@ref(fig:fig-npermtest-c))。  
+```{r fig-npermtest-c, fig.dim = c(12,5.5), fig.cap = "実データの回帰係数とランダムネットワークの回帰係数の分布の比較"}
+r_glmm_ants <- ant(r_glmm)
+```
+<br/>  
+
+検定結果は以下の通り。順位と年齢の有意な影響は確認されたが、固有ベクトル中心性の影響は有意でないという結果が得られた。  
+```{r}
+r_glmm_ants$model
+```
 
 #### ネットワーク同士の関連の検討  
 node label randomizationによってネットワーク同士の関連を調べることもできる。  

@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-01-12" />
+<meta name="date" content="2023-01-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -174,7 +174,11 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="1.2.1" data-path="c1.html"><a href="c1.html#グラフ"><i class="fa fa-check"></i><b>1.2.1</b> グラフ</a></li>
 <li class="chapter" data-level="1.2.2" data-path="c1.html"><a href="c1.html#隣接行列マトリックス"><i class="fa fa-check"></i><b>1.2.2</b> 隣接行列(マトリックス)</a></li>
-<li class="chapter" data-level="1.2.3" data-path="c1.html"><a href="c1.html#rでのグラフの描画"><i class="fa fa-check"></i><b>1.2.3</b> Rでのグラフの描画</a></li>
+<li class="chapter" data-level="1.2.3" data-path="c1.html"><a href="c1.html#rでのグラフの描画"><i class="fa fa-check"></i><b>1.2.3</b> Rでのグラフの描画</a>
+<ul>
+<li class="chapter" data-level="1.2.3.1" data-path="c1.html"><a href="c1.html#tbl_graphクラスへの変換"><i class="fa fa-check"></i><b>1.2.3.1</b> <code>tbl_graph</code>クラスへの変換</a></li>
+<li class="chapter" data-level="1.2.3.2" data-path="c1.html"><a href="c1.html#ggraphを用いた描画"><i class="fa fa-check"></i><b>1.2.3.2</b> <code>ggraph</code>を用いた描画</a></li>
+</ul></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="c2.html"><a href="c2.html"><i class="fa fa-check"></i><b>2</b> データの読み込みとマトリックスの作成</a>
@@ -198,10 +202,18 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="3.2.1" data-path="c3.html"><a href="c3.html#集中度centralization"><i class="fa fa-check"></i><b>3.2.1</b> 集中度(Centralization)</a></li>
 <li class="chapter" data-level="3.2.2" data-path="c3.html"><a href="c3.html#密度density"><i class="fa fa-check"></i><b>3.2.2</b> 密度(Density)</a></li>
-<li class="chapter" data-level="3.2.3" data-path="c3.html"><a href="c3.html#同類性assortativity"><i class="fa fa-check"></i><b>3.2.3</b> 同類性(Assortativity)</a></li>
+<li class="chapter" data-level="3.2.3" data-path="c3.html"><a href="c3.html#同類性assortativity"><i class="fa fa-check"></i><b>3.2.3</b> 同類性(Assortativity)</a>
+<ul>
+<li class="chapter" data-level="3.2.3.1" data-path="c3.html"><a href="c3.html#連続的な属性の場合"><i class="fa fa-check"></i><b>3.2.3.1</b> 連続的な属性の場合</a></li>
+<li class="chapter" data-level="3.2.3.2" data-path="c3.html"><a href="c3.html#離散的な属性の場合"><i class="fa fa-check"></i><b>3.2.3.2</b> 離散的な属性の場合</a></li>
+</ul></li>
 <li class="chapter" data-level="3.2.4" data-path="c3.html"><a href="c3.html#推移性transitivity"><i class="fa fa-check"></i><b>3.2.4</b> 推移性(Transitivity)</a></li>
 <li class="chapter" data-level="3.2.5" data-path="c3.html"><a href="c3.html#modularity"><i class="fa fa-check"></i><b>3.2.5</b> Modularity</a></li>
-<li class="chapter" data-level="3.2.6" data-path="c3.html"><a href="c3.html#応用例下位集団の検出"><i class="fa fa-check"></i><b>3.2.6</b> 応用例(下位集団の検出)</a></li>
+<li class="chapter" data-level="3.2.6" data-path="c3.html"><a href="c3.html#応用例下位集団の検出"><i class="fa fa-check"></i><b>3.2.6</b> 応用例(下位集団の検出)</a>
+<ul>
+<li class="chapter" data-level="3.2.6.1" data-path="c3.html"><a href="c3.html#modularityを用いる方法"><i class="fa fa-check"></i><b>3.2.6.1</b> Modularityを用いる方法</a></li>
+<li class="chapter" data-level="3.2.6.2" data-path="c3.html"><a href="c3.html#構造類似性を用いる方法"><i class="fa fa-check"></i><b>3.2.6.2</b> 構造類似性を用いる方法</a></li>
+</ul></li>
 <li class="chapter" data-level="3.2.7" data-path="c3.html"><a href="c3.html#その他"><i class="fa fa-check"></i><b>3.2.7</b> その他</a></li>
 </ul></li>
 </ul></li>
@@ -210,7 +222,11 @@ div.csl-indent {
 <li class="chapter" data-level="4.1" data-path="c4.html"><a href="c4.html#s4-1"><i class="fa fa-check"></i><b>4.1</b> なぜランダム化検定が必要か？</a></li>
 <li class="chapter" data-level="4.2" data-path="c4.html"><a href="c4.html#s4-2"><i class="fa fa-check"></i><b>4.2</b> Network permutation</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="c4.html"><a href="c4.html#分析例"><i class="fa fa-check"></i><b>4.2.1</b> 分析例</a></li>
+<li class="chapter" data-level="4.2.1" data-path="c4.html"><a href="c4.html#分析例"><i class="fa fa-check"></i><b>4.2.1</b> 分析例</a>
+<ul>
+<li class="chapter" data-level="4.2.1.1" data-path="c4.html"><a href="c4.html#線形モデルglmglmmなど"><i class="fa fa-check"></i><b>4.2.1.1</b> 線形モデル(GLM、GLMMなど)</a></li>
+<li class="chapter" data-level="4.2.1.2" data-path="c4.html"><a href="c4.html#ネットワーク同士の関連の検討"><i class="fa fa-check"></i><b>4.2.1.2</b> ネットワーク同士の関連の検討</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="4.3" data-path="c4.html"><a href="c4.html#data-stream-randomization"><i class="fa fa-check"></i><b>4.3</b> data stream randomization</a></li>
 </ul></li>

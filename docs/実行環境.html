@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-01-12" />
+<meta name="date" content="2023-01-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -174,7 +174,11 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="1.2.1" data-path="c1.html"><a href="c1.html#グラフ"><i class="fa fa-check"></i><b>1.2.1</b> グラフ</a></li>
 <li class="chapter" data-level="1.2.2" data-path="c1.html"><a href="c1.html#隣接行列マトリックス"><i class="fa fa-check"></i><b>1.2.2</b> 隣接行列(マトリックス)</a></li>
-<li class="chapter" data-level="1.2.3" data-path="c1.html"><a href="c1.html#rでのグラフの描画"><i class="fa fa-check"></i><b>1.2.3</b> Rでのグラフの描画</a></li>
+<li class="chapter" data-level="1.2.3" data-path="c1.html"><a href="c1.html#rでのグラフの描画"><i class="fa fa-check"></i><b>1.2.3</b> Rでのグラフの描画</a>
+<ul>
+<li class="chapter" data-level="1.2.3.1" data-path="c1.html"><a href="c1.html#tbl_graphクラスへの変換"><i class="fa fa-check"></i><b>1.2.3.1</b> <code>tbl_graph</code>クラスへの変換</a></li>
+<li class="chapter" data-level="1.2.3.2" data-path="c1.html"><a href="c1.html#ggraphを用いた描画"><i class="fa fa-check"></i><b>1.2.3.2</b> <code>ggraph</code>を用いた描画</a></li>
+</ul></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="c2.html"><a href="c2.html"><i class="fa fa-check"></i><b>2</b> データの読み込みとマトリックスの作成</a>
@@ -198,10 +202,18 @@ div.csl-indent {
 <ul>
 <li class="chapter" data-level="3.2.1" data-path="c3.html"><a href="c3.html#集中度centralization"><i class="fa fa-check"></i><b>3.2.1</b> 集中度(Centralization)</a></li>
 <li class="chapter" data-level="3.2.2" data-path="c3.html"><a href="c3.html#密度density"><i class="fa fa-check"></i><b>3.2.2</b> 密度(Density)</a></li>
-<li class="chapter" data-level="3.2.3" data-path="c3.html"><a href="c3.html#同類性assortativity"><i class="fa fa-check"></i><b>3.2.3</b> 同類性(Assortativity)</a></li>
+<li class="chapter" data-level="3.2.3" data-path="c3.html"><a href="c3.html#同類性assortativity"><i class="fa fa-check"></i><b>3.2.3</b> 同類性(Assortativity)</a>
+<ul>
+<li class="chapter" data-level="3.2.3.1" data-path="c3.html"><a href="c3.html#連続的な属性の場合"><i class="fa fa-check"></i><b>3.2.3.1</b> 連続的な属性の場合</a></li>
+<li class="chapter" data-level="3.2.3.2" data-path="c3.html"><a href="c3.html#離散的な属性の場合"><i class="fa fa-check"></i><b>3.2.3.2</b> 離散的な属性の場合</a></li>
+</ul></li>
 <li class="chapter" data-level="3.2.4" data-path="c3.html"><a href="c3.html#推移性transitivity"><i class="fa fa-check"></i><b>3.2.4</b> 推移性(Transitivity)</a></li>
 <li class="chapter" data-level="3.2.5" data-path="c3.html"><a href="c3.html#modularity"><i class="fa fa-check"></i><b>3.2.5</b> Modularity</a></li>
-<li class="chapter" data-level="3.2.6" data-path="c3.html"><a href="c3.html#応用例下位集団の検出"><i class="fa fa-check"></i><b>3.2.6</b> 応用例(下位集団の検出)</a></li>
+<li class="chapter" data-level="3.2.6" data-path="c3.html"><a href="c3.html#応用例下位集団の検出"><i class="fa fa-check"></i><b>3.2.6</b> 応用例(下位集団の検出)</a>
+<ul>
+<li class="chapter" data-level="3.2.6.1" data-path="c3.html"><a href="c3.html#modularityを用いる方法"><i class="fa fa-check"></i><b>3.2.6.1</b> Modularityを用いる方法</a></li>
+<li class="chapter" data-level="3.2.6.2" data-path="c3.html"><a href="c3.html#構造類似性を用いる方法"><i class="fa fa-check"></i><b>3.2.6.2</b> 構造類似性を用いる方法</a></li>
+</ul></li>
 <li class="chapter" data-level="3.2.7" data-path="c3.html"><a href="c3.html#その他"><i class="fa fa-check"></i><b>3.2.7</b> その他</a></li>
 </ul></li>
 </ul></li>
@@ -210,7 +222,11 @@ div.csl-indent {
 <li class="chapter" data-level="4.1" data-path="c4.html"><a href="c4.html#s4-1"><i class="fa fa-check"></i><b>4.1</b> なぜランダム化検定が必要か？</a></li>
 <li class="chapter" data-level="4.2" data-path="c4.html"><a href="c4.html#s4-2"><i class="fa fa-check"></i><b>4.2</b> Network permutation</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="c4.html"><a href="c4.html#分析例"><i class="fa fa-check"></i><b>4.2.1</b> 分析例</a></li>
+<li class="chapter" data-level="4.2.1" data-path="c4.html"><a href="c4.html#分析例"><i class="fa fa-check"></i><b>4.2.1</b> 分析例</a>
+<ul>
+<li class="chapter" data-level="4.2.1.1" data-path="c4.html"><a href="c4.html#線形モデルglmglmmなど"><i class="fa fa-check"></i><b>4.2.1.1</b> 線形モデル(GLM、GLMMなど)</a></li>
+<li class="chapter" data-level="4.2.1.2" data-path="c4.html"><a href="c4.html#ネットワーク同士の関連の検討"><i class="fa fa-check"></i><b>4.2.1.2</b> ネットワーク同士の関連の検討</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="4.3" data-path="c4.html"><a href="c4.html#data-stream-randomization"><i class="fa fa-check"></i><b>4.3</b> data stream randomization</a></li>
 </ul></li>
@@ -235,7 +251,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="実行環境" class="section level1 unnumbered hasAnchor">
 <h1>実行環境<a href="実行環境.html#実行環境" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="実行環境.html#cb126-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="実行環境.html#cb139-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
 <pre><code>## R version 4.2.2 (2022-10-31 ucrt)
 ## Platform: x86_64-w64-mingw32/x64 (64-bit)
 ## Running under: Windows 10 x64 (build 22621)
@@ -269,41 +285,39 @@ div.csl-indent {
 ## [46] ggplot2_3.4.0        tidygraph_1.2.2     
 ## 
 ## loaded via a namespace (and not attached):
-##   [1] readxl_1.4.1        backports_1.4.1     plyr_1.8.8         
-##   [4] splines_4.2.2       crosstalk_1.2.0     digest_0.6.31      
-##   [7] htmltools_0.5.4     viridis_0.6.2       fansi_1.0.3        
-##  [10] magrittr_2.0.3      googlesheets4_1.0.1 tzdb_0.3.0         
-##  [13] graphlayouts_0.8.4  modelr_0.1.10       Kendall_2.2.1      
-##  [16] vroom_1.6.0         extrafontdb_1.0     svglite_2.1.1      
-##  [19] timechange_0.1.1    colorspace_2.0-3    rvest_1.0.3        
-##  [22] ggrepel_0.9.2       haven_2.5.1         xfun_0.36          
-##  [25] tcltk_4.2.2         crayon_1.5.2        jsonlite_1.8.4     
-##  [28] lme4_1.1-31         glue_1.6.2          polyclip_1.10-4    
-##  [31] gtable_0.3.1        gargle_1.2.1        emmeans_1.8.3      
-##  [34] webshot_0.5.4       V8_4.2.2            Rttf2pt1_1.3.8     
-##  [37] scales_1.2.1        mvtnorm_1.1-3       DBI_1.1.3          
-##  [40] Rcpp_1.0.9          viridisLite_0.4.1   xtable_1.8-4       
-##  [43] bit_4.0.5           htmlwidgets_1.6.1   httr_1.4.4         
-##  [46] ellipsis_0.3.2      pkgconfig_2.0.3     farver_2.1.1       
-##  [49] sass_0.4.4          dbplyr_2.2.1        utf8_1.2.2         
-##  [52] labeling_0.4.2      tidyselect_1.2.0    rlang_1.0.6        
-##  [55] munsell_0.5.0       cellranger_1.1.0    tools_4.2.2        
-##  [58] visNetwork_2.1.2    cachem_1.0.6        cli_3.6.0          
-##  [61] generics_0.1.3      broom_1.0.2         evaluate_0.19      
-##  [64] fastmap_1.1.0       yaml_2.3.6          bit64_4.0.5        
-##  [67] fs_1.5.2            nlme_3.1-160        xml2_1.3.3         
-##  [70] compiler_4.2.2      rstudioapi_0.14     curl_4.3.3         
-##  [73] reprex_2.0.2        tweenr_2.0.2        bslib_0.4.2        
-##  [76] stringi_1.7.8       highr_0.10          lattice_0.20-45    
-##  [79] Matrix_1.5-1        nloptr_2.0.3        vctrs_0.5.1        
-##  [82] pillar_1.8.1        lifecycle_1.0.3     jquerylib_0.1.4    
-##  [85] estimability_1.4.1  R6_2.5.1            bookdown_0.31      
-##  [88] gridExtra_2.3       codetools_0.2-18    boot_1.3-28        
-##  [91] MASS_7.3-58.1       gtools_3.9.4        assertthat_0.2.1   
-##  [94] withr_2.5.0         parallel_4.2.2      hms_1.1.2          
-##  [97] grid_4.2.2          coda_0.19-4         class_7.3-20       
-## [100] minqa_1.2.5         rmarkdown_2.19      googledrive_2.0.0  
-## [103] lubridate_1.9.0</code></pre>
+##  [1] readxl_1.4.1        backports_1.4.1     plyr_1.8.8         
+##  [4] splines_4.2.2       digest_0.6.31       htmltools_0.5.4    
+##  [7] viridis_0.6.2       fansi_1.0.3         magrittr_2.0.3     
+## [10] googlesheets4_1.0.1 tzdb_0.3.0          graphlayouts_0.8.4 
+## [13] modelr_0.1.10       Kendall_2.2.1       extrafontdb_1.0    
+## [16] svglite_2.1.1       timechange_0.1.1    colorspace_2.0-3   
+## [19] rvest_1.0.3         ggrepel_0.9.2       haven_2.5.1        
+## [22] xfun_0.36           tcltk_4.2.2         crayon_1.5.2       
+## [25] jsonlite_1.8.4      lme4_1.1-31         glue_1.6.2         
+## [28] polyclip_1.10-4     gtable_0.3.1        gargle_1.2.1       
+## [31] emmeans_1.8.3       webshot_0.5.4       V8_4.2.2           
+## [34] Rttf2pt1_1.3.8      scales_1.2.1        mvtnorm_1.1-3      
+## [37] DBI_1.1.3           Rcpp_1.0.9          viridisLite_0.4.1  
+## [40] xtable_1.8-4        htmlwidgets_1.6.1   httr_1.4.4         
+## [43] ellipsis_0.3.2      pkgconfig_2.0.3     farver_2.1.1       
+## [46] sass_0.4.4          dbplyr_2.2.1        utf8_1.2.2         
+## [49] tidyselect_1.2.0    rlang_1.0.6         munsell_0.5.0      
+## [52] cellranger_1.1.0    tools_4.2.2         visNetwork_2.1.2   
+## [55] cachem_1.0.6        cli_3.6.0           generics_0.1.3     
+## [58] broom_1.0.2         evaluate_0.19       fastmap_1.1.0      
+## [61] yaml_2.3.6          fs_1.5.2            nlme_3.1-160       
+## [64] xml2_1.3.3          compiler_4.2.2      rstudioapi_0.14    
+## [67] curl_4.3.3          reprex_2.0.2        tweenr_2.0.2       
+## [70] bslib_0.4.2         stringi_1.7.8       highr_0.10         
+## [73] lattice_0.20-45     Matrix_1.5-1        nloptr_2.0.3       
+## [76] vctrs_0.5.1         pillar_1.8.1        lifecycle_1.0.3    
+## [79] jquerylib_0.1.4     estimability_1.4.1  R6_2.5.1           
+## [82] bookdown_0.31       gridExtra_2.3       codetools_0.2-18   
+## [85] boot_1.3-28         MASS_7.3-58.1       gtools_3.9.4       
+## [88] assertthat_0.2.1    withr_2.5.0         hms_1.1.2          
+## [91] grid_4.2.2          coda_0.19-4         class_7.3-20       
+## [94] minqa_1.2.5         rmarkdown_2.19      googledrive_2.0.0  
+## [97] lubridate_1.9.0</code></pre>
 
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div class="csl-entry">
