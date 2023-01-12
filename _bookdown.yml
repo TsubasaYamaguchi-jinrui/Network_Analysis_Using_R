@@ -8,6 +8,7 @@ rmd_files:
   - Chapter4.Rmd  
   - Chapter5.Rmd  
   - sessioninfo.Rmd
+output_dir: "docs"  
 language:
   label:
     fig: "図"

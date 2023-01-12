@@ -1,7 +1,7 @@
 # データの読み込みとマトリックスの作成 {#c2}  
 R上でSNAを行うためには、個体間の関係データを隣接行列にしなければならないことが多い。しかし多くの場合、個体間のassociationの生データは隣接行列の形では表されていない。例えば個体追跡のデータでは、以下(表\@ref(tab:tab-focal-example))のように1分ごとに毛づくろい相手のIDを記録したものをまずExcelファイルなどに記入する、というようなことが多いだろう。ここでは、R上でこのような生データから隣接行列を作成する方法を学ぶ。  
 
-```{r tab-f0cal-example, echo = FALSE}
+```{r tab-focal-example, echo = FALSE}
 data.frame(min = c(1,2,3,4,5),
            groomer = c("A","A","A","B","B"),
            groomee = c("B","B","C","A","A")) %>% 
@@ -68,7 +68,8 @@ duration %>%
 また、毛づくろい相手が大人だったのみを抽出。  
 ```{r}
 groom_G <- groom %>% 
-filter(activity == "G") %>% 
+  ## 地上かつ毛づくろいのみ抽出
+  filter(activity == "G") %>% 
   filter(Groomer %in% adult & Groomee %in% adult)
 ```
 
@@ -187,25 +188,27 @@ $= HWI_{ab} \times \frac{\sum_i \sum_j HWI_{ij}}{\sum_i HWI_{ai} \times \sum_i H
 
 `asnipe`パッケージの`get_network()`関数では、こうしたデータからSRIとHWIを算出し、マトリックスを作成することが可能である。
 ```{r}
-presence_mat <- get_network(presence %>% dplyr::select(-date),
+presence_mat <- get_network(presence %>%
+                            dplyr::select(-date),
                             ## gambit of the group
                             data_format = "GBI",
                             ## "HWI"の場合は、"HWI"
-                            association_index = "SRI")
+                            association_index = "SRI")  
 ```
 
 得られた隣接行列は以下の通り(表\@ref(tab:tab-SRI))。  
 ```{r tab-SRI, echo = FALSE}
 presence_mat %>% 
   kable(digits = 2, align = "c", caption = "SRIの隣接行列") %>% 
-  kable_styling(font_size = 6, full_width = FALSE)
+  kable_styling(font_size = 6, full_width = FALSE)    
 ```
 <br/>  
 
 HWIGは`hwig`パッケージの`calc_hwig()`関数で算出することができる。  
 ```{r}
 ## まずHWIを算出  
-presence_mat_HWI <- get_network(presence %>% dplyr::select(-date),
+presence_mat_HWI <- get_network(presence %>%
+                              dplyr::select(-date),
                               data_format = "GBI",
                               association_index = "HWI")
 
@@ -223,7 +226,7 @@ rownames(presence_mat_HWIG)  <- rownames(presence_mat_HWI)
 得られた隣接行列は以下の通り(表\@ref(tab:tab-HWIG))。  
 ```{r tab-HWIG, echo = FALSE}
 presence_mat_HWIG %>% 
-  kable(digits = 2, align = "c", caption = "HWIGの隣接行列") %>% 
+  kable(digits = 2, align = "c", caption = "HWIGの隣接行列") %>%
   kable_styling(font_size = 6, full_width = FALSE)
 ```
 <br/>  

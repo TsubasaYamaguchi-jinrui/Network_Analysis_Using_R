@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>4 統計的検定 | Network Analysis Using R</title>
   <meta name="description" content="4 統計的検定 | Network Analysis Using R" />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
 
   <meta property="og:title" content="4 統計的検定 | Network Analysis Using R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2022-11-13" />
+<meta name="date" content="2023-01-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -54,12 +54,12 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.23/datatables.js"></script>
-<link href="libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="libs/datatables-binding-0.26/datatables.js"></script>
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
 <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 
@@ -102,7 +102,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -115,7 +115,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -207,11 +207,10 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="4" data-path="c4.html"><a href="c4.html"><i class="fa fa-check"></i><b>4</b> 統計的検定</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="c4.html"><a href="c4.html#なぜランダム化検定が必要か"><i class="fa fa-check"></i><b>4.1</b> なぜランダム化検定が必要か？</a></li>
-<li class="chapter" data-level="4.2" data-path="c4.html"><a href="c4.html#s3-2"><i class="fa fa-check"></i><b>4.2</b> Network permutation</a>
+<li class="chapter" data-level="4.1" data-path="c4.html"><a href="c4.html#s4-1"><i class="fa fa-check"></i><b>4.1</b> なぜランダム化検定が必要か？</a></li>
+<li class="chapter" data-level="4.2" data-path="c4.html"><a href="c4.html#s4-2"><i class="fa fa-check"></i><b>4.2</b> Network permutation</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="c4.html"><a href="c4.html#線形回帰分析"><i class="fa fa-check"></i><b>4.2.1</b> 線形回帰分析</a></li>
-<li class="chapter" data-level="4.2.2" data-path="c4.html"><a href="c4.html#ネットワーク同士の関連の検討"><i class="fa fa-check"></i><b>4.2.2</b> ネットワーク同士の関連の検討</a></li>
+<li class="chapter" data-level="4.2.1" data-path="c4.html"><a href="c4.html#分析例"><i class="fa fa-check"></i><b>4.2.1</b> 分析例</a></li>
 </ul></li>
 <li class="chapter" data-level="4.3" data-path="c4.html"><a href="c4.html#data-stream-randomization"><i class="fa fa-check"></i><b>4.3</b> data stream randomization</a></li>
 </ul></li>
@@ -236,8 +235,8 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="c4" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">4</span> 統計的検定<a href="c4.html#c4" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="なぜランダム化検定が必要か" class="section level2 hasAnchor" number="4.1">
-<h2><span class="header-section-number">4.1</span> なぜランダム化検定が必要か？<a href="c4.html#なぜランダム化検定が必要か" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="s4-1" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> なぜランダム化検定が必要か？<a href="c4.html#s4-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><strong>マトリックス内の数値やそこから算出されたネットワーク指標は互いに独立ではない</strong><span class="citation">(<a href="#ref-Croft2011" role="doc-biblioref">D. P. Croft et al., 2011</a>; <a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>; <a href="#ref-Farine2015" role="doc-biblioref">Farine &amp; Whitehead, 2015</a>)</span>。例えば、図<a href="c4.html#fig:fig-ind">4.1</a>のグラフの重みづけ中心性について考える。ノードAとCの重みづけ中心性をそれぞれ計算するとき、どちらの計算にもAとCをつなぐ辺の重み(3)が入ってくる(A:1+1+2+<span style="color: red;">3</span>; C: 2+2+<span style="color: red;">3</span>)。つまり、<u>これらのノードの重みづけ中心性は互いに関連しあっている(= 独立ではない)</u>。これは、辺で繋がっている全てのノード同士の重み付き中心性について言える。このように、ネットワーク内のデータや中心性指標のほとんどは互いに独立ではない。</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-ind"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/fig-ind-1.png" alt="ネットワークデータの非独立性の説明のためのグラフ" width="576" />
@@ -246,19 +245,43 @@ div.csl-indent {
 </p>
 </div>
 <p>これは、統計的な分析を行おうとするときに大きな問題になる。なぜなら、ほとんどの統計分析(t検定、相関分析、GLMなどの回帰分析、…)ではデータが互いに独立していることが仮定されているからである<span class="citation">(<a href="#ref-Croft2011" role="doc-biblioref">D. P. Croft et al., 2011</a>)</span>。そのため、<strong>ネットワークデータにそのままこのような分析を適用すると、誤った結果が得られる確率が高くなってしまう</strong>のである。</p>
-<p>この問題に対処するために最もよく用いられる方法が<strong>ランダム化検定(randomization test)</strong>である<span class="citation">(<a href="#ref-Croft2011" role="doc-biblioref">D. P. Croft et al., 2011</a>; <a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>; <a href="#ref-Farine2015" role="doc-biblioref">Farine &amp; Whitehead, 2015</a>)</span>。ランダム化検定とは、「ランダムな」ネットワークを大量(少なくとも1000回以上)に生成した後、それらから得られた統計検定量(実際にはt検定量や回帰係数など)の分布を帰無分布<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>として、実際の統計検定量の有意性を判定する方法である。</p>
-<p>適切にランダム化検定を行うためには、検定の対象となる側面についてはランダム化する一方で、それ以外の側面(e.g., 各個体の観察回数、ノードと辺の数、ネットワークの構造など)については可能な限り一定になるようにランダムネットワークを生成することが重要である。この点を考慮するため、ネットワーク分析では実データをシャッフルすることでランダムなネットワークを生成する<strong>パーミュテーション検定(permutation test)</strong>がよく用いられる。パーミュテーション検定は、どの段階のデータをランダム化するかによって大きく2つに分けられる。以下では、それぞれについて詳しくみていく。より詳しい解説は <span class="citation">D. P. Croft et al. (<a href="#ref-Croft2011" role="doc-biblioref">2011</a>)</span>、 <span class="citation">Farine &amp; Whitehead (<a href="#ref-Farine2015" role="doc-biblioref">2015</a>)</span>、 <span class="citation">Farine (<a href="#ref-Farine2017" role="doc-biblioref">2017</a>)</span> を参照。</p>
+<p>この問題に対処するために最もよく用いられる方法が<strong>ランダム化検定(randomization test)</strong>である<span class="citation">(<a href="#ref-Croft2011" role="doc-biblioref">D. P. Croft et al., 2011</a>; <a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>; <a href="#ref-Farine2015" role="doc-biblioref">Farine &amp; Whitehead, 2015</a>)</span>。ランダム化検定とは、「ランダムな」ネットワークを大量(少なくとも1000回以上)に生成した後、それらから得られた統計検定量(e.g., t検定量や回帰係数など)の分布を帰無分布<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>として、実際の統計検定量の有意性を判定する方法である。ここでの<strong>「ランダム」なネットワークは、帰無仮説が正しいときの個体間の交渉やassociationを表すものでなくてはならない</strong>。例えば、「毛づくろいネットワークにおける中心性と年齢に関連がある」という仮説を検証するのであれば、年齢にかかわらずランダムに毛づくろいが行われているネットワークをランダムネットワークとして生成する必要がある。</p>
+<p>加えて、適切にランダム化検定を行うためには、検定の対象となる側面(e.g., 中心性指標と順位の関係、個体間の交渉頻度と性別・年齢の関係など)についてはランダム化する一方で、それ以外の側面(e.g., 各個体の観察回数、ノードと辺の数、ネットワークの構造など)については可能な限り一定になるようにランダムネットワークを生成することが重要である。この点を考慮するため、ネットワーク分析では実データをシャッフルすることでランダムなネットワークを生成する<strong>パーミュテーション検定(permutation test)</strong>がよく用いられる。</p>
+<p><br/><br />
+ネットワークデータへのパーミュテーション検定は、通常以下の5つのステップで行われる<span class="citation">(<a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a> を改変)</span>。</p>
+<ol style="list-style-type: decimal">
+<li>観察データから社会ネットワークを生成する。<br />
+</li>
+<li>1で作成した社会ネットワークに対して統計分析を行い、統計検定量(e.g., t検定ならt統計量、GLMなどの回帰分析なら回帰係数)を算出する。<br />
+</li>
+<li>観察データをシャッフルし、ランダムなネットワークをたくさん作る(少なくとも1000個)。<br />
+</li>
+<li>それぞれのランダムネットワークに対して、2と同じ統計分析を行い、統計検定量を算出する。<br />
+</li>
+<li>2の統計検定量を4の統計検定量の分布と比較する。両者に大きな乖離があれば、仮説が正しいと結論付ける。例えば有意水準が5%のときには、<strong>2の統計検定量が4の統計検定量の95%より大き/小さければ</strong>、帰無仮説を棄却することになる。</li>
+</ol>
+<p><br/><br />
+パーミュテーション検定は、どの段階のデータをシャッフルするかによって大きく2つに分けられる。以下では、それぞれについて詳しくみていく。より詳しい解説は <span class="citation">D. P. Croft et al. (<a href="#ref-Croft2011" role="doc-biblioref">2011</a>)</span>、 <span class="citation">Farine &amp; Whitehead (<a href="#ref-Farine2015" role="doc-biblioref">2015</a>)</span>、 <span class="citation">Farine (<a href="#ref-Farine2017" role="doc-biblioref">2017</a>)</span> を参照。</p>
 <ul>
 <li><strong>Network permutation</strong>: 既に作られたネットワーク上のノードや辺をシャッフルする。<br />
 </li>
-<li><strong>Pre-network permutation</strong> (Data stream permutation): ネットワークを作る前に、交渉やassociationの生データをシャッフルする。</li>
+<li><strong>Pre-network permutation</strong> (またはData stream permutation): ネットワークを作る前に、交渉やassociationの生データをシャッフルする。</li>
 </ul>
 <p>なお、検定の際にはいずれかのランダム化のみを施すことが多いが、どちらのランダム化も同時に適用した方がより頑強な結果が得られるという報告もある<span class="citation">(<a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>)</span>。</p>
 </div>
-<div id="s3-2" class="section level2 hasAnchor" number="4.2">
-<h2><span class="header-section-number">4.2</span> Network permutation<a href="c4.html#s3-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Network permutationには大きく分けて辺をシャッフルする<strong>edge permutation</strong>と、ノードをシャッフルする<strong>node permutation</strong>に分けられるが、本節ではより一般的に用いられている後者についてのみ解説を行う。前者は生物のネットワークではあまり用いられないため<span class="citation">(<a href="#ref-Croft2011" role="doc-biblioref">D. P. Croft et al., 2011</a>; <a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>)</span>、ここでは解説しない。</p>
-<p>Node permutationでは、ノードの属性(性別、順位など)をランダムにシャッフルして生成したランダムなネットワークにおける統計検定量の分布を帰無分布とし、実際のデータの統計検定量をそれと比較することで有意性を判定する方法である。</p>
+<div id="s4-2" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Network permutation<a href="c4.html#s4-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Network permutationには大きく分けて<u>辺</u>をシャッフルする<strong>edge permutation</strong>と、<u>ノード</u>をシャッフルする<strong>node permutation</strong>に分けられるが、本節ではより一般的に用いられている後者についてのみ解説を行う。前者は生物のネットワークではあまり用いられないため<span class="citation">(<a href="#ref-Croft2011" role="doc-biblioref">D. P. Croft et al., 2011</a>; <a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>)</span>、ここでは解説しない。</p>
+<p>Node permutationでは、ノードの属性(性別、順位など)をランダムにシャッフルして生成したランダムなネットワークにおける統計検定量の分布を帰無分布とし、実際のデータの統計検定量をそれと比較することで有意性を判定する方法である。これにより、ネットワークの構造(e.g., ノード数、辺の数、密度など)や属性ごとのノード数(e.g., 性別の場合、オスとメスの数)を一定にしたまま検定を行うことができる。</p>
+<p>例えば、5個体からなる集団において、個体の社会的順位と固有ベクトル中心性の相関の有意性を検定するとしよう。Node permutationでは、以下のような手順で検定を行う(<a href="c4.html#s4-1">4.1</a>も参照)。</p>
+<ol style="list-style-type: decimal">
+<li><p>観察データからネットワークを生成する。<br />
+ここでは、図<a href="c4.html#fig:fig-nlperm">4.2</a>のORIGINALが得られたとする</p></li>
+<li><p>1で作成した社会ネットワークに対して統計分析を行い、統計検定量を算出する。<br />
+ここでは相関係数を算出し、-0.83だったとする(図<a href="c4.html#fig:fig-nlperm">4.2</a>)。</p></li>
+<li><p>ノードの属性(ここでは個体名とその順位)をランダムにシャッフルし、ランダムネットワークを多数作成する(図<a href="c4.html#fig:fig-nlperm">4.2</a>のPERMUTATION1 ~ PERMUTATION1000)。通常は少なくとも1000回は行う。</p></li>
+<li><p>すべてのランダムなネットワークにおける相関係数を算出する(図<a href="c4.html#fig:fig-nlperm">4.2</a>)。　　</p></li>
+</ol>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-nlperm"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/fig-nlperm-1.png" alt="Node permutationの例" width="1296" />
 <p class="caption">
@@ -266,46 +289,1140 @@ div.csl-indent {
 </p>
 </div>
 <p><br/></p>
-有意性は以下のように実際の値がランダムに生成された1000このネットワークの値の何%より大きいかで判断する。<br />
+<ol start="5" style="list-style-type: decimal">
+<li>ランダムなネットワークから算出された相関係数の分布を帰無分布とし、実際の相関係数がこれらの何%より大きい(または小さい)かを算出する(図<a href="c4.html#fig:fig-nlperm2">4.3</a>)。これが<span class="math inline">\(P\)</span>値になる。このように、片側検定が用いられることが多い。ここでは、ランダムネットワークの相関係数の5/1000しか実測値より小さくないので、<span class="math inline">\(P = 0.005\)</span>となり有意な負の相関があるという結論が得られる。</li>
+</ol>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-nlperm2"></span>
-<img src="Network_Analysis_Using_R_files/figure-html/fig-nlperm2-1.png" alt="Node permutationでの検定の例" width="336" />
+<img src="Network_Analysis_Using_R_files/figure-html/fig-nlperm2-1.png" alt="Node permutationでの検定の例" width="432" />
 <p class="caption">
 図4.3: Node permutationでの検定の例
 </p>
 </div>
-<div id="線形回帰分析" class="section level3 hasAnchor" number="4.2.1">
-<h3><span class="header-section-number">4.2.1</span> 線形回帰分析<a href="c4.html#線形回帰分析" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>例えば、上(1.1)で求めた毛づくろいネットワークにおいて、順位や年齢と固有ベクトル中心性に関連があるか知りたいとする。<br />
-以下のような一般化線形モデルを考える。</p>
-<ul>
-<li>分布: 正規分布<br />
-</li>
-<li>応答変数: 固有ベクトル中心性<br />
-</li>
-<li>説明変数: 順位、年齢</li>
-</ul>
-<p>それでは、node label permutationを行う<br />
-ここでは、従属変数のラベルをランダム化する。</p>
-<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="c4.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="co">#perm_glm &lt;- perm.net.nl(female_metrics,</span></span>
-<span id="cb87-2"><a href="c4.html#cb87-2" aria-hidden="true" tabindex="-1"></a> <span class="co">#                       ## ランダマイゼーションするラベル  </span></span>
-<span id="cb87-3"><a href="c4.html#cb87-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                      labels = &quot;eigen&quot;,</span></span>
-<span id="cb87-4"><a href="c4.html#cb87-4" aria-hidden="true" tabindex="-1"></a>   <span class="co">#                     ## 回数  </span></span>
-<span id="cb87-5"><a href="c4.html#cb87-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">#                    nperm = 10000)</span></span></code></pre></div>
-<p>分析は以下の通り。</p>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="c4.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="co">#r &lt;- stat.glm(perm_glm,</span></span>
-<span id="cb88-2"><a href="c4.html#cb88-2" aria-hidden="true" tabindex="-1"></a> <span class="co">#             formula = eigen ~ age + rank,</span></span>
-<span id="cb88-3"><a href="c4.html#cb88-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#            family = &quot;gaussian&quot;)</span></span></code></pre></div>
-<p>ランダムなネットワークにおける係数と実際のネットワークにおける係数の比較。</p>
-<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="c4.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="co">#r_ant &lt;- ant(r)</span></span></code></pre></div>
-<p>結果は以下の通り。<br />
-有意な結果は得られなかった。</p>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="c4.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co">#r_ant$model</span></span></code></pre></div>
-<p>モデル診断。</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="c4.html#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="co">#r_ant$model.diagnostic</span></span></code></pre></div>
-<p>GLM以外にも、t検定や相関分析、GLMM等を同様に行うことができる。</p>
+<div id="分析例" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> 分析例<a href="c4.html#分析例" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Node permutationは様々な分析に適用可能である。以下では、実際の分析例をいくつか見ていく。</p>
+<div id="線形モデルglmglmmなど" class="section level4 hasAnchor" number="4.2.1.1">
+<h4><span class="header-section-number">4.2.1.1</span> 線形モデル(GLM、GLMMなど)<a href="c4.html#線形モデルglmglmmなど" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>一般化線形モデル(GLM)や一般化線形混合モデル(GLMM)をはじめとした線形モデルは、2つ以上の変数間の関連を調べるうえで非常に有用な分析である<span class="citation">(<a href="#ref-Dunn2018" role="doc-biblioref">Dunn &amp; Smyth, 2018</a>; <a href="#ref-Ohigashi2010" role="doc-biblioref">大東, 2010</a>)</span>。これらの手法は、社会ネットワーク分析でノードレベルの検定(e.g., 各個体の属性と中心性指標の関連など)を行う際にも非常に有用である<span class="citation">(<a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>)</span>。</p>
+<p>GLMやGLMMでは、何かの原因となっていると想定される変数を<strong>説明変数</strong>(以下、<span class="math inline">\(x\)</span>とする)、それを受けて変化すると想定される変数を<strong>応答変数</strong>(以下、<span class="math inline">\(y\)</span>とする)という。</p>
+<div id="分析例1.-正規線形モデル" class="section level5 hasAnchor" number="4.2.1.1.1">
+<h5><span class="header-section-number">4.2.1.1.1</span> 分析例1. 正規線形モデル<a href="c4.html#分析例1.-正規線形モデル" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<p>以下では、シンプルな例として応答変数が正規分布から得られていると仮定するモデルを用いた分析を行う。金華山島<span class="math inline">\(B_1\)</span>群において、個体追跡中の6歳以上のメス間の近接時間割合を算出したところ、以下の隣接行列(<code>prox_mat</code>, <a href="c4.html#tab:tab-prox">4.1</a>)が得られたとする。</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="c4.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="do">## マトリックスの読み込み  </span></span>
+<span id="cb87-2"><a href="c4.html#cb87-2" aria-hidden="true" tabindex="-1"></a>prox_mat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/prox_f.csv&quot;</span>,<span class="at">row.names=</span><span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb87-3"><a href="c4.html#cb87-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>()  </span>
+<span id="cb87-4"><a href="c4.html#cb87-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-5"><a href="c4.html#cb87-5" aria-hidden="true" tabindex="-1"></a><span class="do">## マトリックスをアルファベット順で並び替え</span></span>
+<span id="cb87-6"><a href="c4.html#cb87-6" aria-hidden="true" tabindex="-1"></a>prox_mat <span class="ot">&lt;-</span> prox_mat[<span class="fu">sort</span>(<span class="fu">rownames</span>(prox_mat)), <span class="fu">sort</span>(<span class="fu">colnames</span>(prox_mat))]</span>
+<span id="cb87-7"><a href="c4.html#cb87-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb87-8"><a href="c4.html#cb87-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 体格成分を0に</span></span>
+<span id="cb87-9"><a href="c4.html#cb87-9" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(prox_mat) <span class="ot">&lt;-</span> 0　　</span></code></pre></div>
+<table class="table" style="font-size: 5px; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption style="font-size: initial !important;">
+<span id="tab:tab-prox">表4.1: </span>近接時間割合の隣接行列
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:center;">
+Aka
+</th>
+<th style="text-align:center;">
+Ako
+</th>
+<th style="text-align:center;">
+Hen
+</th>
+<th style="text-align:center;">
+Hot
+</th>
+<th style="text-align:center;">
+Kil
+</th>
+<th style="text-align:center;">
+Kit
+</th>
+<th style="text-align:center;">
+Koh
+</th>
+<th style="text-align:center;">
+Kor
+</th>
+<th style="text-align:center;">
+Kun
+</th>
+<th style="text-align:center;">
+Mal
+</th>
+<th style="text-align:center;">
+Mei
+</th>
+<th style="text-align:center;">
+Mik
+</th>
+<th style="text-align:center;">
+Ntr
+</th>
+<th style="text-align:center;">
+Tam
+</th>
+<th style="text-align:center;">
+Ten
+</th>
+<th style="text-align:center;">
+Tot
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Aka
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.07
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.05
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ako
+</td>
+<td style="text-align:center;">
+0.07
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.05
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hen
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.05
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Hot
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.05
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kil
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.15
+</td>
+<td style="text-align:center;">
+0.11
+</td>
+<td style="text-align:center;">
+0.05
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kit
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.15
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.10
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Koh
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.11
+</td>
+<td style="text-align:center;">
+0.10
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.09
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kor
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.05
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+<td style="text-align:center;">
+0.09
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.05
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+<td style="text-align:center;">
+0.07
+</td>
+<td style="text-align:center;">
+0.13
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Kun
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.05
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mal
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.05
+</td>
+<td style="text-align:center;">
+0.15
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mei
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.05
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.05
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mik
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.05
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.15
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+<td style="text-align:center;">
+0.05
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ntr
+</td>
+<td style="text-align:center;">
+0.05
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.05
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.07
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tam
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.07
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ten
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.07
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.05
+</td>
+<td style="text-align:center;">
+0.07
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+<td style="text-align:center;">
+0.07
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tot
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.06
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.04
+</td>
+<td style="text-align:center;">
+0.13
+</td>
+<td style="text-align:center;">
+0.01
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.02
+</td>
+<td style="text-align:center;">
+0.03
+</td>
+<td style="text-align:center;">
+0.07
+</td>
+<td style="text-align:center;">
+0.07
+</td>
+<td style="text-align:center;">
+0.00
+</td>
+</tr>
+</tbody>
+</table>
+<p><br/></p>
+<p>このネットワークにおいて、<u>各メスの固有ベクトル中心性(<code>eigen</code>)と順位(<code>rank</code>)・年齢(<code>age</code>)との関連を調べる</u>ため、以下のモデルを考える。ただし、添え字の<span class="math inline">\(i\)</span>はそれが<span class="math inline">\(i\)</span>番目の個体のデータであることを表す(<span class="math inline">\(i = 1,2,3,...,16\)</span>)。</p>
+<p><span class="math inline">\(\beta_0\)</span>はモデルの切片を、<span class="math inline">\(\beta_1\)</span>と<span class="math inline">\(\beta_2\)</span>はそれぞれ順位と年齢が1増えたときに、固有ベクトル中心性がどのくらい上昇すると期待されるかを表す(= <strong>回帰係数</strong>)。また、2行目の数式は、<span class="math inline">\(i\)</span>番目の個体の固有ベクトル中心性(<span class="math inline">\(eigen_i\)</span>)が、平均<span class="math inline">\(\mu_i\)</span>、分散<span class="math inline">\(\sigma\)</span>の正規分布から得られることを表す。GLMやGLMMでは、実際のデータが得られる確率が最も高くなるようにモデルのパラメータ(ここでは、<span class="math inline">\(\beta_0, \beta_1, \beta_2. \sigma\)</span>)を推定していく。</p>
+<p>$$</p>
+<span class="math display">\[\begin{aligned}
+
+\mu_i &amp;= \beta_0 + \beta_1 \times rank_i + \beta_2 \times age_i  \\
+eigen_i &amp;\sim Normal(\mu_i, \sigma)
+
+\end{aligned}\]</span>
+<p>$$</p>
+<p>それでは、分析に移ろう。すでに隣接行列を算出してネットワークを作成しているので、個体ごとの固有ベクトル中心性を算出する(<strong>Step2</strong>)。個体ごとの属性を<code>att_females</code>としてデータフレームにまとめる。</p>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="c4.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 属性データの作成</span></span>
+<span id="cb88-2"><a href="c4.html#cb88-2" aria-hidden="true" tabindex="-1"></a>att_females <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">femaleID =</span> <span class="fu">colnames</span>(prox_mat),</span>
+<span id="cb88-3"><a href="c4.html#cb88-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">rank =</span> <span class="fu">c</span>(<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">12</span>,<span class="dv">13</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">14</span>,<span class="dv">16</span>,<span class="dv">15</span>,<span class="dv">6</span>,<span class="dv">10</span>,<span class="dv">7</span>,<span class="dv">11</span>),</span>
+<span id="cb88-4"><a href="c4.html#cb88-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">age =</span> <span class="fu">c</span>(<span class="dv">12</span>,<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">10</span>,<span class="dv">14</span>,<span class="dv">7</span>,<span class="dv">12</span>,<span class="dv">8</span>,<span class="dv">6</span>,<span class="dv">8</span>,<span class="dv">10</span>,<span class="dv">15</span>, <span class="dv">10</span>, <span class="dv">13</span>, <span class="dv">10</span>, <span class="dv">10</span>))</span>
+<span id="cb88-5"><a href="c4.html#cb88-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-6"><a href="c4.html#cb88-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 算出  </span></span>
+<span id="cb88-7"><a href="c4.html#cb88-7" aria-hidden="true" tabindex="-1"></a>att_females <span class="ot">&lt;-</span> <span class="fu">met.eigen</span>(prox_mat,</span>
+<span id="cb88-8"><a href="c4.html#cb88-8" aria-hidden="true" tabindex="-1"></a>                         <span class="at">df =</span> att_females,</span>
+<span id="cb88-9"><a href="c4.html#cb88-9" aria-hidden="true" tabindex="-1"></a>                         <span class="at">dfid =</span> <span class="dv">1</span>,</span>
+<span id="cb88-10"><a href="c4.html#cb88-10" aria-hidden="true" tabindex="-1"></a>                         <span class="at">sym =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>算出結果は以下のようになった。</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="c4.html#cb89-1" aria-hidden="true" tabindex="-1"></a>att_females <span class="sc">%&gt;%</span> </span>
+<span id="cb89-2"><a href="c4.html#cb89-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(<span class="at">rownames =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-39599aaf9b96f73629d2" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-39599aaf9b96f73629d2">{"x":{"filter":"none","vertical":false,"data":[["Aka","Ako","Hen","Hot","Kil","Kit","Koh","Kor","Kun","Mal","Mei","Mik","Ntr","Tam","Ten","Tot"],[8,9,12,13,1,2,3,5,4,14,16,15,6,10,7,11],[12,9,10,10,14,7,12,8,6,8,10,15,10,13,10,10],[0.545396326244556,0.513573544345867,0.503129058856467,0.41066049893287,0.788573265750225,0.852374602525354,0.799276646944809,1,0.554693968122154,0.642230297967831,0.517297768280168,0.777993661791739,0.725485576186864,0.717925939554867,0.821305355442344,0.810116296036662]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>femaleID<\/th>\n      <th>rank<\/th>\n      <th>age<\/th>\n      <th>eigen<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<p><br/></p>
+算出結果からプロットを作成したところ、順位と固有ベクトル中心性の間には負の関連がありそうなことがわかる(図<a href="c4.html#fig:fig-cor">4.4</a>)。<br />
+
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-cor"></span>
+<img src="Network_Analysis_Using_R_files/figure-html/fig-cor-1.png" alt="固有ベクトル中心性(`eigen`)と順位(`rank`)・年齢(`age`)との関連" width="960" />
+<p class="caption">
+図4.4: 固有ベクトル中心性(<code>eigen</code>)と順位(<code>rank</code>)・年齢(<code>age</code>)との関連
+</p>
 </div>
-<div id="ネットワーク同士の関連の検討" class="section level3 hasAnchor" number="4.2.2">
-<h3><span class="header-section-number">4.2.2</span> ネットワーク同士の関連の検討<a href="c4.html#ネットワーク同士の関連の検討" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p><br/></p>
+<p>続いて、先ほどの数式に基づいたモデリングを行う。Rでは以下のコードで実行することができる。</p>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="c4.html#cb90-1" aria-hidden="true" tabindex="-1"></a>r_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data =</span> att_females,</span>
+<span id="cb90-2"><a href="c4.html#cb90-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">formula =</span> eigen <span class="sc">~</span> rank <span class="sc">+</span> age)</span></code></pre></div>
+<p>モデリングの結果推定された<span class="math inline">\(\beta_0\)</span>、<span class="math inline">\(\beta_1\)</span>、<span class="math inline">\(\beta_2\)</span>の推定値は以下のようになる。なお、<code>Intercept</code>は切片を表す。</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="c4.html#cb91-1" aria-hidden="true" tabindex="-1"></a>r_lm</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = eigen ~ rank + age, data = att_females)
+## 
+## Coefficients:
+## (Intercept)         rank          age  
+##     0.71746     -0.01781      0.01173</code></pre>
+<p>パーミュテーション検定では、<span class="math inline">\(beta_1\)</span>や<span class="math inline">\(\beta_2\)</span>などの<strong>回帰係数</strong>を統計検定量として検定を行うことで、説明変数と応答変数の関連が有意であるかをしらべることが推奨されている<span class="citation">(<a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>)</span>。そこで、それぞれの推定値を持つオブジェクトを作成する(<code>b_rank</code>と<code>b_age</code>)。</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="c4.html#cb93-1" aria-hidden="true" tabindex="-1"></a>b_rank <span class="ot">&lt;-</span> <span class="fu">coef</span>(r_lm)[[<span class="dv">2</span>]]</span>
+<span id="cb93-2"><a href="c4.html#cb93-2" aria-hidden="true" tabindex="-1"></a>b_age <span class="ot">&lt;-</span> <span class="fu">coef</span>(r_lm)[[<span class="dv">3</span>]]</span></code></pre></div>
+<div id="snaパッケージを用いる方法" class="section level6 hasAnchor" number="4.2.1.1.1.1">
+<h6><span class="header-section-number">4.2.1.1.1.1</span> <code>sna</code>パッケージを用いる方法<a href="c4.html#snaパッケージを用いる方法" class="anchor-section" aria-label="Anchor link to header"></a></h6>
+<p>続いて、node permutationを行ってランダムなネットワーク(隣接行列)を1000個生成し、それぞれのネットワークにおいて同じ回帰分析を行い、先ほど同様に<span class="math inline">\(\beta_1\)</span>と<span class="math inline">\(\beta_2\)</span>の推定値を算出する(<strong>Step3~4</strong>)。</p>
+<p>Rでは、<code>sna</code>パッケージの<code>rmperm</code>関数でnode permutationを行うことができる。<code>b_rank_rand</code>と<code>b_rank_age</code>という空のベクトルを作成し、そこにランダムネットワークから算出された<span class="math inline">\(\beta_1\)</span>と<span class="math inline">\(\beta_2\)</span>を入れている。</p>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="c4.html#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 空の行列を作成</span></span>
+<span id="cb94-2"><a href="c4.html#cb94-2" aria-hidden="true" tabindex="-1"></a>b_rank_rand <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">1000</span>)</span>
+<span id="cb94-3"><a href="c4.html#cb94-3" aria-hidden="true" tabindex="-1"></a>b_age_rand <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">1000</span>)</span>
+<span id="cb94-4"><a href="c4.html#cb94-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-5"><a href="c4.html#cb94-5" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb94-6"><a href="c4.html#cb94-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb94-7"><a href="c4.html#cb94-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>){</span>
+<span id="cb94-8"><a href="c4.html#cb94-8" aria-hidden="true" tabindex="-1"></a>  random_net <span class="ot">&lt;-</span> <span class="fu">rmperm</span>(prox_mat)</span>
+<span id="cb94-9"><a href="c4.html#cb94-9" aria-hidden="true" tabindex="-1"></a>  att_females_rand <span class="ot">&lt;-</span> <span class="fu">met.eigen</span>(random_net, <span class="at">df =</span> att_females)</span>
+<span id="cb94-10"><a href="c4.html#cb94-10" aria-hidden="true" tabindex="-1"></a>  r_lm_rand <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data =</span> att_females_rand,</span>
+<span id="cb94-11"><a href="c4.html#cb94-11" aria-hidden="true" tabindex="-1"></a>                  <span class="at">formula =</span> eigen <span class="sc">~</span> rank <span class="sc">+</span> age)</span>
+<span id="cb94-12"><a href="c4.html#cb94-12" aria-hidden="true" tabindex="-1"></a>  b_rank_rand[i] <span class="ot">&lt;-</span> <span class="fu">coef</span>(r_lm_rand)[[<span class="dv">2</span>]]</span>
+<span id="cb94-13"><a href="c4.html#cb94-13" aria-hidden="true" tabindex="-1"></a>  b_age_rand[i] <span class="ot">&lt;-</span> <span class="fu">coef</span>(r_lm_rand)[[<span class="dv">3</span>]]</span>
+<span id="cb94-14"><a href="c4.html#cb94-14" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+<p>それでは、最後に実データの回帰係数をランダムネットワークの回帰係数の分布と比較する(図<a href="c4.html#fig:fig-npermtest">4.5</a>)。灰色のヒストグラムがランダムネットワークの回帰係数の分布を、赤い線が実データの回帰係数を表している。<span class="math inline">\(\beta_1\)</span>については、有意な値だといえそうだ。</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-npermtest"></span>
+<img src="Network_Analysis_Using_R_files/figure-html/fig-npermtest-1.png" alt="実データの回帰係数とランダムネットワークの回帰係数の分布の比較" width="960" />
+<p class="caption">
+図4.5: 実データの回帰係数とランダムネットワークの回帰係数の分布の比較
+</p>
+</div>
+<p><br/></p>
+<p>そこで、実データの回帰係数がランダムネットワークの回帰係数の何%より大きいか/小さいかを計算することで、<span class="math inline">\(P\)</span>値を算出する。<br />
+算出は以下のように行える。</p>
+<p>順位の係数(<span class="math inline">\(\beta_1\)</span>)については、P = 0.016なので、有意な関連があると結論付けられる。</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="c4.html#cb95-1" aria-hidden="true" tabindex="-1"></a>p_rank <span class="ot">&lt;-</span> <span class="fu">sum</span>(b_rank <span class="sc">&gt;</span> b_rank_rand)<span class="sc">/</span><span class="dv">1000</span></span>
+<span id="cb95-2"><a href="c4.html#cb95-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-3"><a href="c4.html#cb95-3" aria-hidden="true" tabindex="-1"></a>p_rank</span></code></pre></div>
+<pre><code>## [1] 0.016</code></pre>
+<p>一方で、年齢の係数(<span class="math inline">\(\beta_2\)</span>)については、P = 0.724なので、帰無仮説は棄却されない。</p>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="c4.html#cb97-1" aria-hidden="true" tabindex="-1"></a>p_age <span class="ot">&lt;-</span> <span class="fu">sum</span>(b_age <span class="sc">&gt;</span> b_age_rand)<span class="sc">/</span><span class="dv">1000</span></span>
+<span id="cb97-2"><a href="c4.html#cb97-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-3"><a href="c4.html#cb97-3" aria-hidden="true" tabindex="-1"></a>p_age</span></code></pre></div>
+<pre><code>## [1] 0.724</code></pre>
+<p><br/></p>
+</div>
+<div id="antsパッケージを用いる方法" class="section level6 hasAnchor" number="4.2.1.1.1.2">
+<h6><span class="header-section-number">4.2.1.1.1.2</span> <code>ANTs</code>パッケージを用いる方法<a href="c4.html#antsパッケージを用いる方法" class="anchor-section" aria-label="Anchor link to header"></a></h6>
+<p>ここまで行ったnode permutation検定のstep3以降は、<code>ANTs</code>パッケージを用いるとより簡単に行うことができる。</p>
+<p><code>ANTs</code>パッケージでは、個体の属性や中心性指標が入ったデータフレームを用いて、node permutationを行うことができる。<br />
+<code>perm.net.nl</code>関数では、指定されたラベル(今回の場合は、応答変数である固有ベクトル中心性)について、指定した数だけパーミュテーションを行ってくれる(やっていることは<code>sna</code>パッケージを用いた場合と同じ)。</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="c4.html#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb99-2"><a href="c4.html#cb99-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb99-3"><a href="c4.html#cb99-3" aria-hidden="true" tabindex="-1"></a>perm_lm <span class="ot">&lt;-</span> <span class="fu">perm.net.nl</span>(<span class="do">## 算出した固有ベクトル中心性と属性を含むデータフレーム  </span></span>
+<span id="cb99-4"><a href="c4.html#cb99-4" aria-hidden="true" tabindex="-1"></a>  　　　　　　　　　　　att_females,</span>
+<span id="cb99-5"><a href="c4.html#cb99-5" aria-hidden="true" tabindex="-1"></a>                        <span class="do">## パーミュテーションするラベル。ここでは固有ベクトル中心性  </span></span>
+<span id="cb99-6"><a href="c4.html#cb99-6" aria-hidden="true" tabindex="-1"></a>                        <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;eigen&quot;</span>),</span>
+<span id="cb99-7"><a href="c4.html#cb99-7" aria-hidden="true" tabindex="-1"></a>                        <span class="do">## 回数  </span></span>
+<span id="cb99-8"><a href="c4.html#cb99-8" aria-hidden="true" tabindex="-1"></a>                        <span class="at">nperm =</span> <span class="dv">1000</span>,</span>
+<span id="cb99-9"><a href="c4.html#cb99-9" aria-hidden="true" tabindex="-1"></a>  　　　　　　　　　　　<span class="at">progress =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>続いて<code>stat.glm</code>関数を用い、実データとランダムネットワークにおけるデータに対してモデリングを行い、パラメータの推定値を算出する。 このとき、相関係数の検定については<code>stat.cor</code>、t検定については<code>stat.t</code>、GLMMについては<code>stat.glmm</code>など、分析ごとに様々な関数が用意されている。詳細は<a href="https://rdrr.io/github/SebastianSosa/ANTs/man/">こちらのサイト</a>を参照。</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="c4.html#cb100-1" aria-hidden="true" tabindex="-1"></a>r_lm_b <span class="ot">&lt;-</span> <span class="fu">stat.glm</span>(perm_lm,</span>
+<span id="cb100-2"><a href="c4.html#cb100-2" aria-hidden="true" tabindex="-1"></a>              <span class="do">## 式</span></span>
+<span id="cb100-3"><a href="c4.html#cb100-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">formula =</span> eigen <span class="sc">~</span> age <span class="sc">+</span> rank,</span>
+<span id="cb100-4"><a href="c4.html#cb100-4" aria-hidden="true" tabindex="-1"></a>              <span class="do">## 応答変数が従う分布を指定。二項分布なら&quot;binomial&quot;、ポワソン分布なら&quot;poisson&quot;</span></span>
+<span id="cb100-5"><a href="c4.html#cb100-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">family =</span> <span class="fu">gaussian</span>(<span class="at">link =</span> <span class="st">&quot;identity&quot;</span>),</span>
+<span id="cb100-6"><a href="c4.html#cb100-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">progress =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<pre><code>## Original model :  
+##  
+## 
+## Call:
+## c(&quot;eigen ~ age + rank , family = gaussian&quot;, &quot;eigen ~ age + rank , family = identity&quot;, 
+## &quot;eigen ~ age + rank , family = function (mu) \nmu&quot;, &quot;eigen ~ age + rank , family = function (eta) \neta&quot;, 
+## &quot;eigen ~ age + rank , family = function (mu) \nrep.int(1, length(mu))&quot;, 
+## &quot;eigen ~ age + rank , family = function (y, mu, wt) \nwt * ((y - mu)^2)&quot;, 
+## &quot;eigen ~ age + rank , family = function (y, n, mu, wt, dev) \n{\n    nobs &lt;- length(y)\n    nobs * (log(dev/nobs * 2 * pi) + 1) + 2 - sum(log(wt))\n}&quot;, 
+## &quot;eigen ~ age + rank , family = function (eta) \nrep.int(1, length(eta))&quot;, 
+## &quot;eigen ~ age + rank , family = expression({\n    n &lt;- rep.int(1, nobs)\n    if (is.null(etastart) &amp;&amp; is.null(start) &amp;&amp; is.null(mustart) &amp;&amp; ((family$link == \&quot;inverse\&quot; &amp;&amp; any(y == 0)) || (family$link == \&quot;log\&quot; &amp;&amp; any(y &lt;= 0)))) \n        stop(\&quot;cannot find valid starting values: please specify some\&quot;)\n    mustart &lt;- y\n})&quot;, 
+## &quot;eigen ~ age + rank , family = function (mu) \nTRUE&quot;, &quot;eigen ~ age + rank , family = function (eta) \nTRUE&quot;
+## )
+## 
+## Deviance Residuals: 
+##       Min         1Q     Median         3Q        Max  
+## -0.192496  -0.125659  -0.003923   0.094151   0.277786  
+## 
+## Coefficients:
+##              Estimate Std. Error t value
+## (Intercept)  0.717461   0.171108   4.193
+## age          0.011728   0.015915   0.737
+## rank        -0.017814   0.008233  -2.164
+## 
+## (Dispersion parameter for gaussian family taken to be 0.02246467)
+## 
+##     Null deviance: 0.40075  on 15  degrees of freedom
+## Residual deviance: 0.29204  on 13  degrees of freedom
+## AIC: -10.649
+## 
+## Number of Fisher Scoring iterations: 2</code></pre>
+<p>分析結果は、<code>ant</code>パッケージを用いることで確認できる。<br />
+実データの回帰係数とランダムネットワークの回帰係数の分布の比較は以下のように可視化できる(図<a href="c4.html#fig:fig-npermtest-b">4.6</a>)。</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="c4.html#cb102-1" aria-hidden="true" tabindex="-1"></a>r_lm_ants <span class="ot">&lt;-</span> <span class="fu">ant</span>(r_lm_b)</span></code></pre></div>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-npermtest-b"></span>
+<img src="Network_Analysis_Using_R_files/figure-html/fig-npermtest-b-1.png" alt="実データの回帰係数とランダムネットワークの回帰係数の分布の比較" width="1152" />
+<p class="caption">
+図4.6: 実データの回帰係数とランダムネットワークの回帰係数の分布の比較
+</p>
+</div>
+<p><br/></p>
+<p>検定結果は以下の通り。<code>p.left</code>はランダムネットワークの係数が,<code>sna</code>パッケージを用いた場合と同じ結果が得られている。</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="c4.html#cb103-1" aria-hidden="true" tabindex="-1"></a>r_lm_ants<span class="sc">$</span>model</span></code></pre></div>
+<pre><code>## 
+## Call:
+## c(&quot;eigen ~ age + rank , family = gaussian&quot;, &quot;eigen ~ age + rank , family = identity&quot;, 
+## &quot;eigen ~ age + rank , family = function (mu) \nmu&quot;, &quot;eigen ~ age + rank , family = function (eta) \neta&quot;, 
+## &quot;eigen ~ age + rank , family = function (mu) \nrep.int(1, length(mu))&quot;, 
+## &quot;eigen ~ age + rank , family = function (y, mu, wt) \nwt * ((y - mu)^2)&quot;, 
+## &quot;eigen ~ age + rank , family = function (y, n, mu, wt, dev) \n{\n    nobs &lt;- length(y)\n    nobs * (log(dev/nobs * 2 * pi) + 1) + 2 - sum(log(wt))\n}&quot;, 
+## &quot;eigen ~ age + rank , family = function (eta) \nrep.int(1, length(eta))&quot;, 
+## &quot;eigen ~ age + rank , family = expression({\n    n &lt;- rep.int(1, nobs)\n    if (is.null(etastart) &amp;&amp; is.null(start) &amp;&amp; is.null(mustart) &amp;&amp; ((family$link == \&quot;inverse\&quot; &amp;&amp; any(y == 0)) || (family$link == \&quot;log\&quot; &amp;&amp; any(y &lt;= 0)))) \n        stop(\&quot;cannot find valid starting values: please specify some\&quot;)\n    mustart &lt;- y\n})&quot;, 
+## &quot;eigen ~ age + rank , family = function (mu) \nTRUE&quot;, &quot;eigen ~ age + rank , family = function (eta) \nTRUE&quot;
+## )
+## 
+## Deviance Residuals: 
+##       Min         1Q     Median         3Q        Max  
+## -0.192496  -0.125659  -0.003923   0.094151   0.277786  
+## 
+## Coefficients:
+##              Estimate Std. Error   t value    p.left   p.rigth p.one.side
+## (Intercept)  0.717461   0.171108  4.193041  0.582000  0.418000   0.836000
+## age          0.011728   0.015915  0.736914  0.725000  0.275000   0.550000
+## rank        -0.017814   0.008233 -2.163611  0.016000  0.984000   0.032000
+##              lower.ci   uper.ci  mean
+## (Intercept)  0.382047  0.987095 0.679
+## age         -0.028418  0.029426 0.001
+## rank        -0.014572  0.015720 0.000
+## 
+## (Dispersion parameter for gaussian family taken to be 0.02246467)
+## 
+##     Null deviance: 0.40075  on 15  degrees of freedom
+## Residual deviance: 0.29204  on 13  degrees of freedom
+## AIC: -10.649
+## 
+## Number of Fisher Scoring iterations: 2</code></pre>
+</div>
+</div>
+<div id="分析例2.-線形混合モデル" class="section level5 hasAnchor" number="4.2.1.1.2">
+<h5><span class="header-section-number">4.2.1.1.2</span> 分析例2. 線形混合モデル<a href="c4.html#分析例2.-線形混合モデル" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+</div>
+</div>
+<div id="ネットワーク同士の関連の検討" class="section level4 hasAnchor" number="4.2.1.2">
+<h4><span class="header-section-number">4.2.1.2</span> ネットワーク同士の関連の検討<a href="c4.html#ネットワーク同士の関連の検討" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>node label randomizationによってネットワーク同士の関連を調べることもできる。<br />
 例えば、上(1.2)で求めたメスが一緒に確認される割合が、個体間の血縁度や順位差と関連しているか調べるとする。<br />
 イメージとしては、以下のようにネットワーク同士で回帰分析を行うような感じである。<br />
@@ -315,33 +1432,34 @@ div.csl-indent {
 <p class="caption">MRQAP検定のイメージ</p>
 </div>
 <p>分析には、<a href="https://rdrr.io/github/MNWeiss/aninet/man/">aninetパッケージ</a>を用いる<span class="citation">(<a href="#ref-Franks2021" role="doc-biblioref">Franks et al., 2021</a>)</span>。</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="c4.html#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(aninet)</span></code></pre></div>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="c4.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(aninet)</span></code></pre></div>
 <p>血縁と順位差マトリクスの読み込み。</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="c4.html#cb93-1" aria-hidden="true" tabindex="-1"></a>kin_mat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/kin_demo.csv&quot;</span>, <span class="at">row.names=</span><span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb93-2"><a href="c4.html#cb93-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span>
-<span id="cb93-3"><a href="c4.html#cb93-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb93-4"><a href="c4.html#cb93-4" aria-hidden="true" tabindex="-1"></a>rank_mat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/rank_demo.csv&quot;</span>,<span class="at">row.names =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb93-5"><a href="c4.html#cb93-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span>
-<span id="cb93-6"><a href="c4.html#cb93-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb93-7"><a href="c4.html#cb93-7" aria-hidden="true" tabindex="-1"></a><span class="do">## マトリクスの順番を合わせる</span></span>
-<span id="cb93-8"><a href="c4.html#cb93-8" aria-hidden="true" tabindex="-1"></a>presence_mat <span class="ot">&lt;-</span> presence_mat[<span class="fu">rownames</span>(kin_mat),<span class="fu">rownames</span>(kin_mat)]</span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="c4.html#cb106-1" aria-hidden="true" tabindex="-1"></a>kin_mat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/kin_demo.csv&quot;</span>, <span class="at">row.names=</span><span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb106-2"><a href="c4.html#cb106-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span>
+<span id="cb106-3"><a href="c4.html#cb106-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-4"><a href="c4.html#cb106-4" aria-hidden="true" tabindex="-1"></a>rank_mat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/rank_demo.csv&quot;</span>,<span class="at">row.names =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb106-5"><a href="c4.html#cb106-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span>
+<span id="cb106-6"><a href="c4.html#cb106-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb106-7"><a href="c4.html#cb106-7" aria-hidden="true" tabindex="-1"></a><span class="do">## マトリクスの順番を合わせる</span></span>
+<span id="cb106-8"><a href="c4.html#cb106-8" aria-hidden="true" tabindex="-1"></a>presence_mat <span class="ot">&lt;-</span> presence_mat[<span class="fu">rownames</span>(kin_mat),<span class="fu">rownames</span>(kin_mat)]</span></code></pre></div>
 <p><code>glmqap()</code>関数を用いれば様々な分布を用いたモデリングを行うことができる。<br />
 ここでは、SRIを応答変数とするので、二項分布を用いたモデリングを行う。<br />
 SRIの分母を以下のようにして求める。</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="c4.html#cb94-1" aria-hidden="true" tabindex="-1"></a>denom <span class="ot">&lt;-</span> <span class="fu">get_denominator</span>(presence <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>date),</span>
-<span id="cb94-2"><a href="c4.html#cb94-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">return =</span> <span class="st">&quot;matrix&quot;</span>,</span>
-<span id="cb94-3"><a href="c4.html#cb94-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">index =</span> <span class="st">&quot;SRI&quot;</span>)</span>
-<span id="cb94-4"><a href="c4.html#cb94-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb94-5"><a href="c4.html#cb94-5" aria-hidden="true" tabindex="-1"></a>denom <span class="ot">&lt;-</span> denom[<span class="fu">rownames</span>(kin_mat),<span class="fu">colnames</span>(kin_mat)]</span></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="c4.html#cb107-1" aria-hidden="true" tabindex="-1"></a>denom <span class="ot">&lt;-</span> <span class="fu">get_denominator</span>(presence <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>date),</span>
+<span id="cb107-2"><a href="c4.html#cb107-2" aria-hidden="true" tabindex="-1"></a>                         <span class="at">return =</span> <span class="st">&quot;matrix&quot;</span>,</span>
+<span id="cb107-3"><a href="c4.html#cb107-3" aria-hidden="true" tabindex="-1"></a>                         <span class="at">index =</span> <span class="st">&quot;SRI&quot;</span>)</span>
+<span id="cb107-4"><a href="c4.html#cb107-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb107-5"><a href="c4.html#cb107-5" aria-hidden="true" tabindex="-1"></a>denom <span class="ot">&lt;-</span> denom[<span class="fu">rownames</span>(kin_mat),<span class="fu">colnames</span>(kin_mat)]</span></code></pre></div>
 <p>分析は以下の通り。</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="c4.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="co">#r_qap &lt;- glmqap(presence_mat ~ rank_mat + kin_mat,</span></span>
-<span id="cb95-2"><a href="c4.html#cb95-2" aria-hidden="true" tabindex="-1"></a> <span class="co">#               ## 分母のマトリクス</span></span>
-<span id="cb95-3"><a href="c4.html#cb95-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#              weights = denom,</span></span>
-<span id="cb95-4"><a href="c4.html#cb95-4" aria-hidden="true" tabindex="-1"></a>   <span class="co">#             family = &quot;binomial&quot;,</span></span>
-<span id="cb95-5"><a href="c4.html#cb95-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">#            nperm = 10000,</span></span>
-<span id="cb95-6"><a href="c4.html#cb95-6" aria-hidden="true" tabindex="-1"></a>     <span class="co">#           permutation = &quot;DSP&quot;</span></span>
-<span id="cb95-7"><a href="c4.html#cb95-7" aria-hidden="true" tabindex="-1"></a>      <span class="co">#        )</span></span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="c4.html#cb108-1" aria-hidden="true" tabindex="-1"></a><span class="co">#r_qap &lt;- glmqap(presence_mat ~ rank_mat + kin_mat,</span></span>
+<span id="cb108-2"><a href="c4.html#cb108-2" aria-hidden="true" tabindex="-1"></a> <span class="co">#               ## 分母のマトリクス</span></span>
+<span id="cb108-3"><a href="c4.html#cb108-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#              weights = denom,</span></span>
+<span id="cb108-4"><a href="c4.html#cb108-4" aria-hidden="true" tabindex="-1"></a>   <span class="co">#             family = &quot;binomial&quot;,</span></span>
+<span id="cb108-5"><a href="c4.html#cb108-5" aria-hidden="true" tabindex="-1"></a>    <span class="co">#            nperm = 10000,</span></span>
+<span id="cb108-6"><a href="c4.html#cb108-6" aria-hidden="true" tabindex="-1"></a>     <span class="co">#           permutation = &quot;DSP&quot;</span></span>
+<span id="cb108-7"><a href="c4.html#cb108-7" aria-hidden="true" tabindex="-1"></a>      <span class="co">#        )</span></span></code></pre></div>
 <p>結果は以下の通り。</p>
+</div>
 </div>
 </div>
 <div id="data-stream-randomization" class="section level2 hasAnchor" number="4.3">
@@ -352,25 +1470,25 @@ SRIの分母を以下のようにして求める。</p>
 <p>ANTsパッケージでdata stream randomizationを行うことができる。<br />
 ここでは、group by individualの形式で記録したメスの出欠データ(1.2参照)を用いる。<br />
 ランダマイゼーションを行うためには、縦長のデータフレームにする必要がある。</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="c4.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="do">## まずはデータフレームの形に直す。</span></span>
-<span id="cb96-2"><a href="c4.html#cb96-2" aria-hidden="true" tabindex="-1"></a>presence_mat <span class="ot">&lt;-</span> presence <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="st">&quot;date&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb96-3"><a href="c4.html#cb96-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span>
-<span id="cb96-4"><a href="c4.html#cb96-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb96-5"><a href="c4.html#cb96-5" aria-hidden="true" tabindex="-1"></a><span class="do">## gbi.to.df関数でデータフレーム形式に  </span></span>
-<span id="cb96-6"><a href="c4.html#cb96-6" aria-hidden="true" tabindex="-1"></a>presence_df <span class="ot">&lt;-</span> <span class="fu">gbi.to.df</span>(presence_mat)</span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="c4.html#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="do">## まずはデータフレームの形に直す。</span></span>
+<span id="cb109-2"><a href="c4.html#cb109-2" aria-hidden="true" tabindex="-1"></a>presence_mat <span class="ot">&lt;-</span> presence <span class="sc">%&gt;%</span> <span class="fu">column_to_rownames</span>(<span class="st">&quot;date&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb109-3"><a href="c4.html#cb109-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as.matrix</span>()</span>
+<span id="cb109-4"><a href="c4.html#cb109-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb109-5"><a href="c4.html#cb109-5" aria-hidden="true" tabindex="-1"></a><span class="do">## gbi.to.df関数でデータフレーム形式に  </span></span>
+<span id="cb109-6"><a href="c4.html#cb109-6" aria-hidden="true" tabindex="-1"></a>presence_df <span class="ot">&lt;-</span> <span class="fu">gbi.to.df</span>(presence_mat)</span></code></pre></div>
 <p><code>perm.ds.grp()</code>でdata stream randomizationを行うことができる。<br />
 ここでは、観察日ごとに個体の出欠を10000回シャッフルするが、もしあれば時間や場所などの情報も<code>ctrlf</code>という引数で加えることが可能である。詳しくは、Farine (2017)を参照。</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="c4.html#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="co">#perm_ds &lt;- perm.ds.grp(presence_df,</span></span>
-<span id="cb97-2"><a href="c4.html#cb97-2" aria-hidden="true" tabindex="-1"></a> <span class="co">#                      scan = &quot;scan&quot;,</span></span>
-<span id="cb97-3"><a href="c4.html#cb97-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                     nperm = 10000,</span></span>
-<span id="cb97-4"><a href="c4.html#cb97-4" aria-hidden="true" tabindex="-1"></a>   <span class="co">#                    index = &quot;sri&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="c4.html#cb110-1" aria-hidden="true" tabindex="-1"></a><span class="co">#perm_ds &lt;- perm.ds.grp(presence_df,</span></span>
+<span id="cb110-2"><a href="c4.html#cb110-2" aria-hidden="true" tabindex="-1"></a> <span class="co">#                      scan = &quot;scan&quot;,</span></span>
+<span id="cb110-3"><a href="c4.html#cb110-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                     nperm = 10000,</span></span>
+<span id="cb110-4"><a href="c4.html#cb110-4" aria-hidden="true" tabindex="-1"></a>   <span class="co">#                    index = &quot;sri&quot;)</span></span></code></pre></div>
 <p>生成された10001(実データ1 + ランダマイゼーション×10000)それぞれについて、ネットワーク指標を算出して、メスの属性データと結合する。やり方は、第2節と同様であるが、<code>map()</code>を用いることで10001個のマトリクスそれぞれについて算出できる。</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="c4.html#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="do">## メスの属性データ</span></span>
-<span id="cb98-2"><a href="c4.html#cb98-2" aria-hidden="true" tabindex="-1"></a><span class="co">#attribute_b &lt;- attribute %&gt;% </span></span>
-<span id="cb98-3"><a href="c4.html#cb98-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#filter(femaleID != &quot;Tam&quot;&amp;femaleID != &quot;Kur&quot;) %&gt;% </span></span>
-<span id="cb98-4"><a href="c4.html#cb98-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#arrange(femaleID)</span></span>
-<span id="cb98-5"><a href="c4.html#cb98-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb98-6"><a href="c4.html#cb98-6" aria-hidden="true" tabindex="-1"></a><span class="co">#list &lt;- map(perm_ds,met.eigen, df = attribute_b, dfid = 1)</span></span></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="c4.html#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="do">## メスの属性データ</span></span>
+<span id="cb111-2"><a href="c4.html#cb111-2" aria-hidden="true" tabindex="-1"></a><span class="co">#attribute_b &lt;- attribute %&gt;% </span></span>
+<span id="cb111-3"><a href="c4.html#cb111-3" aria-hidden="true" tabindex="-1"></a>  <span class="co">#filter(femaleID != &quot;Tam&quot;&amp;femaleID != &quot;Kur&quot;) %&gt;% </span></span>
+<span id="cb111-4"><a href="c4.html#cb111-4" aria-hidden="true" tabindex="-1"></a>  <span class="co">#arrange(femaleID)</span></span>
+<span id="cb111-5"><a href="c4.html#cb111-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-6"><a href="c4.html#cb111-6" aria-hidden="true" tabindex="-1"></a><span class="co">#list &lt;- map(perm_ds,met.eigen, df = attribute_b, dfid = 1)</span></span></code></pre></div>
 <p>それでは、算出した値を用いて統計的検定を行う。<br />
 3.1.1と同様に、以下のような線形モデルを考える。<br />
 以下のような一般化線形モデルを考える。</p>
@@ -382,66 +1500,66 @@ SRIの分母を以下のようにして求める。</p>
 <li>説明変数: 順位、年齢</li>
 </ul>
 <p>まず、算出したネットワーク指標を一つのデータフレームにまとめ、マトリクスごとにネスト化する。</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="c4.html#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="co">#for(i in 2:10001){</span></span>
-<span id="cb99-2"><a href="c4.html#cb99-2" aria-hidden="true" tabindex="-1"></a><span class="co">#    if(i == 2){</span></span>
-<span id="cb99-3"><a href="c4.html#cb99-3" aria-hidden="true" tabindex="-1"></a> <span class="co">#   female_met &lt;- bind_rows(list[[i-1]],list[[i]])</span></span>
-<span id="cb99-4"><a href="c4.html#cb99-4" aria-hidden="true" tabindex="-1"></a> <span class="co">#   } else{</span></span>
-<span id="cb99-5"><a href="c4.html#cb99-5" aria-hidden="true" tabindex="-1"></a> <span class="co">#   female_met &lt;- bind_rows(female_met,list[[i]])</span></span>
-<span id="cb99-6"><a href="c4.html#cb99-6" aria-hidden="true" tabindex="-1"></a> <span class="co"># }</span></span>
-<span id="cb99-7"><a href="c4.html#cb99-7" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span>
-<span id="cb99-8"><a href="c4.html#cb99-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb99-9"><a href="c4.html#cb99-9" aria-hidden="true" tabindex="-1"></a><span class="co">#female_met %&gt;% </span></span>
-<span id="cb99-10"><a href="c4.html#cb99-10" aria-hidden="true" tabindex="-1"></a><span class="co">#  mutate(perm.no = rep(1:10001,each = 15)) %&gt;% </span></span>
-<span id="cb99-11"><a href="c4.html#cb99-11" aria-hidden="true" tabindex="-1"></a><span class="co">#  group_by(perm.no) %&gt;% </span></span>
-<span id="cb99-12"><a href="c4.html#cb99-12" aria-hidden="true" tabindex="-1"></a><span class="co">#  nest() -&gt; female_met_nest</span></span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="c4.html#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="co">#for(i in 2:10001){</span></span>
+<span id="cb112-2"><a href="c4.html#cb112-2" aria-hidden="true" tabindex="-1"></a><span class="co">#    if(i == 2){</span></span>
+<span id="cb112-3"><a href="c4.html#cb112-3" aria-hidden="true" tabindex="-1"></a> <span class="co">#   female_met &lt;- bind_rows(list[[i-1]],list[[i]])</span></span>
+<span id="cb112-4"><a href="c4.html#cb112-4" aria-hidden="true" tabindex="-1"></a> <span class="co">#   } else{</span></span>
+<span id="cb112-5"><a href="c4.html#cb112-5" aria-hidden="true" tabindex="-1"></a> <span class="co">#   female_met &lt;- bind_rows(female_met,list[[i]])</span></span>
+<span id="cb112-6"><a href="c4.html#cb112-6" aria-hidden="true" tabindex="-1"></a> <span class="co"># }</span></span>
+<span id="cb112-7"><a href="c4.html#cb112-7" aria-hidden="true" tabindex="-1"></a><span class="co"># }</span></span>
+<span id="cb112-8"><a href="c4.html#cb112-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-9"><a href="c4.html#cb112-9" aria-hidden="true" tabindex="-1"></a><span class="co">#female_met %&gt;% </span></span>
+<span id="cb112-10"><a href="c4.html#cb112-10" aria-hidden="true" tabindex="-1"></a><span class="co">#  mutate(perm.no = rep(1:10001,each = 15)) %&gt;% </span></span>
+<span id="cb112-11"><a href="c4.html#cb112-11" aria-hidden="true" tabindex="-1"></a><span class="co">#  group_by(perm.no) %&gt;% </span></span>
+<span id="cb112-12"><a href="c4.html#cb112-12" aria-hidden="true" tabindex="-1"></a><span class="co">#  nest() -&gt; female_met_nest</span></span></code></pre></div>
 <p><code>map()</code>を用いて、それぞれのマトリクスごとにGLMを行う。</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="c4.html#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="co">#r_ds &lt;- map(female_met_nest$data, ~ glm(formula = eigen ~ rank + age, data = .,family = &quot;Gamma&quot;))</span></span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="c4.html#cb113-1" aria-hidden="true" tabindex="-1"></a><span class="co">#r_ds &lt;- map(female_met_nest$data, ~ glm(formula = eigen ~ rank + age, data = .,family = &quot;Gamma&quot;))</span></span></code></pre></div>
 <p>例えば、1つめのマトリクス(ここでは実測値)の結果は以下のようになる。<br />
 ここで算出されているp値はこんかいは用いることができない(データの独立性を仮定した結果なので)。<br />
 得られた係数(Coefficient)をランダム化されたマトリクスを用いた分析の係数と比較することで有意性を判定する。</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="c4.html#cb101-1" aria-hidden="true" tabindex="-1"></a><span class="co">#model_parameters(r_ds[[1]])</span></span>
-<span id="cb101-2"><a href="c4.html#cb101-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb101-3"><a href="c4.html#cb101-3" aria-hidden="true" tabindex="-1"></a><span class="co">#coef_rank_r &lt;- r_ds[[1]]$coefficients[[2]]</span></span>
-<span id="cb101-4"><a href="c4.html#cb101-4" aria-hidden="true" tabindex="-1"></a><span class="co">#coef_age_r &lt;-  r_ds[[1]]$coefficients[[3]]  </span></span></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="c4.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="co">#model_parameters(r_ds[[1]])</span></span>
+<span id="cb114-2"><a href="c4.html#cb114-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-3"><a href="c4.html#cb114-3" aria-hidden="true" tabindex="-1"></a><span class="co">#coef_rank_r &lt;- r_ds[[1]]$coefficients[[2]]</span></span>
+<span id="cb114-4"><a href="c4.html#cb114-4" aria-hidden="true" tabindex="-1"></a><span class="co">#coef_age_r &lt;-  r_ds[[1]]$coefficients[[3]]  </span></span></code></pre></div>
 <p>ランダム化された10000個のマトリクスで算出された順位と血縁の係数をまとめたデータフレームを作成する。</p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="c4.html#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="co">#coef &lt;- data.frame(coef_rank = 0L,</span></span>
-<span id="cb102-2"><a href="c4.html#cb102-2" aria-hidden="true" tabindex="-1"></a>                <span class="co">#   coef_age = 0L) </span></span>
-<span id="cb102-3"><a href="c4.html#cb102-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-4"><a href="c4.html#cb102-4" aria-hidden="true" tabindex="-1"></a><span class="co">#for(i in 2:10001){</span></span>
-<span id="cb102-5"><a href="c4.html#cb102-5" aria-hidden="true" tabindex="-1"></a><span class="co">#  coef[i-1,1] &lt;- r_ds[[i]]$coefficients[[2]]</span></span>
-<span id="cb102-6"><a href="c4.html#cb102-6" aria-hidden="true" tabindex="-1"></a><span class="co">#  coef[i-1,2] &lt;- r_ds[[i]]$coefficients[[3]]</span></span>
-<span id="cb102-7"><a href="c4.html#cb102-7" aria-hidden="true" tabindex="-1"></a><span class="co">#}</span></span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="c4.html#cb115-1" aria-hidden="true" tabindex="-1"></a><span class="co">#coef &lt;- data.frame(coef_rank = 0L,</span></span>
+<span id="cb115-2"><a href="c4.html#cb115-2" aria-hidden="true" tabindex="-1"></a>                <span class="co">#   coef_age = 0L) </span></span>
+<span id="cb115-3"><a href="c4.html#cb115-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb115-4"><a href="c4.html#cb115-4" aria-hidden="true" tabindex="-1"></a><span class="co">#for(i in 2:10001){</span></span>
+<span id="cb115-5"><a href="c4.html#cb115-5" aria-hidden="true" tabindex="-1"></a><span class="co">#  coef[i-1,1] &lt;- r_ds[[i]]$coefficients[[2]]</span></span>
+<span id="cb115-6"><a href="c4.html#cb115-6" aria-hidden="true" tabindex="-1"></a><span class="co">#  coef[i-1,2] &lt;- r_ds[[i]]$coefficients[[3]]</span></span>
+<span id="cb115-7"><a href="c4.html#cb115-7" aria-hidden="true" tabindex="-1"></a><span class="co">#}</span></span></code></pre></div>
 <p>実データの係数がランダム化されたマトリクスの係数のうち95%よりも大きい/小さいときに、実データの係数は有意に大きい/小さいとする。</p>
 <p><strong>順位</strong>については、以下のような結果になるので(p_upper = 0.0426)、順位の係数はランダムな場合よりも有意に大きい(＝固有ベクトル中心性に有意に正の関連がある)ということができる。</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="c4.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co">#p_upper1 &lt;- sum(coef$coef_rank &gt; coef_rank_r)/10000</span></span>
-<span id="cb103-2"><a href="c4.html#cb103-2" aria-hidden="true" tabindex="-1"></a><span class="co">#p_lower1 &lt;- sum(coef$coef_rank &lt; coef_rank_r)/10000</span></span>
-<span id="cb103-3"><a href="c4.html#cb103-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb103-4"><a href="c4.html#cb103-4" aria-hidden="true" tabindex="-1"></a><span class="co">#p_upper1</span></span>
-<span id="cb103-5"><a href="c4.html#cb103-5" aria-hidden="true" tabindex="-1"></a><span class="co">#p_lower1</span></span></code></pre></div>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="c4.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="co">#coef %&gt;% </span></span>
-<span id="cb104-2"><a href="c4.html#cb104-2" aria-hidden="true" tabindex="-1"></a> <span class="co"># ggplot(aes(x=coef_rank))+ </span></span>
-<span id="cb104-3"><a href="c4.html#cb104-3" aria-hidden="true" tabindex="-1"></a> <span class="co"># geom_histogram(bins = 500)+</span></span>
-<span id="cb104-4"><a href="c4.html#cb104-4" aria-hidden="true" tabindex="-1"></a> <span class="co"># geom_vline(xintercept = coef_rank_r,</span></span>
-<span id="cb104-5"><a href="c4.html#cb104-5" aria-hidden="true" tabindex="-1"></a> <span class="co">#             color = &quot;red&quot;)+</span></span>
-<span id="cb104-6"><a href="c4.html#cb104-6" aria-hidden="true" tabindex="-1"></a> <span class="co"># geom_text(aes(x = 0.0053, y = 60),</span></span>
-<span id="cb104-7"><a href="c4.html#cb104-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#          label = str_c(&quot;実測値\n&quot;,&quot;p_upper =&quot;, p_upper1),</span></span>
-<span id="cb104-8"><a href="c4.html#cb104-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#          hjust=0)+</span></span>
-<span id="cb104-9"><a href="c4.html#cb104-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#theme_bw()</span></span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="c4.html#cb116-1" aria-hidden="true" tabindex="-1"></a><span class="co">#p_upper1 &lt;- sum(coef$coef_rank &gt; coef_rank_r)/10000</span></span>
+<span id="cb116-2"><a href="c4.html#cb116-2" aria-hidden="true" tabindex="-1"></a><span class="co">#p_lower1 &lt;- sum(coef$coef_rank &lt; coef_rank_r)/10000</span></span>
+<span id="cb116-3"><a href="c4.html#cb116-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-4"><a href="c4.html#cb116-4" aria-hidden="true" tabindex="-1"></a><span class="co">#p_upper1</span></span>
+<span id="cb116-5"><a href="c4.html#cb116-5" aria-hidden="true" tabindex="-1"></a><span class="co">#p_lower1</span></span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="c4.html#cb117-1" aria-hidden="true" tabindex="-1"></a><span class="co">#coef %&gt;% </span></span>
+<span id="cb117-2"><a href="c4.html#cb117-2" aria-hidden="true" tabindex="-1"></a> <span class="co"># ggplot(aes(x=coef_rank))+ </span></span>
+<span id="cb117-3"><a href="c4.html#cb117-3" aria-hidden="true" tabindex="-1"></a> <span class="co"># geom_histogram(bins = 500)+</span></span>
+<span id="cb117-4"><a href="c4.html#cb117-4" aria-hidden="true" tabindex="-1"></a> <span class="co"># geom_vline(xintercept = coef_rank_r,</span></span>
+<span id="cb117-5"><a href="c4.html#cb117-5" aria-hidden="true" tabindex="-1"></a> <span class="co">#             color = &quot;red&quot;)+</span></span>
+<span id="cb117-6"><a href="c4.html#cb117-6" aria-hidden="true" tabindex="-1"></a> <span class="co"># geom_text(aes(x = 0.0053, y = 60),</span></span>
+<span id="cb117-7"><a href="c4.html#cb117-7" aria-hidden="true" tabindex="-1"></a>  <span class="co">#          label = str_c(&quot;実測値\n&quot;,&quot;p_upper =&quot;, p_upper1),</span></span>
+<span id="cb117-8"><a href="c4.html#cb117-8" aria-hidden="true" tabindex="-1"></a>  <span class="co">#          hjust=0)+</span></span>
+<span id="cb117-9"><a href="c4.html#cb117-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#theme_bw()</span></span></code></pre></div>
 <p><strong>年齢</strong>については、以下のような結果になるので(p_upper = 0.057)、有意な影響はないとなる。</p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="c4.html#cb105-1" aria-hidden="true" tabindex="-1"></a><span class="co">#p_upper2 &lt;- sum(coef$coef_age &gt; coef_age_r)/10000</span></span>
-<span id="cb105-2"><a href="c4.html#cb105-2" aria-hidden="true" tabindex="-1"></a><span class="co">#p_lower2 &lt;- sum(coef$coef_age &lt; coef_age_r)/10000</span></span>
-<span id="cb105-3"><a href="c4.html#cb105-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb105-4"><a href="c4.html#cb105-4" aria-hidden="true" tabindex="-1"></a><span class="co">#p_upper2</span></span>
-<span id="cb105-5"><a href="c4.html#cb105-5" aria-hidden="true" tabindex="-1"></a><span class="co">#p_lower2</span></span></code></pre></div>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="c4.html#cb106-1" aria-hidden="true" tabindex="-1"></a><span class="co">#coef %&gt;% </span></span>
-<span id="cb106-2"><a href="c4.html#cb106-2" aria-hidden="true" tabindex="-1"></a> <span class="co"># ggplot(aes(x=coef_age))+ </span></span>
-<span id="cb106-3"><a href="c4.html#cb106-3" aria-hidden="true" tabindex="-1"></a> <span class="co"># geom_histogram(bins = 500)+</span></span>
-<span id="cb106-4"><a href="c4.html#cb106-4" aria-hidden="true" tabindex="-1"></a> <span class="co"># geom_vline(xintercept = coef_age_r,</span></span>
-<span id="cb106-5"><a href="c4.html#cb106-5" aria-hidden="true" tabindex="-1"></a>              <span class="co">#color = &quot;red&quot;)+</span></span>
-<span id="cb106-6"><a href="c4.html#cb106-6" aria-hidden="true" tabindex="-1"></a> <span class="co"># geom_text(aes(x = 0.045, y = 65),</span></span>
-<span id="cb106-7"><a href="c4.html#cb106-7" aria-hidden="true" tabindex="-1"></a> <span class="co">#           label = str_c(&quot;実測値\n&quot;,&quot;p_upper =&quot;, p_upper2),</span></span>
-<span id="cb106-8"><a href="c4.html#cb106-8" aria-hidden="true" tabindex="-1"></a> <span class="co">#           hjust =0)+</span></span>
-<span id="cb106-9"><a href="c4.html#cb106-9" aria-hidden="true" tabindex="-1"></a> <span class="co"># theme_bw()</span></span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="c4.html#cb118-1" aria-hidden="true" tabindex="-1"></a><span class="co">#p_upper2 &lt;- sum(coef$coef_age &gt; coef_age_r)/10000</span></span>
+<span id="cb118-2"><a href="c4.html#cb118-2" aria-hidden="true" tabindex="-1"></a><span class="co">#p_lower2 &lt;- sum(coef$coef_age &lt; coef_age_r)/10000</span></span>
+<span id="cb118-3"><a href="c4.html#cb118-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-4"><a href="c4.html#cb118-4" aria-hidden="true" tabindex="-1"></a><span class="co">#p_upper2</span></span>
+<span id="cb118-5"><a href="c4.html#cb118-5" aria-hidden="true" tabindex="-1"></a><span class="co">#p_lower2</span></span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="c4.html#cb119-1" aria-hidden="true" tabindex="-1"></a><span class="co">#coef %&gt;% </span></span>
+<span id="cb119-2"><a href="c4.html#cb119-2" aria-hidden="true" tabindex="-1"></a> <span class="co"># ggplot(aes(x=coef_age))+ </span></span>
+<span id="cb119-3"><a href="c4.html#cb119-3" aria-hidden="true" tabindex="-1"></a> <span class="co"># geom_histogram(bins = 500)+</span></span>
+<span id="cb119-4"><a href="c4.html#cb119-4" aria-hidden="true" tabindex="-1"></a> <span class="co"># geom_vline(xintercept = coef_age_r,</span></span>
+<span id="cb119-5"><a href="c4.html#cb119-5" aria-hidden="true" tabindex="-1"></a>              <span class="co">#color = &quot;red&quot;)+</span></span>
+<span id="cb119-6"><a href="c4.html#cb119-6" aria-hidden="true" tabindex="-1"></a> <span class="co"># geom_text(aes(x = 0.045, y = 65),</span></span>
+<span id="cb119-7"><a href="c4.html#cb119-7" aria-hidden="true" tabindex="-1"></a> <span class="co">#           label = str_c(&quot;実測値\n&quot;,&quot;p_upper =&quot;, p_upper2),</span></span>
+<span id="cb119-8"><a href="c4.html#cb119-8" aria-hidden="true" tabindex="-1"></a> <span class="co">#           hjust =0)+</span></span>
+<span id="cb119-9"><a href="c4.html#cb119-9" aria-hidden="true" tabindex="-1"></a> <span class="co"># theme_bw()</span></span></code></pre></div>
 
 </div>
 </div>
@@ -452,6 +1570,9 @@ Croft, D. P., Madden, J. R., Franks, D. W., &amp; James, R. (2011). Hypothesis t
 </div>
 <div id="ref-Dekker2007" class="csl-entry">
 Dekker, D., Krackhardt, D., &amp; Snijders, T. A. B. (2007). Sensitivity of <span>MRQAP</span> tests to collinearity and autocorrelation conditions. <em>Psychometrika</em>, <em>72</em>(4), 563–581.
+</div>
+<div id="ref-Dunn2018" class="csl-entry">
+Dunn, P. K., &amp; Smyth, G. K. (2018). <em>Generalized linear models with examples in <span>R</span></em>. Springer New York.
 </div>
 <div id="ref-Farine2017" class="csl-entry">
 Farine, D. R. (2017). A guide to null models for animal social network analysis. <em>Methods Ecol. Evol.</em>, <em>8</em>(10), 1309–1320.
@@ -465,11 +1586,14 @@ Farine, D. R., &amp; Whitehead, H. (2015). Constructing, conducting and interpre
 <div id="ref-Franks2021" class="csl-entry">
 Franks, D. W., Weiss, M. N., Silk, M. J., Perryman, R. J. Y., &amp; Croft, D. P. (2021). Calculating effect sizes in animal social network analysis. <em>Methods Ecol. Evol.</em>, <em>12</em>(1), 33–41.
 </div>
+<div id="ref-Ohigashi2010" class="csl-entry">
+大東健太郎. (2010). <span>線形モデルから一般化線形モデル（GLM）へ</span>. <em>雑草研究</em>, <em>55</em>(4), 268–274.
+</div>
 </div>
 <div class="footnotes">
 <hr />
 <ol start="4">
-<li id="fn4"><p>帰無仮説(今回の場合はランダムなネットワーク)が正しいとしたときの統計検定量の分布。<a href="c4.html#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>帰無仮説が正しいとしたときの統計検定量の分布。帰無仮説とは何かわからない場合は、<a href="https://manabitimes.jp/math/1073">こちら</a>を参照。 　<a href="c4.html#fnref4" class="footnote-back">↩︎</a></p></li>
 </ol>
 </div>
             </section>

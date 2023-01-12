@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>3 ネットワーク指標の算出 | Network Analysis Using R</title>
   <meta name="description" content="3 ネットワーク指標の算出 | Network Analysis Using R" />
-  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
 
   <meta property="og:title" content="3 ネットワーク指標の算出 | Network Analysis Using R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2022-11-13" />
+<meta name="date" content="2023-01-12" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -54,12 +54,12 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<script src="libs/htmlwidgets-1.6.1/htmlwidgets.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.23/datatables.js"></script>
-<link href="libs/dt-core-1.11.3/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.11.3/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.11.3/js/jquery.dataTables.min.js"></script>
+<script src="libs/datatables-binding-0.26/datatables.js"></script>
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
 <link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
 <script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 
@@ -102,7 +102,7 @@ code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
 code span.at { color: #7d9029; } /* Attribute */
 code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
+code span.bu { color: #008000; } /* BuiltIn */
 code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
 code span.ch { color: #4070a0; } /* Char */
 code span.cn { color: #880000; } /* Constant */
@@ -115,7 +115,7 @@ code span.er { color: #ff0000; font-weight: bold; } /* Error */
 code span.ex { } /* Extension */
 code span.fl { color: #40a070; } /* Float */
 code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
+code span.im { color: #008000; font-weight: bold; } /* Import */
 code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
 code span.kw { color: #007020; font-weight: bold; } /* Keyword */
 code span.op { color: #666666; } /* Operator */
@@ -207,11 +207,10 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="4" data-path="c4.html"><a href="c4.html"><i class="fa fa-check"></i><b>4</b> 統計的検定</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="c4.html"><a href="c4.html#なぜランダム化検定が必要か"><i class="fa fa-check"></i><b>4.1</b> なぜランダム化検定が必要か？</a></li>
-<li class="chapter" data-level="4.2" data-path="c4.html"><a href="c4.html#s3-2"><i class="fa fa-check"></i><b>4.2</b> Network permutation</a>
+<li class="chapter" data-level="4.1" data-path="c4.html"><a href="c4.html#s4-1"><i class="fa fa-check"></i><b>4.1</b> なぜランダム化検定が必要か？</a></li>
+<li class="chapter" data-level="4.2" data-path="c4.html"><a href="c4.html#s4-2"><i class="fa fa-check"></i><b>4.2</b> Network permutation</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="c4.html"><a href="c4.html#線形回帰分析"><i class="fa fa-check"></i><b>4.2.1</b> 線形回帰分析</a></li>
-<li class="chapter" data-level="4.2.2" data-path="c4.html"><a href="c4.html#ネットワーク同士の関連の検討"><i class="fa fa-check"></i><b>4.2.2</b> ネットワーク同士の関連の検討</a></li>
+<li class="chapter" data-level="4.2.1" data-path="c4.html"><a href="c4.html#分析例"><i class="fa fa-check"></i><b>4.2.1</b> 分析例</a></li>
 </ul></li>
 <li class="chapter" data-level="4.3" data-path="c4.html"><a href="c4.html#data-stream-randomization"><i class="fa fa-check"></i><b>4.3</b> data stream randomization</a></li>
 </ul></li>
@@ -249,8 +248,8 @@ div.csl-indent {
 <span id="cb25-4"><a href="c3.html#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-5"><a href="c3.html#cb25-5" aria-hidden="true" tabindex="-1"></a>attr <span class="sc">%&gt;%</span> </span>
 <span id="cb25-6"><a href="c3.html#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(<span class="at">rownames =</span> <span class="cn">FALSE</span>, <span class="at">width =</span> <span class="st">&quot;55%&quot;</span>)</span></code></pre></div>
-<div id="htmlwidget-fa512c3671ef7dd11d73" style="width:55%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-fa512c3671ef7dd11d73">{"x":{"filter":"none","vertical":false,"data":[["A","B","C","D","E","F","G","H"],[12,13,12,11,14,15,18,9],[2,3,4,1,8,1,7,6]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>name<\/th>\n      <th>age<\/th>\n      <th>rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-be73df65393886bc3129" style="width:55%;height:auto;" class="datatables html-widget "></div>
+<script type="application/json" data-for="htmlwidget-be73df65393886bc3129">{"x":{"filter":"none","vertical":false,"data":[["A","B","C","D","E","F","G","H"],[12,13,12,11,14,15,18,9],[2,3,4,1,8,1,7,6]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>name<\/th>\n      <th>age<\/th>\n      <th>rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p><br/></p>
 <div id="近接中心性closeness-centrality" class="section level3 hasAnchor" number="3.1.1">
 <h3><span class="header-section-number">3.1.1</span> 近接中心性(closeness centrality)<a href="c3.html#近接中心性closeness-centrality" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1091,6 +1090,7 @@ H
 <p><br/></p>
 <p>このとき、以下のような式を満たす<span class="math inline">\(c\)</span>と<span class="math inline">\(\lambda\)</span>を求めることになる。</p>
 $$<br />
+
 <span class="math display">\[\begin{aligned}
 
   \lambda
@@ -1943,7 +1943,7 @@ bi
 </tbody>
 </table>
 <p><br/></p>
-<p>なお離散的な属性については、<code>ANTs</code>パッケージの<code>met.assortativity()</code>関数を用いると、node permutation(詳細は<a href="c4.html#s3-2">4.2</a>)で生成したランダムなネットワークにおける同類性を指定した数だけ生成してくれる。<u>それらの何%より実際の同類性の数値が大きい/小さいかを検討することで、統計的な検定が行える</u>。今回の例では、実測値はランダムな値の全てより小さいので、ランダムな場合より<u>有意に小さいと言える</u>(図<a href="c3.html#fig:fig-perm">3.10</a>)。</p>
+<p>なお離散的な属性については、<code>ANTs</code>パッケージの<code>met.assortativity()</code>関数を用いると、node permutation(詳細は<a href="c4.html#s4-2">4.2</a>)で生成したランダムなネットワークにおける同類性を指定した数だけ生成してくれる。<u>それらの何%より実際の同類性の数値が大きい/小さいかを検討することで、統計的な検定が行える</u>。今回の例では、実測値はランダムな値の全てより小さいので、ランダムな場合より<u>有意に小さいと言える</u>(図<a href="c3.html#fig:fig-perm">3.10</a>)。</p>
 <div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="c3.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="do">## node label permutationで生成したランダムなネットワーク100個についてassortativityを算出</span></span>
 <span id="cb68-2"><a href="c3.html#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">met.assortativity</span>(groom_mat_b,</span>
 <span id="cb68-3"><a href="c3.html#cb68-3" aria-hidden="true" tabindex="-1"></a>                  <span class="do">## 各ノードの固有ベクトル中心性  </span></span>
@@ -1976,6 +1976,7 @@ bi
 </p>
 </div>
 有向グラフの場合は、頂点<span class="math inline">\(i\)</span>から<span class="math inline">\(j\)</span>、頂点<span class="math inline">\(j\)</span>から<span class="math inline">\(k\)</span>に有向辺があり、かつ頂点<span class="math inline">\(i\)</span>から<span class="math inline">\(k\)</span>に有向辺があるとき推移的であるという(図<a href="c3.html#fig:fig-trans2">3.12</a>)。<br />
+
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-trans2"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/fig-trans2-1.png" alt="推移性の説明のための有向グラフの例" width="220.8" />
 <p class="caption">
@@ -1995,7 +1996,7 @@ bi
 <p>Modularityは以下のように定式化される<span class="citation">(<a href="#ref-Csardi2006" role="doc-biblioref">Csardi et al., 2006</a>)</span>。</p>
 <p><span class="math inline">\(Q = \frac{1}{2m} \sum_{i,j} (A_{ij} - \gamma \frac{k_i k_j}{2m}) \delta(c_i,c_j)\)</span><br />
 <br/></p>
-<p>なお、<span class="math inline">\(m\)</span>は辺の数、<span class="math inline">\(A_{ij}\)</span>は隣接行列の<span class="math inline">\(i\)</span>行目<span class="math inline">\(j\)</span>列目の成分、<span class="math inline">\(k_i\)</span>と<span class="math inline">\(k_j\)</span>はノード<span class="math inline">\(i\)</span>と<span class="math inline">\(j\)</span>の重み付き中心性を表す(<span class="math inline">\(k_i\)</span>と<span class="math inline">\(k_j\)</span>に固有ベクトル中心性を使っている論文もある<span class="citation">(<a href="#ref-Bala2018" role="doc-biblioref">Balasubramaniam et al., 2018</a>)</span>)。また、<span class="math inline">\(\delta(c_i,c_j)\)</span>はノード<span class="math inline">\(i\)</span>と<span class="math inline">\(j\)</span>が同じクラスターに属しているときは1、そうでないときは0になる。なお、<span class="math inline">\(\gamma \frac{k_i k_j}{2m}\)</span>の部分は、ランダムに交渉が行割れていると仮定したときの<span class="math inline">\(A_{ij}\)</span>の値である。<span class="math inline">\(\delta\)</span>はデフォルトでは1だが変化させることができ、大きい値をとるほどクラスター数が多くなる。</p>
+<p>なお、<span class="math inline">\(m\)</span>は辺の数、<span class="math inline">\(A_{ij}\)</span>は隣接行列の<span class="math inline">\(i\)</span>行目<span class="math inline">\(j\)</span>列目の成分、<span class="math inline">\(k_i\)</span>と<span class="math inline">\(k_j\)</span>はノード<span class="math inline">\(i\)</span>と<span class="math inline">\(j\)</span>の重み付き中心性を表す(<span class="math inline">\(k_i\)</span>と<span class="math inline">\(k_j\)</span>に固有ベクトル中心性を使っている論文もある<span class="citation">(<a href="#ref-Bala2018" role="doc-biblioref">Balasubramaniam et al., 2018</a>)</span>)。また、<span class="math inline">\(\delta(c_i,c_j)\)</span>はノード<span class="math inline">\(i\)</span>と<span class="math inline">\(j\)</span>が同じクラスターに属しているときは1、そうでないときは0になる。なお、<span class="math inline">\(\gamma \frac{k_i k_j}{2m}\)</span>の部分は、ランダムに交渉が行割れていると仮定したときの<span class="math inline">\(A_{ij}\)</span>の値である。<span class="math inline">\(\gamma\)</span>はデフォルトでは1だが変化させることができ、大きい値をとるほどクラスター数が多くなる。</p>
 <p>ここでは例として、毛づくろい頻度ネットワーク<code>groom_mat_b</code>(表<a href="c2.html#tab:tab-groom-b">2.3</a>)を用いて、各順位カテゴリ内(低順位・中順位・高順位)の交渉がカテゴリ間の交渉よりどの程度多いかを、<span class="math inline">\(Q\)</span>を算出することで求める。</p>
 <p>Rでは、<code>igraph</code>パッケージの<code>modularity()</code>関数で求めることができる。<code>graph_from_adjacency_matrix()</code>で<code>igraph</code>クラスに変換した後に算出する。また、<code>weight =</code>で明示的に各エッジのweightを与えてあげる必要があるよう。modularityは0.315…とそこそこ大きい値であるので、順位カテゴリ内に毛づくろいが偏っていることを示している。</p>
 <div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="c3.html#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 順位カテゴリごとに番号を振る</span></span>
@@ -2112,6 +2113,7 @@ r_{ij} = \frac{(i列とj列の共分散) + (i行とj行の共分散)}{(i列とi�
 <span id="cb81-5"><a href="c3.html#cb81-5" aria-hidden="true" tabindex="-1"></a>                            <span class="do">## 階層クラスター分析の方法</span></span>
 <span id="cb81-6"><a href="c3.html#cb81-6" aria-hidden="true" tabindex="-1"></a>                             <span class="at">cluster.method =</span> <span class="st">&quot;complete&quot;</span>)</span></code></pre></div>
 クラスター分析に基づくデンドログラムは図<a href="c3.html#fig:fig-dendro">3.14</a>のようになる。縦軸が互いのユークリッド距離を表す。<br />
+
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-dendro"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/fig-dendro-1.png" alt="クラスター分析結果に基づくデンドログラム" width="528" />
 <p class="caption">

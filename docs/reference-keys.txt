@@ -1,7 +1,7 @@
 fig:fig-graph
 tab:unnamed-chunk-3
 fig:fig-ggraph
-tab:tab-f0cal-example
+tab:tab-focal-example
 tab:tab-groom
 tab:tab-groom-b
 fig:fig-groom
@@ -31,6 +31,10 @@ fig:fig-cluster2
 fig:fig-ind
 fig:fig-nlperm
 fig:fig-nlperm2
+tab:tab-prox
+fig:fig-cor
+fig:fig-npermtest
+fig:fig-npermtest-b
 c1
 社会ネットワーク分析snaとは
 社会ネットワークの基礎
@@ -64,9 +68,14 @@ modularityを用いる方法
 構造類似性を用いる方法
 その他
 c4
-なぜランダム化検定が必要か
-s3-2
-線形回帰分析
+s4-1
+s4-2
+分析例
+線形モデルglmglmmなど
+分析例1.-正規線形モデル
+snaパッケージを用いる方法
+antsパッケージを用いる方法
+分析例2.-線形混合モデル
 ネットワーク同士の関連の検討
 data-stream-randomization
 おまけ.-csiの算出

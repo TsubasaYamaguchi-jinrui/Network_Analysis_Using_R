@@ -43,7 +43,7 @@ as_tbl_graph(mat,directed = TRUE) %>%
   geom_edge_link(aes(width = weight),
                  alpha = 0.6, color = "grey60")+
   scale_edge_width_continuous(range = c(0,2))+
-  geom_node_point(size = 8)+
+  geom_node_point(size = 10)+
   geom_node_text(aes(label = name), size =5, color = "white")+
   theme_graph()+
   theme(panel.background = element_blank(),
@@ -68,7 +68,7 @@ as_tbl_graph(mat, directed = TRUE) %>%
                  arrow = arrow(angle = 20, type = "closed",length = unit(0.18, "inches"))
                 , end_cap = circle(2.5,"mm"), alpha =0.7, color = "grey60")+
   scale_edge_width(range = c(0,1))+
-  geom_node_point(size = 8)+
+  geom_node_point(size = 10)+
   geom_node_text(aes(label = name), size =5, color = "white")+
   theme_graph()+
   theme(legend.position = "none",
