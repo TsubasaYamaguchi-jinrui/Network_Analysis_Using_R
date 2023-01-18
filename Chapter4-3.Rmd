@@ -1,0 +1,115 @@
+## Pre-network permutation  
+Node permutationとともによく用いられるパーミュテーションの方法が、**pre-network (またはdata stream) permutation**である。この方法では、隣接行列(ネットワーク)を作成する前の生データに対してパーミュテーションを行う[@Farine2017]。  
+
+Pre-network permutationは、もともと<u>"group by individual"(第\@ref(s2-2)節参照)形式のデータに適用するために考案された手法</u>である[@Bejder1998; @Whitehead1999]。このような形式のデータとしては、下のようなものがあげられる。これは、金華山島$B_1$群で2021年交尾期の各観察日(`date`)にそれぞれのメスが群れ内で観察されたか否かを示したものである。1が観察されたこと、0が観察されなかったことを表す。   
+<br/>  
+
+```{r, echo = FALSE}
+presence <- read_csv("data/presence_demo.csv")
+
+presence %>% 
+  datatable(rownames = FALSE)
+```
+<br/>  
+
+Pre-network permutationのプロセスを模式的に表したのが図\@ref(fig:fig-dsp)である[@Bejder1998; @Whitehead1999]。以下のプロセスで行う。  
+
+1. "group by individual"形式のデータからランダムに2つのグループ(行)と2個体を選ぶ。ただし、各個体はいずれか一方のグループ(行)のみで確認され、かつ各グループ(行)ではいずれか一方の個体のみしか確認されていないものの中から選ぶ。例えば、図\@ref(fig:fig-dsp)の左の行列の下線の組み合わせがこのような条件を満たす。  
+
+2. 2つのグループ(行)における各個体の数値を入れ替える(図\@ref(fig:fig-dsp)の右の行列)。  
+
+3. 入れ替えた後のデータをもとにassociation index(e.g., SRIなど)を算出し、隣接行列(ネットワーク)を作成する。  
+
+4. 2~3の過程を少なくとも1000回繰り返す。ただし、各ステップで入れ替えを行うデータは、前のステップで入れ替えを行った後のデータである。例えば図\@ref(fig:fig-dsp)では、次のステップにおいては右の行列(= 前のステップで入れ替えた後のデータ)に対してランダムな入れ替えを同様に行う。  
+
+<br/>  
+```{r fig-dsp, echo=FALSE, out.width="90%", fig.cap="Pre-network permutationのプロセス。Whitehead et al. (1999)から引用。"}
+knitr::include_graphics("image/DSP.png")
+```
+<br/>  
+
+この方法を用いることで、**各グループ(行)で確認された個体数と、各個体が確認された回数を保ったまま**ランダムなネットワークを無数に生成することができる。また、ランダムに選ぶ2個体を同じ属性(e.g., 性別)の個体に限定したり、観察が複数の調査期間/場所で行われた際にそれぞれの調査期間/場所**内**で入れ替えを行ったりすることで、**node permutationで問題となっていた観察バイアスや観察場所・期間の影響を排除することができる**[@Whitehead2005]。  
+
+検定を行う際には、node permutationのときと同様に、実データをもとに算出した統計検定量と、各ステップでランダムな入れ替えによって生成されたデータから算出された統計検定量の分布を比較することでP値を算出する。  
+
+なお、pre-network permutationは近年適用範囲が広がり、"group by individual"形式のデータだけでなく、GPSデータや個体追跡データに対しても適用できるようになってきている。詳しい方法については、@Farine2017 を参照。  
+
+### 分析例  
+Pre-network permutationを用いた分析は、node permutationで行ったすべての分析(線形モデル、相関分析、MRQAP検定など)に対して適用することができる。  
+
+以下のような一般化線形モデルを考える。  
+
+- 分布: ガンマ分布  
+- 応答変数: 固有ベクトル中心性  
+- 説明変数: 順位、年齢  
+
+ANTsパッケージでdata stream randomizationを行うことができる。  
+ここでは、group by individualの形式で記録したメスの出欠データ(1.2参照)を用いる。  
+ランダマイゼーションを行うためには、縦長のデータフレームにする必要がある。  
+```{r}
+## まずはデータフレームの形に直す。
+presence_multi <- read.csv("data/presence_demo_multi.csv") 
+
+presence_multi %>% 
+  column_to_rownames(var = "date") %>% 
+  select(-period) %>% 
+  as.matrix()-> presence_multi_b
+
+## gbi.to.df関数でデータフレーム形式に  
+presence_df <- gbi.to.df(presence_multi_b)
+
+presence_df %>% 
+  mutate(period = ifelse(year(scan) == "2019",1,
+                         ifelse(year(scan) == "2020",2,3))) -> presence_df_b
+```
+
+`perm.ds.grp()`でdata stream randomizationを行うことができる。  
+ここでは、観察日ごとに個体の出欠を10000回シャッフルするが、もしあれば時間や場所などの情報も`ctrlf`という引数で加えることが可能である。詳しくは、Farine (2017)を参照。
+```{r}
+perm_ds <- perm.ds.grp(presence_df_b,
+                       scan = "scan",
+                       nperm = 1000,
+                       ctrlf = "period",
+                       index = "sri",
+                       progress = FALSE)
+```
+
+生成された10001(実データ1 + ランダマイゼーション×10000)それぞれについて、ネットワーク指標を算出して、メスの属性データと結合する。やり方は、第2節と同様であるが、`map()`を用いることで10001個のマトリクスそれぞれについて算出できる。    
+```{r}
+## メスの属性データ
+att_females <- data.frame(femaleID = colnames(prox_mat),
+                          rank = c(8,9,11,12,1,2,3,5,4,13,15,14,6,7,10),
+                          age = c(12,9,10,10,14,7,12,8,6,8,10,15, 10, 10, 10))
+
+set.seed(123)
+att_list <- met.eigen(perm_ds, df = att_females, dfid = 1)
+```
+
+```{r}
+
+a <- stat.glm(ant = att_list, formula = eigen ~ age + rank,
+              family = Gamma(link = "log"),
+              oda = presence_df_b,
+              progress = FALSE)
+
+r <- ant(a)
+
+r
+```
+
+```{r}
+#presence_multi <- read_csv("data/presence_demo_multi.csv")
+
+#period <- presence_multi$period
+
+#presence_multi_b <- presence_multi %>% select(-date,-period)
+
+#network <- get_network(presence_multi %>% select(-date,-period))
+
+#network_permutation(presence_multi_b %>% as.matrix(),
+ #                   data_format = "GBI",
+  #                  association_matrix = network,
+   #                 association_index = "SRI",
+    #                days = period,
+     #               within_day = TRUE) ->a
+```

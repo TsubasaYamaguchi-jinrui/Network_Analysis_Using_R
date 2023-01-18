@@ -4,6 +4,7 @@ author: "Tsubasa Yamaguchi"
 date: "`r Sys.Date()`"
 output: 
   bookdown::gitbook:
+    split_by: rmd  
     split_bib: yes  
     number_sections: true   
     toc_depth: 4 

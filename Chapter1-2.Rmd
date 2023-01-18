@@ -1,0 +1,187 @@
+## 社会ネットワークの基礎  
+### グラフ   
+SNAでは、ネットワークの構造を頂点(**ノード**)と辺(**エッジ**)の集合によって表す。これを、**グラフ**と呼ぶ。頂点は個体などを、辺は何らかの個体間の社会関係を表す。
+
+- 関係の有無(1か0か)だけを考慮するグラフと、関係の強さ(交渉頻度など)も考慮するグラフがある。後者は特に**重み付きグラフ**といい、関係の強さを「重み(weight)」という。グラフでは、エッジの太さで関係の強さを表す(図\@ref(fig:fig-graph))。    
+
+- 関係の向きを考える($A \rightarrow B$と$A \leftarrow B$を区別)グラフを**有向グラフ**、考えないグラフを**無向グラフ**という。有向グラフの場合は、辺に矢印を用いることが多い(図\@ref(fig:fig-graph)のB)。    
+
+
+```{r fig-graph, fig.cap = "例1. 無向グラフ(A)と有向グラフ(B)の例", echo = FALSE, fig.dim= c(8,4.5)}
+## 無向グラフ
+mat <- matrix(c(0,1,5,3,
+                1,0,1,1,
+                5,1,0, 2,
+                3,1,2,0),
+              ncol = 4,nrow = 4,
+              byrow = TRUE)
+
+colnames(mat) <- c("A","B","C","D")
+rownames(mat) <- c("A","B","C","D")
+
+as_tbl_graph(mat,directed = TRUE) %>% 
+  ggraph(layout = "fr")+ 
+  geom_edge_link(aes(width = weight),
+                 alpha = 0.6, color = "grey60")+
+  scale_edge_width_continuous(range = c(0,2))+
+  geom_node_point(size = 10)+
+  geom_node_text(aes(label = name), size =5, color = "white")+
+  theme_graph()+
+  theme(panel.background = element_blank(),
+        legend.position = "none",
+        aspect.ratio = 1)+
+  ggtitle("A")-> p1
+
+## 有向グラフ
+mat <- matrix(c(0,0,0,2,
+                1.5,0,2,0,
+                3,0,0,1,
+                0,1,3,0),
+              ncol = 4,nrow = 4,
+              byrow = TRUE)
+
+colnames(mat) <- c("A","B","C","D")
+rownames(mat) <- c("A","B","C","D")
+
+as_tbl_graph(mat, directed = TRUE) %>% 
+  ggraph(layout = "fr")+ 
+  geom_edge_fan(aes(width = weight),
+                 arrow = arrow(angle = 20, type = "closed",length = unit(0.18, "inches"))
+                , end_cap = circle(2.5,"mm"), alpha =0.7, color = "grey60")+
+  scale_edge_width(range = c(0,1))+
+  geom_node_point(size = 10)+
+  geom_node_text(aes(label = name), size =5, color = "white")+
+  theme_graph()+
+  theme(legend.position = "none",
+        aspect.ratio = 1)+
+  ggtitle("B") -> p2
+
+p1 + p2
+```
+<br />  
+
+### 隣接行列(マトリックス)    
+ネットワーク分析では、データを**隣接行列**(adjacency matrix)の形で表現することが多い。隣接行列はグラフのノード間の関係が記された行列で、ノードの数が$n$個ならば、$n \times n$の正方行列になる。Rの分析でも、基本的に隣接行列を用いることが多い。    
+
+Rでは、`matrix()`関数によって以下のように作成できる。
+```{r}
+mat_example <- matrix(## 数値のベクトル
+                     c(0,0,0,2,
+                       1.5,0,2,0,
+                       3,0,0,1,
+                       0,1,3,0),
+                       ## 行数と列数
+                       ncol = 4, nrow = 4,
+                       ## TRUEなら、1行目から順に数値を入れていく
+                       byrow = TRUE)
+
+## 列名と行名を入れられる
+colnames(mat_example) <- c("A","B","C","D")
+rownames(mat_example) <- c("A","B","C","D")
+
+## 完成したのがこちら
+mat_example %>% 
+  kable(digits = 2, align = "c",caption = "作成した隣接行列") %>% 
+  kable_styling(font_size = 10, full_width = FALSE)
+```
+<br/>  
+
+Excel等で作成したcsvファイルをデータフレームとして読み込み、それをマトリックスに変換する方法もある。  
+```{r}
+## 1列目を行名に指定
+mat_example2 <- read.csv("data/example.csv", row.names = 1) 
+
+## マトリックスに変換  
+mat_example2 <- as.matrix(mat_example2)
+
+mat_example2 %>% 
+  kable(digits = 2, align = "c") %>% 
+   kable_styling(font_size = 10, full_width = FALSE)
+```
+<br/>  
+
+### Rでのグラフの描画  
+本稿では`ggraph`パッケージを用いる。このパッケージを用いる利点は主に以下の2点である。  
+
+- `tidygraph`と併用することで、データフレーム形式のデータをそのままグラフにできる。それによって、データの加工とグラフの描画をシームレスに行いやすい。  
+- `ggplot`パッケージの拡張なので、`ggplot`と同じ文法で描ける。    
+
+#### `tbl_graph`クラスへの変換  
+`ggraph`でグラフを描くには、データを`tbl_graph`クラスに変換する必要がある。隣接行列を`as_tbl_graph()`で変換してあげればよい。すると、ノードの名前`name`と辺リスト(辺の始点、終点、重みが書いてあるリスト)が入ったオブジェクトを返してくれる。  
+```{r}
+## 有向グラフであれば directed = TRUE、無向グラフならFALSE
+graph_mat_example2 <- as_tbl_graph(mat_example2, directed = TRUE)
+
+graph_mat_example2 
+```
+
+なお、各ノードの名前以外の情報もグラフに反映させたい場合は、以下のように情報を追加できる。ここでは、各個体の年齢の情報を追加した。    
+```{r}
+graph_mat_example2 %>% 
+  mutate(age = c(12,10,15,6,20,13,8,7)) -> graph_mat_example2
+
+graph_mat_example2
+```
+
+グラフに使用するデータを絞り込むなどの作業をする場合は、一度隣接行列を辺リストのデータフレームに変換してから(`mat.to.edgl()`で可能)データフレームを加工し、その後に`as_tbl_graph()`を用いるとよい。以下では、重みが0.7以上の辺のみを抽出している。    
+```{r}
+mat_example2 %>%
+  ## 辺リストのデータフレームに変換
+  mat.to.edgl() %>% 
+  ## weightが0.5以上のものに限定する
+　filter(weight >= 0.5) %>% 
+  ## tbl_graphクラスに変換
+  as_tbl_graph(directed = TRUE) %>% 
+  mutate(age = c(12,10,15,6,20,13,8,7)) -> graph_mat_example2_b
+
+graph_mat_example2
+```
+
+#### `ggraph`を用いた描画  
+`ggraph`でグラフを描画するときには、主に以下の3つを指定してあげればよい。  
+
+- **レイアウト**: グラフでノードと辺をどのような規則に基づいて配置するかを決める。  
+例. `line`: 一直線、`circle`: 円上、`nicely`: いい感じに?、`randomly`: ランダムに、...  
+詳細は[こちら](https://rdrr.io/cran/ggraph/man/layout_tbl_graph_igraph.html)や[こちら](https://www.data-imaginist.com/2017/ggraph-introduction-layouts/)を参照。  
+
+- **ノード**: `geom_node_*()`(*には色々入る)という関数群でノードについて指定。関数の中で`size =`で大きさ、`color =`で色、`shape =`で形などを`ggplot`と同じように指定できる。    
+例. `geom_node_point()`: 普通のノード、`geom_node_text()`: ノードのラベル、...  
+
+- **辺(エッジ)**: `geom_edge_*()`(*には色々入る)という関数群でノードについて指定。関数の中で`width =`で太さ、`color =`で色などを`ggplot`と同じように指定できる。  
+例: `geom_edge_link()`: 直線、`geom_edge_fan()`: 曲線、...  
+<br/>  
+
+図\@ref(fig:fig-ggraph)は実際に以下のコードで描いた例である。  
+`layout = "nicely"`とすると、グラフが見やすいように配置してくれる。関係のある(= 辺がある)個体同士はより近くに配置される傾向があるため、絶対とはいえないが、結果的に多くの個体と繋がっている個体が中心部に来る傾向がある。  
+  
+何らかの指標を出さない限りグラフのみから何かを結論付けることはできないが、パッと見て関係構造の全体図を掴んだり、仮説を立てたりしようとする際にはグラフを見ることが非常に有用である。  
+```{r fig-ggraph, fig.cap = "ggraphで描いたグラフの例", fig.dim = c(6,4)}
+graph_mat_example2_b %>% 
+  # layoutの指定
+  ggraph(layout = "nicely")+
+  # 曲線のエッジ、weightを太さに
+  geom_edge_fan(aes(width = weight),
+                ## 矢印について指定
+                 arrow = arrow(angle = 15, type = "closed",length = unit(0.18, "inches")),
+                ## 矢印の終点のノードからの距離
+                end_cap = circle(2.5,"mm"),
+                ## 矢印の始点のノードからの距離
+                start_cap = circle(2.5,"mm"),
+                ## 透明度(alpha)と色(color)指定
+                 alpha =0.7, color = "grey60")+
+  # エッジの太さの範囲を決める  
+  scale_edge_width(range = c(0,1.3))+
+  ## 四角のノード。大きさは年齢によって変化するとする。  
+  geom_node_point(aes(size = age), shape = 18)+
+  ## ノードのラベルは個体名  
+  scale_size(range = c(3,6))+
+  geom_node_text(aes(label = name), 
+                 ## ノードと重ならないようにする 
+                 repel=TRUE, size =6)+
+  theme_graph()+
+  ## 縦横比
+  theme(aspect.ratio = 0.7)
+```
+
+
+

@@ -1,0 +1,492 @@
+## ネットワーク構造の諸指標  
+ここでは、ネットワーク全体の構造の特徴を表す指標についてまとめる。  
+
+### 集中度(Centralization)  
+前節では、各ノードがグラフ内でどの程度中心的かを表す指標として中心性指標を扱ってきた。それらを用いて<u>グラフにおいて特定のノードに高い中心性がどの程度集中しているのか</u>を示す指標が**集中度**である。グラフの集中度($C_x$)は以下の式によって定式化され、0から1の値をとる。ただし、各ノードの中心性指標を$C_x(i)$、グラフにおけるその中心性指標の最大値を$C_x(i^*)$とする。また、そのグラフと同数のノード(n個)を持つグラフにおける$\sum_{i=1}^n [C_x(i^*)-C_x(i)]$の最大値を$max\sum_{i=1}^n [C_x(i^*)-C_x(i)]$とする。  
+
+$C_x = \frac {\sum_{i=1}^n [C_x(i^*)-C_x(i)]}{max\sum_{i=1}^n [C_x(i^*)-C_x(i)]}$  
+
+例として、第\@ref(c2)章で算出した毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))の集中度を求める。`igraph`パッケージでは、様々な中心性指標についての中心度を求められる。`graph_from_adjacency_matrix()`で`igraph`クラスに変換した後に算出する。  
+```{r}
+
+## igraphクラスに変換
+graph_groom <- graph_from_adjacency_matrix(groom_mat_b,
+                                           ## 有向グラフなら "directed"
+                                           mode= "undirected", 
+                                           ## 重みなしなら NULL
+                                           weighted = TRUE) 
+
+
+## 次数中心性  
+centr_degree(graph_groom,
+             ## 入次数、出次数ならそれぞれ "in"と"out
+             mode = "all")$centralization -> cent_deg
+
+cent_deg
+
+## 固有ベクトル中心性  
+centr_eigen(graph_groom,
+            ## 有向グラフならTRUE
+            directed = FALSE)$centralization -> cent_eig
+
+cent_eig
+
+## 媒介中心性  
+centr_betw(graph_groom,
+           directed = TRUE)$centralization -> cent_bet
+
+cent_bet
+```
+
+各指標の大きさをノードサイズに反映したグラフを以下に示した(図\@ref(fig:fig-centr))。集中度はそこまで高くないといえそう(特に媒介中心性は)?
+```{r fig-centr, fig.cap = "次数中心性・固有ベクトル中心性・媒介中心性の値をノードの大きさに反映したグラフと各指標における集中度。\n ノードが赤い個体が各指標の最も大きい個体を示す", echo = FALSE, fig.align = "center", fig.dim = c(13,13)}
+
+graph_groom %>% 
+  as_tbl_graph(directed = FALSE) %>% 
+  mutate(deg = met.degree(groom_mat_b)) %>% 
+  ggraph(layout = "nicely")+
+  geom_node_point(aes(size = deg, color = name == "Ako"),shape = 16)+
+  geom_edge_link(start_cap = circle(0.6,"cm"),
+                 end_cap = circle(0.6,"cm"),
+                 color = "grey55",
+                 aes(width = weight))+
+  scale_edge_width(range = c(0,3))+
+  scale_size(range = c(13,18))+
+  geom_node_text(aes(label = name), color = "white", size = 5)+
+  scale_color_manual(values = c("black","red4"))+
+  theme_graph(base_size = 12)+
+  theme(aspect.ratio = 0.9,
+        legend.position = "none")+
+  guides(color = "none")+
+  labs(title = "次数中心性")+
+  geom_text(aes(x = 4, y = 12, label = str_c("集中度: ", sprintf("%.2f",cent_deg))),
+            size = 9)+
+  scale_x_continuous(expand = c(0.12,0.12))+
+  scale_y_continuous(expand = c(0.1,0.1)) -> p_deg
+
+graph_groom %>% 
+  as_tbl_graph(directed = FALSE) %>% 
+  mutate(eigen = met.eigen(groom_mat_b, sym = FALSE)) %>% 
+  ggraph(layout = "nicely")+
+  geom_node_point(aes(size = eigen, color = name == "Ako"),shape = 16)+
+  geom_edge_link(start_cap = circle(0.6,"cm"),
+                 end_cap = circle(0.6,"cm"),
+                 color = "grey55",
+                 aes(width = weight))+
+  scale_edge_width(range = c(0,3))+
+  scale_size(range = c(13,18))+
+  geom_node_text(aes(label = name), color = "white",size = 5)+
+  scale_color_manual(values = c("black","red4"))+
+  theme_graph(base_size = 12)+
+  theme(aspect.ratio = 0.9,
+        legend.position = "none")+
+  guides(color = "none")+
+  labs(title = "固有ベクトル中心性")+
+  geom_text(aes(x = 4, y = 11, label = str_c("集中度: ", sprintf("%.2f",cent_eig))),
+            size = 9)+
+  scale_x_continuous(expand = c(0.12,0.12))+
+  scale_y_continuous(expand = c(0.1,0.1)) -> p_eigen
+
+graph_groom %>% 
+  as_tbl_graph(directed = FALSE) %>% 
+  mutate(bet = met.betweenness(groom_mat_b, sym = FALSE, shortest.weight = TRUE)) %>% 
+  ggraph(layout = "nicely")+
+  geom_node_point(aes(size = bet, color = name == "Hot"),shape = 16)+
+  geom_edge_link(start_cap = circle(0.6,"cm"),
+                 end_cap = circle(0.6,"cm"),
+                 color = "grey55",
+                 aes(width = weight))+
+  scale_edge_width(range = c(0,3))+
+  scale_size(range = c(13,18))+
+  geom_node_text(aes(label = name), color = "white", size = 5)+
+  scale_color_manual(values = c("black","red4"))+
+  theme_graph(base_size = 12)+
+  theme(aspect.ratio = 0.9,
+        legend.position = "none")+
+  guides(color = "none")+
+  labs(title = "媒介中心性")+
+  geom_text(aes(x = 4, y = 11, label = str_c("集中度: ", sprintf("%.2f",cent_bet))),
+            size = 9)+
+  scale_x_continuous(expand = c(0.12,0.12))+
+  scale_y_continuous(expand = c(0.1,0.1)) -> p_bet
+
+set.seed(123)
+p_deg + p_eigen + p_bet + plot_layout(ncol = 2)  
+```
+
+### 密度(Density)  
+密度は、社会ネットワークにおける関係の緊密さの指標になりうる。密度が低いとき、社会ネットワーク内の個体間の直接的な関係は少なく、両者の関係は媒介者を通じた間接的なものが多いということができる[@Croft2019]。    
+
+- 重み無しグラフの場合: 実際の辺の数をグラフに張ることが可能な辺の最大数で割ったもの    
+ノードの数を$n$、実際の辺の数を$m$としたとき、$2m/n(n-1)$(無向グラフ)または$m/n(n-1)$(有向グラフ)    
+
+- 重み付きグラフの場合: 全辺の重みの合計をグラフに張ることが可能な辺の最大数で割ったもの  
+ノードの数を$n$、重みの合計を$w$としたとき、$2w/n(n-1)$(無向グラフ)または$2m/n(n-1)$(有向グラフ)    
+
+ここでは、表\@ref(tab:tab-strength)の隣接行列を用いて密度を算出する。    
+`ANTs`パッケージでは、`met.density()`で計算可能。ただし、重みなしグラフとして算出されるよう。また、`list()`関数で複数の隣接行列をリスト化することで、同時に2つ以上の隣接行列について密度を算出できる。      
+```{r}
+met.density(mat_undir_b)
+
+## リスト化
+list_mat <- list(mat_undir_b, mat_dir_b)
+
+met.density(list_mat)
+```
+
+`sna`パッケージでは、`gden()`で計算可能。`ignore.value = FALSE`とすると重み付きグラフとして扱われる。`ANTs`パッケージと同様、リスト化した複数の隣接行列の密度を同時に算出できる。  
+```{r}
+## 重み付き
+gden(mat_undir_b, 
+     ## 重み無グラフならば、TRUE
+     ignore.eval = FALSE,
+     ## 有向グラフならば "digraph"
+     mode = "graph")
+
+## リスト化
+gden(list_mat)
+```
+
+### 同類性(Assortativity)  
+ネットワーク内において、<u>似ているノード同士が結びつきやすい/結びつきにくいか</u>を表したのが**同類性**である。ネットワーク内の辺の両端にあるノードの中心性指標や属性の相関係数を算出したものであり、-1から1の値をとる(重み付きグラフの場合は、それで重み付けされているよう)。<u>各ノードの離散的な属性(性別、順位カテゴリなど)と連続的な属性(中心性指標、年齢など)のいずれにも適用できる</u>。計算方法の詳細は @Farine2014 を参照。    
+
+ここでは例として、再び毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))を使用する。同類性は`assortnet`パッケージ[@Farine2014]の関数群を用いて算出できる。  
+
+#### 連続的な属性の場合  
+年齢が近い個体同士が結びつきやすいかを調べる。連続的な属性の同類性は`assortment.continuous()`関数で算出できる。係数は-0.397...となり、**年齢の近い個体同士は結びつきにくい**という結果になった。
+
+```{r}
+## 年齢(2019年時点)
+age <- c(13,10,11,11,15,8,13,9,7,18,9,11,16,11,14,11,11)
+
+## 同類性
+assortment.continuous(groom_mat_b,
+                      ## 各ノードの属性
+                      vertex_values = age,
+                      ## 重みなしなら FALSE
+                      weighted = TRUE)
+```
+
+#### 離散的な属性の場合    
+同じ年齢カテゴリ(低順位: m、中順位: m、高順位: h)の個体同士が結びつきやすいかを調べる。離散的な属性の同類性は`assortment.discrete()`関数で算出できる。係数はかなり高く(0.484...)、**同順位カテゴリ―の個体同士がよく結びつく傾向**がある。  
+
+```{r}
+## 順位カテゴリ
+rank <-  c("m","m","l","l","h","h","h","h","h","h","l","l","l","m","m","m","m")
+
+## 同類性
+assortment.discrete(groom_mat_b,
+                  ## 各ノードの属性
+                  types = rank,
+                  ## 重みなしなら FALSE
+                  weighted = TRUE) -> assort_rank
+
+assort_rank$r
+```
+
+各カテゴリ間のノードのweightの合計を計算した隣接行列も出力してくれる(表\@ref(tab:tab-cor))。この表からも、同順位カテゴリ間での交渉が多いことが分かる。    
+```{r tab-cor}
+assort_rank$mixing_matrix %>% 
+  kable(digits = 2, align = "c",caption = "各カテゴリ間のweightの合計") %>% 
+  kable_styling(font_size = 12, full_width = FALSE)
+```
+<br/>  
+
+なお離散的な属性については、`ANTs`パッケージの`met.assortativity()`関数を用いると、node permutation(詳細は\@ref(s4-2))で生成したランダムなネットワークにおける同類性を指定した数だけ生成してくれる。<u>それらの何%より実際の同類性の数値が大きい/小さいかを検討することで、統計的な検定が行える</u>。今回の例では、実測値はランダムな値の全てより小さいので、ランダムな場合より<u>有意に小さいと言える</u>(図\@ref(fig:fig-perm))。  
+
+```{r}
+## node label permutationで生成したランダムなネットワーク100個についてassortativityを算出
+met.assortativity(groom_mat_b,
+                  ## 各ノードの固有ベクトル中心性  
+                  attr = rank,
+                  ## 重みなしの場合 FALSE
+                  weighted = TRUE,
+                  ## node label permutationをするか
+                  perm.nl = TRUE,
+                  ## permutationの数
+                  nperm = 10000) -> nlperm_rank
+
+### ランダムなassortativityの何%より小さい？
+sum(nlperm_rank > assort_rank$r)/10000
+```
+
+```{r fig-perm, fig.cap = "ランダムなネットワークの同類性の分布(灰色)と実測値(赤)", echo = FALSE, fig.dim = c(4,4)}
+data.frame(random =nlperm_rank) %>% 
+  ggplot(aes(x = random))+
+  geom_histogram(binwidth = 0.001) +
+  geom_vline(xintercept = assort_rank$r, size = 1, color = "red")+
+  geom_text(aes(x = 0.2,y= 50, label = str_c("実測値 = ",round(assort_rank$r,3),"\n p < 0.001")),
+            hjust =0, vjust = 0.7)+
+  theme_bw()+
+  theme(aspect.ratio=1)+
+  labs(x = "assortativity", y = "frequency")
+```
+
+### 推移性(Transitivity)  
+ネットワークにおいて、頂点$i$と$j$の間、および頂点$j$と$k$の間に関係があり、頂点$i$と$k$の間にも関係があるとき、関係が**推移的**であるという。例えば、図\@ref(fig:fig-trans)で頂点A, B, Cの関係は推移的だが、頂点A, B, Gは推移的ではない。  
+
+```{r fig-trans, fig.cap = "推移性の説明のための無向グラフの例", echo = FALSE, fig.dim = c(4,4)}
+mat <- matrix(c(0,1,1,1,1,1,0,0,
+                1,0,1,0,0,0,1,0,
+                1,1,0,0,0,0,0,0,
+                1,0,0,0,1,0,0,1,
+                1,0,0,1,0,1,0,0,
+                1,0,0,0,1,0,0,0,
+                0,1,0,0,0,0,0,0,
+                0,0,0,1,0,0,0,0),
+              nrow = 8, ncol = 8)
+
+
+colnames(mat) <- c("A","B","C","D","E","F","G","H")
+rownames(mat) <- c("A","B","C","D","E","F","G","H")
+
+mat %>% 
+  as_tbl_graph() %>% 
+  ggraph(layout = "nicely")+
+  geom_node_point(shape = 16, size = 8, color = "black")+
+  geom_edge_link()+
+  geom_node_text(aes(label = name), color = "white")+
+  theme_graph()
+```
+
+有向グラフの場合は、頂点$i$から$j$、頂点$j$から$k$に有向辺があり、かつ頂点$i$から$k$に有向辺があるとき推移的であるという(図\@ref(fig:fig-trans2))。  
+```{r fig-trans2, fig.cap = "推移性の説明のための有向グラフの例", echo = FALSE, fig.dim = c(2.3,2.3)}
+dagify(j~i,
+        k~j,
+         k~i) %>% 
+  ggdag(node_size = 10, text_size = 3.2)+
+  theme_dag()
+```
+
+**推移性**はネットワーク内で推移的な関係が成り立っている比率を指す。例えば無向グラフの場合には、頂点$i$と$j$、$j$と$k$の間に辺があるとき、頂点$i$と$k$にも辺がある割合である。推移性はネットワークがどの程度クラスター化されているかの指標になる[@Farine2015]。そのため、**クラスター係数**と呼ばれることもある。    
+
+例として、毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))の推移性を算出する。推移性は`igraph`パッケージの`transitivity()`関数で求められる。推移性は高い？      
+
+```{r}
+transitivity(graph_groom,
+             ## 有向グラフなら "directed"
+             type = "undirected")
+```
+
+### Modularity  
+霊長類のネットワークの種間比較でよく用いられる指標にNewmanの**modularity**[@Newman2004; @Whitehead2008]がある。この指標は、<u>ネットワーク内を複数のクラスターに分けたとき、クラスター内の個体間での交渉がクラスター間の個体間の交渉よりどの程度多いか</u>を示したもので、一般に-1から1の値をとる(文献によって書いてあることが違うので注意)。値が高いほどその差が大きいことを示し、クラスターの分け方が妥当であることを示す。@Newman2004 は、modularityが0.3以上のとき、クラスター間がよく分断されているとしている。例えばマカクの種間比較研究では、血縁ごとにクラスター分けしたとき、寛容性が低い種は高い種よりもmodularityが高い(0.33±0.08 vs 0.21 ±0.03)、つまり交渉がより血縁に偏っていることが分かっている[@Sueur2011b]。    
+
+Modularityは以下のように定式化される[@Csardi2006]。  
+
+$Q = \frac{1}{2m} \sum_{i,j} (A_{ij} - \gamma \frac{k_i k_j}{2m}) \delta(c_i,c_j)$  
+<br/>  
+
+なお、$m$は辺の数、$A_{ij}$は隣接行列の$i$行目$j$列目の成分、$k_i$と$k_j$はノード$i$と$j$の重み付き中心性を表す($k_i$と$k_j$に固有ベクトル中心性を使っている論文もある[@Bala2018])。また、$\delta(c_i,c_j)$はノード$i$と$j$が同じクラスターに属しているときは1、そうでないときは0になる。なお、$\gamma \frac{k_i k_j}{2m}$の部分は、ランダムに交渉が行割れていると仮定したときの$A_{ij}$の値である。$\gamma$はデフォルトでは1だが変化させることができ、大きい値をとるほどクラスター数が多くなる。  
+
+ここでは例として、毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))を用いて、各順位カテゴリ内(低順位・中順位・高順位)の交渉がカテゴリ間の交渉よりどの程度多いかを、$Q$を算出することで求める。 
+
+
+Rでは、`igraph`パッケージの`modularity()`関数で求めることができる。`graph_from_adjacency_matrix()`で`igraph`クラスに変換した後に算出する。また、`weight =`で明示的に各エッジのweightを与えてあげる必要があるよう。modularityは0.315...とそこそこ大きい値であるので、順位カテゴリ内に毛づくろいが偏っていることを示している。  
+```{r}
+## 順位カテゴリごとに番号を振る
+rank <- c(2,2,1,1,3,3,3,3,3,3,1,1,1,2,2,2,2)
+
+## igraphに変換
+graph_groom <- graph_from_adjacency_matrix(groom_mat_b,
+                                           ## 有向グラフなら "directed"
+                                           mode= "undirected", 
+                                           ## 重みなしなら NULL
+                                           weighted = TRUE) 
+
+
+modularity(graph_groom,
+           ## クラスターの分け方
+           membership = rank,
+           ## deltaの値
+           resolution = 1,
+           ## 有向グラフなら TRUE
+           directed = FALSE,
+           ## グラフのweightを与える
+           weights = E(graph_groom, directed = FALSE)$weight)
+```
+
+### 応用例(下位集団の検出)  
+ネットワーク内に下位集団(クラスター)が存在するかを調べる方法はたくさんあるが[詳細は @Suzuki2017]、ここでは主に2つの方法に焦点を当てて紹介する。  
+
+#### Modularityを用いる方法    
+一つの方法として<u>modularityが最大になるような分け方</u>がある。`igraph`パッケージでは、`cluster_optimal()`でそのようなクラスタの分け方を算出してくれる。なお、ノード数が多い場合には時間がかかるため、様々な近似計算法が考案されている(`cluster_fast_greedy()`、`cluster_walktrap()`など)。  
+
+例として、毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))について算出する。その結果、4つのクラスターに分類され、そのときのmodularityは0.40だった。概ね順位ごとに分かれていることが分かる(同じアルファベットから始まる個体が同一家系である)。高順位、中順位(2つに分かれている)、低順位にほぼ綺麗に分かれた。  
+
+```{r}
+## 算出
+cluster_optimal(graph_groom,
+                weights = E(graph_groom)$weight) -> cluster_groom
+
+## 結果
+cluster_groom
+
+## modularity
+modularity(cluster_groom,directed = FALSE, weights = NULL)
+
+## 確認   
+modularity(graph_groom,
+           ## クラスターの分け方
+           membership = membership(cluster_groom),
+           ## deltaの値
+           resolution = 1,
+           ## 有向グラフなら TRUE
+           directed = FALSE,
+           weights = E(graph_groom)$weight)                                                                       
+```
+
+クラスターごとに色分けして図示すると図\@ref(fig:fig-cluster)のようになる。  
+```{r fig-cluster, fig.cap = "Modularityに基づいてクラスターごとに色分けした毛づくろい頻度のグラフ", fig.dim = c(6,5)}
+set.seed(125)
+
+graph_groom %>% 
+  as_tbl_graph(directed = FALSE) %>% 
+  ## 各個体がどのクラスターに属するかを指定
+  mutate(member = as.factor(cluster_groom$membership)) %>% 
+  ggraph(layout = "nicely")+
+  ## クラスターごとに囲う
+  geom_mark_hull(aes(x=x,y=y,fill = member),
+                 concavity = 10)+
+  geom_node_point(aes(color = member),shape = 16, size = 12)+
+  geom_edge_link(start_cap = circle(0.5,"cm"),
+                 end_cap = circle(0.5,"cm"),
+                 color = "grey55",
+                 aes(width = weight))+
+  scale_edge_width(range = c(0,3))+
+  geom_node_text(aes(label = name), color = "white")+
+  theme_graph()+
+  scale_color_nejm()+
+  scale_fill_nejm()+
+  theme(aspect.ratio = 0.9)+
+  scale_x_continuous(expand = c(0.12,0.12))+
+  scale_y_continuous(expand = c(0.1,0.1))
+```
+
+#### 構造類似性を用いる方法  
+他の方法として、ノード間でネットワーク内での構造的な位置が類似している程度(= **構造類似性**)を用いる方法がある。構造類似性の指標として良く用いられるのが**ユークリッド距離**や**相関係数**である。このような構造類似性の指標を用い、ネットワーク上における位置の似た頂点をひとまとめにし、ネットワークをより少ないいくつかの**ブロック**同士の関係に分けることを**ブロックモデリング**という。  
+  
+<u>**ユークリッド距離**</u>   
+ノード$i$と$j$のユークリッド距離($d_{ij}$)は隣接行列$A = (a_{ij})$について以下のように定式化される。$d_{ij}$が大きいほど類似性は低い。  
+
+$$
+d_{ij} = \sqrt {\sum_{k =1}^{n}(a_{ij}-a_{jk})^2 + (a_{ki}-a_{kj})^2 }
+$$
+<u>**相関係数**</u>  
+ノード$i$とノード$j$の相関係数($r_{ij}$は隣接行列$A = (a_{ij})$について以下のように定式化される。$r_{ij}$が大きいほど類似性は高い。  
+
+$$
+r_{ij} = \frac{(i列とj列の共分散) + (i行とj行の共分散)}{(i列とi行の標準偏差) \times (j列とj行の標準偏差)}
+$$
+<br/>  
+
+`sna`パッケージの`equiv.clust()`関数を用いることで、構造同値性に基づいたクラスター分析ができる。ここでは、毛づくろい頻度ネットワーク`groom_mat_b`(表\@ref(tab:tab-groom-b))のユークリッド距離を用いて分析を行う。`method =`で使用する構造類似性の指標を、`clust.method =`で階層クラスター分析の方法を指定する(方法の詳細は[こちら](https://www.kamishima.net/jp/clustering/)) 。   
+
+```{r}
+## ユークリッド距離
+cluster_groom_euc <- equiv.clust(groom_mat_b,
+                            ## 相関係数なら "correlation"
+                             method = "euclidean",
+                            ## 階層クラスター分析の方法
+                             cluster.method = "complete")
+```
+
+クラスター分析に基づくデンドログラムは図\@ref(fig:fig-dendro)のようになる。縦軸が互いのユークリッド距離を表す。  
+```{r fig-dendro, fig.cap = "クラスター分析結果に基づくデンドログラム", echo = FALSE, fig.dim = c(5.5,4.5)}
+plot(cluster_groom_euc)
+```
+
+この結果から`blockmodel()`関数でブロックモデルを作る。引数`h =`でクラスター(= ブロック)を作る基準となる高さを、もしくは引数`k =`でブロック数を指定できる。ここでは、ブロック数を3つに指定したときの結果を調べる。各個体がどのブロックに振り分けられたかは、表\@ref(tab:tab-cluster3)の通りである。      
+
+```{r tab-cluster3}
+blockmodel_groom_3 <- blockmodel(## 隣接行列
+                    groom_mat_b, 
+                    ## クラスター分析結果
+                    cluster_groom_euc, 
+                    ## `k =`でクラスター数の指定。`h = `でクラスターの基準の高さも指定できる。
+                    k = 3) 
+
+## メンバーシップ
+data.frame(femaleID = blockmodel_groom_3$plabels,
+           block = blockmodel_groom_3$block.membership) %>% 
+  arrange(femaleID) -> membership_3 
+
+membership_3 %>% 
+  pivot_wider(names_from = femaleID, values_from = block) %>% 
+  kable(align = "c", caption = "ブロック数が3のときに各個体が属するブロック") %>% 
+  kable_styling(font_size = 8, full_width = FALSE)
+```
+<br/>  
+
+
+ブロック数を2から5に変化させたときにmodularityがどうなるかを調べたところ、`k = 3`のときに最大になるよう(表\@ref(tab:tab-cluster-modularity))。  
+```{r tab-cluster-modularity}
+k = 2:5
+
+## kを2~5にしたときに各個体が属するブロックを計算
+map(k, ~blockmodel(## 隣接行列
+                    groom_mat_b, 
+                    ## クラスター分析結果
+                    cluster_groom_euc, 
+                    ## `k =`でクラスター数の指定。`h = `でクラスターの基準の高さも指定できる。
+                    k = .)$block.membership) -> member_list
+
+
+## modularityを算出  
+data.frame(k = rep(k,each = 17),femaleID = blockmodel_groom_3$plabels,
+           member = c(member_list[[1]],member_list[[2]],member_list[[3]],member_list[[4]])) %>% 
+  group_by(k) %>% 
+  nest() %>% 
+  mutate(member2 = map(data,~arrange(., femaleID)$member)) %>% 
+  select(k, member2) %>% 
+  group_by(k) %>% 
+  mutate(modularity = map(member2, ~modularity(graph_groom, membership = as.factor(.),
+                                               weights = E(graph_groom, directed = FALSE)$weight))) %>% 
+  select(k, modularity) %>% 
+  unnest(cols = c(modularity)) %>% 
+  kable(align = "c", caption = "ブロック数を2~5にしたときのmodularity") %>% 
+  kable_styling(font_size = 13, full_width = FALSE)
+```
+<br/>  
+
+`clValid`パッケージの`clValid()`関数では、様々な指標を用いてクラスター分けが妥当か算出してくれるよう。詳しくは、 @Brock2008 もしくは[こちら](http://www.sthda.com/english/wiki/wiki.php?id_contents=7932)を参照。よく使用される指標であるDunn indexと silhouette widthの結果を見ると、3つのクラスターに分けるのが妥当だと示唆される。     
+```{r}
+clValid(obj = groom_mat_b,
+        nClust = 2:5,
+        clMethods = "hierarchical",
+        validation = "internal",
+        Metric = "euclidean") -> result
+
+summary(result)
+```
+
+３つのクラスターごとに色分けして図示すると図\@ref(fig:fig-cluster2)のようになる。  
+```{r fig-cluster2, fig.cap = "構造類似性に基づいてクラスターごとに色分けした毛づくろい頻度のグラフ",  fig.dim = c(6,5)}
+set.seed(125)
+
+graph_groom %>% 
+  as_tbl_graph(directed = FALSE) %>% 
+  ## 各個体がどのブロックに属するかを指定
+  mutate(member = as.factor(membership_3$block)) %>% 
+  ggraph(layout = "nicely")+
+  ## ブロックごとに囲む
+  geom_mark_hull(aes(x=x,y=y,fill = member),
+                 concavity = 10)+
+  geom_node_point(aes(color = member),shape = 16, size = 12)+
+  geom_edge_link(start_cap = circle(0.5,"cm"),
+                 end_cap = circle(0.5,"cm"),
+                 color = "grey55",
+                 aes(width = weight))+
+  scale_edge_width(range = c(0,3))+
+  geom_node_text(aes(label = name), color = "white")+
+  theme_graph()+
+  scale_color_nejm()+
+  scale_fill_nejm()+
+  theme(aspect.ratio = 0.9)+
+  scale_x_continuous(expand = c(0.1,0.1))+
+  scale_y_continuous(expand = c(0.1,0.1))
+```
+
+### その他  
+個体間の敵対的交渉の隣接行列を用いた順位序列についての各指標の算出については、筆者の[別稿](https://tsubasayamaguchi-jinrui.github.io/Dominance_Analysis/)を参照。ここで紹介しきれなかった他の指標やクラスター分析の手法については、@Whitehead2008 , @Croft2019 , @Suzuki2017 などを参照。  
+
+

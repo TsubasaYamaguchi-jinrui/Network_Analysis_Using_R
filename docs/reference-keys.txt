@@ -13,6 +13,7 @@ fig:fig-degree2
 tab:tab-strength
 fig:fig-strength
 fig:fig-eigen
+fig:fig-eigen-b
 tab:tab-pagerank
 fig:fig-pagerank
 fig:fig-between
@@ -37,6 +38,9 @@ fig:fig-npermtest
 fig:fig-npermtest-b
 tab:tab-example3
 fig:fig-npermtest-c
+fig:fig-mrqap
+tab:tab-CSI
+fig:fig-dsp
 c1
 社会ネットワーク分析snaとは
 社会ネットワークの基礎
@@ -47,7 +51,7 @@ tbl_graphクラスへの変換
 ggraphを用いた描画
 c2
 s2-1
-group-by-individual
+s2-2
 c3
 ノードについての諸指標中心性指標
 近接中心性closeness-centrality
@@ -79,5 +83,10 @@ snaパッケージを用いる方法
 antsパッケージを用いる方法
 分析例2.-線形混合モデル
 ネットワーク同士の関連の検討
-data-stream-randomization
-おまけ.-csiの算出
+ネットワーク間の相関の検定
+mantel検定
+hemelrijkの行列相関検定
+ネットワークデータを用いた回帰分析
+network-permutationの欠点
+pre-network-permutation
+分析例-1
