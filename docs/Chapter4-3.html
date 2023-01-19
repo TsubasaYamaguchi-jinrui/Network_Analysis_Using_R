@@ -238,12 +238,12 @@ div.csl-indent {
 <li class="chapter" data-level="4.3.2.1" data-path="Chapter4-3.html"><a href="Chapter4-3.html#snaパッケージを用いる方法-1"><i class="fa fa-check"></i><b>4.3.2.1</b> <code>sna</code>パッケージを用いる方法</a></li>
 <li class="chapter" data-level="4.3.2.2" data-path="Chapter4-3.html"><a href="Chapter4-3.html#antsパッケージを用いる方法-1"><i class="fa fa-check"></i><b>4.3.2.2</b> <code>ANTs</code>パッケージを用いる方法</a></li>
 </ul></li>
+<li class="chapter" data-level="4.3.3" data-path="Chapter4-3.html"><a href="Chapter4-3.html#pre-network-permutationの欠点"><i class="fa fa-check"></i><b>4.3.3</b> Pre-network permutationの欠点</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="Chapter4-3.html"><a href="Chapter4-3.html#pre-network-permutationの欠点"><i class="fa fa-check"></i><b>4.4</b> Pre-network permutationの欠点</a></li>
-<li class="chapter" data-level="4.5" data-path="Chapter4-4.html"><a href="Chapter4-4.html"><i class="fa fa-check"></i><b>4.5</b> パーミュテーション検定以外の統計的検定方法</a>
+<li class="chapter" data-level="4.4" data-path="Chapter4-4.html"><a href="Chapter4-4.html"><i class="fa fa-check"></i><b>4.4</b> パーミュテーション検定以外の統計的検定方法</a>
 <ul>
-<li class="chapter" data-level="4.5.1" data-path="Chapter4-4.html"><a href="Chapter4-4.html#指数ランダムグラフモデルと確率的アクター志向モデル"><i class="fa fa-check"></i><b>4.5.1</b> 指数ランダムグラフモデルと確率的アクター志向モデル</a></li>
-<li class="chapter" data-level="4.5.2" data-path="Chapter4-4.html"><a href="Chapter4-4.html#ランダム化を用いない方法"><i class="fa fa-check"></i><b>4.5.2</b> ランダム化を用いない方法</a></li>
+<li class="chapter" data-level="4.4.1" data-path="Chapter4-4.html"><a href="Chapter4-4.html#指数ランダムグラフモデルと確率的アクター志向モデル"><i class="fa fa-check"></i><b>4.4.1</b> 指数ランダムグラフモデルと確率的アクター志向モデル</a></li>
+<li class="chapter" data-level="4.4.2" data-path="Chapter4-4.html"><a href="Chapter4-4.html#ランダム化を用いない方法"><i class="fa fa-check"></i><b>4.4.2</b> ランダム化を用いない方法</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="sessioninfo.html"><a href="sessioninfo.html"><i class="fa fa-check"></i>実行環境</a></li>
@@ -1254,9 +1254,8 @@ div.csl-indent {
 ## Number of Fisher Scoring iterations: 5</code></pre>
 </div>
 </div>
-</div>
-<div id="pre-network-permutationの欠点" class="section level2 hasAnchor" number="4.4">
-<h2><span class="header-section-number">4.4</span> Pre-network permutationの欠点<a href="Chapter4-3.html#pre-network-permutationの欠点" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="pre-network-permutationの欠点" class="section level3 hasAnchor" number="4.3.3">
+<h3><span class="header-section-number">4.3.3</span> Pre-network permutationの欠点<a href="Chapter4-3.html#pre-network-permutationの欠点" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>以上のように、pre-network permutationは観察バイアスや観察場所/期間の影響を排除することのできる強力な手法であり、多くの研究で用いられている<span class="citation">(<a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>; <a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>; <a href="#ref-Farine2015" role="doc-biblioref">Farine &amp; Whitehead, 2015</a>)</span>。一方で、ここ数年の研究によって<strong>pre-network permutationは相関分析や回帰分析の検定を行う手法としては適切でない</strong>ことが指摘されるようになっている<span class="citation">(<a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>; <a href="#ref-PugaGonzalez2021" role="doc-biblioref">Puga‐Gonzalez et al., 2021</a>; <a href="#ref-Weiss2021" role="doc-biblioref">Weiss et al., 2021</a>)</span>。</p>
 <p>回帰分析を例にとって考えてみよう。回帰分析の目的は説明変数(X)と応答変数(Y)に関連があるかを調べることなので、その帰無仮説は「両者の間に関連がない(<span class="math inline">\(\beta = 0\)</span>)」である。Node permutationでは隣接行列の行と列に対してパーミュテーションを行うことで、ネットワークの構造自体は保ちつつ、XとYの関連がランダムなネットワークを作り出すことができていた(第<a href="Chapter4-1.html#s4-1">4.1</a>節と第<a href="Chapter4-2.html#s4-2">4.2</a>節を参照)。</p>
 <p>一方で、pre-network permutationは生のassociation/交渉データに対してパーミュテーションを行うので、ネットワークの構造自体に大きな変化が生じてしまい、辺の重みや中心性指標の分布が大きく変わってしまう<span class="citation">(<a href="#ref-Weiss2021" role="doc-biblioref">Weiss et al., 2021</a>)</span>。その結果、現実世界における辺の重みや中心性指標の分布からは乖離してしまい、適切な帰無分布にならなくなってしまう可能性がある<span class="citation">(<a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>)</span>。一般的に、pre-network permutationによって辺の重みや中心性指標の分布のばらつきは小さくなってしまうので(つまり、実際のデータの値のほうが極端になる傾向があるので)、第一種の過誤を犯す確率が高くなってしまう(図<a href="Chapter4-3.html#fig:fig-prenetwork">4.12</a>)。</p>
@@ -1272,6 +1271,7 @@ div.csl-indent {
 <p>この問題を解消するため、<span class="citation">Farine &amp; Carter (<a href="#ref-Farine2022" role="doc-biblioref">2022</a>)</span> はnode permutationとpre-network permutationの手法を組み合わせた<strong>double permutation</strong>法を提唱し、この手法を用いることでそれぞれの手法を単独で用いるよりも誤った結論を導いてしまう可能性が低くなることを指摘している。一方で <span class="citation">Weiss et al. (<a href="#ref-Weiss2021" role="doc-biblioref">2021</a>)</span> は、①Generalized affiliation indicesなどの交絡要因をはじめから除外できる指標を用いること、②観察バイアスや観察場所や期間の情報を明示的にモデルに取り込むこと(e.g., 観察回数を説明変数に入れたり、ランダム効果に場所や期間を入れるなど)<span class="citation">(c.f. <a href="#ref-Franks2021" role="doc-biblioref">Franks et al., 2021</a>)</span>でnode permutationだけでも適切な検定ができることを指摘している。</p>
 <p>いずれにしても、ここ数年だけでもパーミュテーション検定の妥当性を検証する論文が多数出ていることからもわかるように<span class="citation">(<a href="#ref-Evans2020" role="doc-biblioref">Evans et al., 2020</a>; <a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>; <a href="#ref-Franks2021" role="doc-biblioref">Franks et al., 2021</a>; <a href="#ref-Hart2022" role="doc-biblioref">Hart et al., 2022</a>; <a href="#ref-PugaGonzalez2021" role="doc-biblioref">Puga‐Gonzalez et al., 2021</a>; <a href="#ref-Weiss2021" role="doc-biblioref">Weiss et al., 2021</a>)</span>、どのような分析方法が最も適切かについてはまだ結論が出ていないのが現状だ。今後新たにどのような検証結果が出るかに注視していく必要があるだろう。</p>
 
+</div>
 </div>
 <h3>References</h3>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">

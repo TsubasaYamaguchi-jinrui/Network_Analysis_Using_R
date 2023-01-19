@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>4.5 パーミュテーション検定以外の統計的検定方法 | Network Analysis Using R</title>
-  <meta name="description" content="4.5 パーミュテーション検定以外の統計的検定方法 | Network Analysis Using R" />
+  <title>4.4 パーミュテーション検定以外の統計的検定方法 | Network Analysis Using R</title>
+  <meta name="description" content="4.4 パーミュテーション検定以外の統計的検定方法 | Network Analysis Using R" />
   <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="4.5 パーミュテーション検定以外の統計的検定方法 | Network Analysis Using R" />
+  <meta property="og:title" content="4.4 パーミュテーション検定以外の統計的検定方法 | Network Analysis Using R" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4.5 パーミュテーション検定以外の統計的検定方法 | Network Analysis Using R" />
+  <meta name="twitter:title" content="4.4 パーミュテーション検定以外の統計的検定方法 | Network Analysis Using R" />
   
   
   
@@ -238,12 +238,12 @@ div.csl-indent {
 <li class="chapter" data-level="4.3.2.1" data-path="Chapter4-3.html"><a href="Chapter4-3.html#snaパッケージを用いる方法-1"><i class="fa fa-check"></i><b>4.3.2.1</b> <code>sna</code>パッケージを用いる方法</a></li>
 <li class="chapter" data-level="4.3.2.2" data-path="Chapter4-3.html"><a href="Chapter4-3.html#antsパッケージを用いる方法-1"><i class="fa fa-check"></i><b>4.3.2.2</b> <code>ANTs</code>パッケージを用いる方法</a></li>
 </ul></li>
+<li class="chapter" data-level="4.3.3" data-path="Chapter4-3.html"><a href="Chapter4-3.html#pre-network-permutationの欠点"><i class="fa fa-check"></i><b>4.3.3</b> Pre-network permutationの欠点</a></li>
 </ul></li>
-<li class="chapter" data-level="4.4" data-path="Chapter4-3.html"><a href="Chapter4-3.html#pre-network-permutationの欠点"><i class="fa fa-check"></i><b>4.4</b> Pre-network permutationの欠点</a></li>
-<li class="chapter" data-level="4.5" data-path="Chapter4-4.html"><a href="Chapter4-4.html"><i class="fa fa-check"></i><b>4.5</b> パーミュテーション検定以外の統計的検定方法</a>
+<li class="chapter" data-level="4.4" data-path="Chapter4-4.html"><a href="Chapter4-4.html"><i class="fa fa-check"></i><b>4.4</b> パーミュテーション検定以外の統計的検定方法</a>
 <ul>
-<li class="chapter" data-level="4.5.1" data-path="Chapter4-4.html"><a href="Chapter4-4.html#指数ランダムグラフモデルと確率的アクター志向モデル"><i class="fa fa-check"></i><b>4.5.1</b> 指数ランダムグラフモデルと確率的アクター志向モデル</a></li>
-<li class="chapter" data-level="4.5.2" data-path="Chapter4-4.html"><a href="Chapter4-4.html#ランダム化を用いない方法"><i class="fa fa-check"></i><b>4.5.2</b> ランダム化を用いない方法</a></li>
+<li class="chapter" data-level="4.4.1" data-path="Chapter4-4.html"><a href="Chapter4-4.html#指数ランダムグラフモデルと確率的アクター志向モデル"><i class="fa fa-check"></i><b>4.4.1</b> 指数ランダムグラフモデルと確率的アクター志向モデル</a></li>
+<li class="chapter" data-level="4.4.2" data-path="Chapter4-4.html"><a href="Chapter4-4.html#ランダム化を用いない方法"><i class="fa fa-check"></i><b>4.4.2</b> ランダム化を用いない方法</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="sessioninfo.html"><a href="sessioninfo.html"><i class="fa fa-check"></i>実行環境</a></li>
@@ -264,16 +264,16 @@ div.csl-indent {
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="パーミュテーション検定以外の統計的検定方法" class="section level2 hasAnchor" number="4.5">
-<h2><span class="header-section-number">4.5</span> パーミュテーション検定以外の統計的検定方法<a href="Chapter4-4.html#パーミュテーション検定以外の統計的検定方法" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="パーミュテーション検定以外の統計的検定方法" class="section level2 hasAnchor" number="4.4">
+<h2><span class="header-section-number">4.4</span> パーミュテーション検定以外の統計的検定方法<a href="Chapter4-4.html#パーミュテーション検定以外の統計的検定方法" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>前節まではパーミュテーション検定に焦点を当ててネットワークデータの統計的検定の枠組みを説明してきた。この手法はネットワークデータの検定に最もよく使用されるものではあるが、これ以外にも統計的検定の手法は存在する<span class="citation">(<a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>; <a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>)</span>。</p>
-<div id="指数ランダムグラフモデルと確率的アクター志向モデル" class="section level3 hasAnchor" number="4.5.1">
-<h3><span class="header-section-number">4.5.1</span> 指数ランダムグラフモデルと確率的アクター志向モデル<a href="Chapter4-4.html#指数ランダムグラフモデルと確率的アクター志向モデル" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="指数ランダムグラフモデルと確率的アクター志向モデル" class="section level3 hasAnchor" number="4.4.1">
+<h3><span class="header-section-number">4.4.1</span> 指数ランダムグラフモデルと確率的アクター志向モデル<a href="Chapter4-4.html#指数ランダムグラフモデルと確率的アクター志向モデル" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>パーミュテーション検定以外によく用いられる手法としては、指数ランダムグラフモデル(expoential random graph model: ERGM)があげられる。ERGMは、グラフ上の辺をランダムに除いたり加えたりすることで生じるネットワークの変化をもとに、様々な要因(ノードの属性やノード間の関係)がネットワーク構造に与える影響を調べる手法である。具体的な理論や方法については、<span class="citation">鈴木 (<a href="#ref-Suzuki2017" role="doc-biblioref">2017</a>)</span> や <span class="citation">Borgatti et al. (<a href="#ref-Borgatti2022" role="doc-biblioref">2022</a>)</span> を参照。ERGMがネットワークデータに対する検定方法として不適切であることを指摘する研究者もいる一方で<span class="citation">(<a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>)</span>、パーミュテーション検定と同等かそれ以上にうまく機能する手法であると考える研究者もいる<span class="citation">(<a href="#ref-Evans2020" role="doc-biblioref">Evans et al., 2020</a>)</span>。</p>
 <p>そのほかに経時的なネットワークデータを用いた手法として確率的アクター志向モデル(stochastic actor-oriented model)などもよく用いられる。詳細については <span class="citation">鈴木 (<a href="#ref-Suzuki2017" role="doc-biblioref">2017</a>)</span> や <span class="citation">Borgatti et al. (<a href="#ref-Borgatti2022" role="doc-biblioref">2022</a>)</span> を参照。</p>
 </div>
-<div id="ランダム化を用いない方法" class="section level3 hasAnchor" number="4.5.2">
-<h3><span class="header-section-number">4.5.2</span> ランダム化を用いない方法<a href="Chapter4-4.html#ランダム化を用いない方法" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="ランダム化を用いない方法" class="section level3 hasAnchor" number="4.4.2">
+<h3><span class="header-section-number">4.4.2</span> ランダム化を用いない方法<a href="Chapter4-4.html#ランダム化を用いない方法" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>パラメトリックな検定方法であっても、GLMMなどの混合モデルを用いてデータの非独立性や観察バイアスなどの情報をモデルに取り込むことで、パーミュテーション検定よりも適切な分析を行うことができると主張する研究者もいる<span class="citation">(<a href="#ref-Hart2022" role="doc-biblioref">Hart et al., 2022</a>)</span>。また、P値ばかりに着目した分析を行うのは望ましくなく、ベイズ統計の枠組みを用いるなどして効果量により焦点を当てた分析を行うべきだという主張もある<span class="citation">(<a href="#ref-Franks2021" role="doc-biblioref">Franks et al., 2021</a>; <a href="#ref-Hart2022" role="doc-biblioref">Hart et al., 2022</a>)</span>。今後、パラメトリックな分析方法だけでもネットワークデータを適切に分析できるのかが検証されることが期待される<span class="citation">(<a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>)</span>。</p>
 
 </div>

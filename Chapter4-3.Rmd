@@ -281,7 +281,7 @@ r_glm_ants <- ant(glm_ants)
 r_glm_ants$model
 ```
 
-## Pre-network permutationの欠点  
+### Pre-network permutationの欠点  
 以上のように、pre-network permutationは観察バイアスや観察場所/期間の影響を排除することのできる強力な手法であり、多くの研究で用いられている[@Farine2015; @Farine2017; @Farine2022]。一方で、ここ数年の研究によって**pre-network permutationは相関分析や回帰分析の検定を行う手法としては適切でない**ことが指摘されるようになっている[@PugaGonzalez2021; @Weiss2021; @Farine2022]。  
 
 回帰分析を例にとって考えてみよう。回帰分析の目的は説明変数(X)と応答変数(Y)に関連があるかを調べることなので、その帰無仮説は「両者の間に関連がない($\beta = 0$)」である。Node permutationでは隣接行列の行と列に対してパーミュテーションを行うことで、ネットワークの構造自体は保ちつつ、XとYの関連がランダムなネットワークを作り出すことができていた(第\@ref(s4-1)節と第\@ref(s4-2)節を参照)。  
