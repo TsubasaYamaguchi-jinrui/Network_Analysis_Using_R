@@ -45,5 +45,6 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE,
 - Farine & Whitehead (2015) Constructing, conducting and interpreting animal social network analysis [@Farine2015]  
 - Farine (2017) A guide to null models for animal social network analysis [@Farine2017]  
 - Sosa et al. (2020) A multilevel statistical toolkit to study animal social networks: the Animal Network Toolkit Software (ANTs) R package. [@Sosa2020]  
+- - Borgatti et al.(2022) Analyzing Social Networks Using R. [@Borgatti2022]  
 - Network Analysis in R ([Dai Shizukaのホームページ](https://dshizuka.github.io/networkanalysis/tutorials.html))  
 
