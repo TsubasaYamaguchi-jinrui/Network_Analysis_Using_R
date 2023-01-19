@@ -526,7 +526,7 @@ bi
 </div>
 <div id="modularity" class="section level3 hasAnchor" number="3.2.5">
 <h3><span class="header-section-number">3.2.5</span> Modularity<a href="Chapter3-2.html#modularity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>霊長類のネットワークの種間比較でよく用いられる指標にNewmanの<strong>modularity</strong><span class="citation">(<a href="#ref-Newman2004" role="doc-biblioref">Newman, 2004</a>; <a href="#ref-Whitehead2008" role="doc-biblioref">Whitehead, 2008</a>)</span>がある。この指標は、<u>ネットワーク内を複数のクラスターに分けたとき、クラスター内の個体間での交渉がクラスター間の個体間の交渉よりどの程度多いか</u>を示したもので、一般に-1から1の値をとる(文献によって書いてあることが違うので注意)。値が高いほどその差が大きいことを示し、クラスターの分け方が妥当であることを示す。<span class="citation">Newman (<a href="#ref-Newman2004" role="doc-biblioref">2004</a>)</span> は、modularityが0.3以上のとき、クラスター間がよく分断されているとしている。例えばマカクの種間比較研究では、血縁ごとにクラスター分けしたとき、寛容性が低い種は高い種よりもmodularityが高い(0.33±0.08 vs 0.21 ±0.03)、つまり交渉がより血縁に偏っていることが分かっている<span class="citation">(<a href="#ref-Sueur2011b" role="doc-biblioref">Sueur, Petit, et al., 2011</a>)</span>。</p>
+<p>霊長類のネットワークの種間比較でよく用いられる指標にNewmanの<strong>modularity</strong><span class="citation">(<a href="#ref-Newman2004" role="doc-biblioref">Newman, 2004</a>; <a href="#ref-Whitehead2008" role="doc-biblioref">Whitehead, 2008</a>)</span>がある。この指標は、<u>ネットワーク内を複数のクラスターに分けたとき、クラスター内の個体間での交渉がクラスター間の個体間の交渉よりどの程度多いか</u>を示したもので、クラスターの数をcとするとき、-0.5~1-1/cの値をとる<span class="citation">(<a href="#ref-Borgatti2022" role="doc-biblioref">Borgatti et al., 2022</a>)</span>。値が高いほどその差が大きいことを示し、クラスターの分け方が妥当であることを示す。<span class="citation">Newman (<a href="#ref-Newman2004" role="doc-biblioref">2004</a>)</span> は、modularityが0.3以上のとき、クラスター間がよく分断されているとしている。例えばマカクの種間比較研究では、血縁ごとにクラスター分けしたとき、寛容性が低い種は高い種よりもmodularityが高い(0.33±0.08 vs 0.21 ±0.03)、つまり交渉がより血縁に偏っていることが分かっている<span class="citation">(<a href="#ref-Sueur2011b" role="doc-biblioref">Sueur, Petit, et al., 2011</a>)</span>。</p>
 <p>Modularityは以下のように定式化される<span class="citation">(<a href="#ref-Csardi2006" role="doc-biblioref">Csardi et al., 2006</a>)</span>。</p>
 <p><span class="math inline">\(Q = \frac{1}{2m} \sum_{i,j} (A_{ij} - \gamma \frac{k_i k_j}{2m}) \delta(c_i,c_j)\)</span><br />
 <br/></p>
@@ -934,6 +934,9 @@ modularity
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-Bala2018" class="csl-entry">
 Balasubramaniam, K. N., Beisner, B. A., Berman, C. M., De Marco, A., Duboscq, J., Koirala, S., Majolo, B., Macintosh, A. J. J. J., McFarland, R., Molesti, S., Ogawa, H., Petit, O., Schino, G., Sosa, S., Sueur, C., Thierry, B., Waal, F. B. M. M. de, &amp; McCowan, B. (2018). The influence of phylogeny, social style, and sociodemographic factors on macaque social network structure. <em>Am. J. Primatol.</em>, <em>80</em>(1), e22727.
+</div>
+<div id="ref-Borgatti2022" class="csl-entry">
+Borgatti, S. P., Everett, M. G., Johnson, J. C., &amp; Agneessens, F. (2022). <em>Analyzing social networks using <span>R</span></em>. SAGE.
 </div>
 <div id="ref-Brock2008" class="csl-entry">
 Brock, G., Pihur, V., Datta, S., &amp; Datta, S. (2008). clValid: An <span>R</span> package for cluster validation. <em>J. Stat. Softw.</em>, <em>25</em>, 1–22.
