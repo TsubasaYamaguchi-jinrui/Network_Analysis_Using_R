@@ -42,6 +42,7 @@ $= HWI_{ab} \times \frac{\sum_i \sum_j HWI_{ij}}{\sum_i HWI_{ai} \times \sum_i H
 `asnipe`パッケージの`get_network()`関数では、こうしたデータからSRIとHWIを算出し、マトリックスを作成することが可能である。
 ```{r}
 presence_mat <- get_network(presence %>%
+                            ## 日付の列は除く
                             dplyr::select(-date),
                             ## gambit of the group
                             data_format = "GBI",

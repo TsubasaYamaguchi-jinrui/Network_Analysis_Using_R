@@ -41,6 +41,10 @@ fig:fig-npermtest-c
 fig:fig-mrqap
 tab:tab-CSI
 fig:fig-dsp
+tab:tab-rand120
+fig:fig-npermtest-d
+fig:fig-npermtest-e
+fig:fig-prenetwork
 c1
 社会ネットワーク分析snaとは
 社会ネットワークの基礎
@@ -53,7 +57,7 @@ c2
 s2-1
 s2-2
 c3
-ノードについての諸指標中心性指標
+s3-1
 近接中心性closeness-centrality
 次数中心性degree-centrality
 重み付き中心性strength-centrality
@@ -76,6 +80,7 @@ modularityを用いる方法
 c4
 s4-1
 s4-2
+node-permutationの手法
 分析例
 線形モデルglmglmmなど
 分析例1.-正規線形モデル
@@ -87,6 +92,14 @@ antsパッケージを用いる方法
 mantel検定
 hemelrijkの行列相関検定
 ネットワークデータを用いた回帰分析
-network-permutationの欠点
+node-permutationの欠点
 pre-network-permutation
+pre-network-permutationの手法
 分析例-1
+snaパッケージを用いる方法-1
+antsパッケージを用いる方法-1
+pre-network-permutationの欠点
+パーミュテーション検定以外の統計的検定方法
+指数ランダムグラフモデルと確率的アクター志向モデル
+ランダム化を用いない方法
+references

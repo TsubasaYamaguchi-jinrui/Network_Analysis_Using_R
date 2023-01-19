@@ -222,19 +222,32 @@ div.csl-indent {
 <li class="chapter" data-level="4.1" data-path="Chapter4-1.html"><a href="Chapter4-1.html#s4-1"><i class="fa fa-check"></i><b>4.1</b> なぜランダム化検定が必要か？</a></li>
 <li class="chapter" data-level="4.2" data-path="Chapter4-2.html"><a href="Chapter4-2.html"><i class="fa fa-check"></i><b>4.2</b> Network permutation</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="Chapter4-2.html"><a href="Chapter4-2.html#分析例"><i class="fa fa-check"></i><b>4.2.1</b> 分析例</a>
+<li class="chapter" data-level="4.2.1" data-path="Chapter4-2.html"><a href="Chapter4-2.html#node-permutationの手法"><i class="fa fa-check"></i><b>4.2.1</b> Node permutationの手法</a></li>
+<li class="chapter" data-level="4.2.2" data-path="Chapter4-2.html"><a href="Chapter4-2.html#分析例"><i class="fa fa-check"></i><b>4.2.2</b> 分析例</a>
 <ul>
-<li class="chapter" data-level="4.2.1.1" data-path="Chapter4-2.html"><a href="Chapter4-2.html#線形モデルglmglmmなど"><i class="fa fa-check"></i><b>4.2.1.1</b> 線形モデル(GLM、GLMMなど)</a></li>
-<li class="chapter" data-level="4.2.1.2" data-path="Chapter4-2.html"><a href="Chapter4-2.html#ネットワーク同士の関連の検討"><i class="fa fa-check"></i><b>4.2.1.2</b> ネットワーク同士の関連の検討</a></li>
+<li class="chapter" data-level="4.2.2.1" data-path="Chapter4-2.html"><a href="Chapter4-2.html#線形モデルglmglmmなど"><i class="fa fa-check"></i><b>4.2.2.1</b> 線形モデル(GLM、GLMMなど)</a></li>
+<li class="chapter" data-level="4.2.2.2" data-path="Chapter4-2.html"><a href="Chapter4-2.html#ネットワーク同士の関連の検討"><i class="fa fa-check"></i><b>4.2.2.2</b> ネットワーク同士の関連の検討</a></li>
 </ul></li>
-<li class="chapter" data-level="4.2.2" data-path="Chapter4-2.html"><a href="Chapter4-2.html#network-permutationの欠点"><i class="fa fa-check"></i><b>4.2.2</b> Network permutationの欠点</a></li>
+<li class="chapter" data-level="4.2.3" data-path="Chapter4-2.html"><a href="Chapter4-2.html#node-permutationの欠点"><i class="fa fa-check"></i><b>4.2.3</b> Node permutationの欠点</a></li>
 </ul></li>
 <li class="chapter" data-level="4.3" data-path="Chapter4-3.html"><a href="Chapter4-3.html"><i class="fa fa-check"></i><b>4.3</b> Pre-network permutation</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="Chapter4-3.html"><a href="Chapter4-3.html#分析例-1"><i class="fa fa-check"></i><b>4.3.1</b> 分析例</a></li>
+<li class="chapter" data-level="4.3.1" data-path="Chapter4-3.html"><a href="Chapter4-3.html#pre-network-permutationの手法"><i class="fa fa-check"></i><b>4.3.1</b> Pre-network permutationの手法</a></li>
+<li class="chapter" data-level="4.3.2" data-path="Chapter4-3.html"><a href="Chapter4-3.html#分析例-1"><i class="fa fa-check"></i><b>4.3.2</b> 分析例</a>
+<ul>
+<li class="chapter" data-level="4.3.2.1" data-path="Chapter4-3.html"><a href="Chapter4-3.html#snaパッケージを用いる方法-1"><i class="fa fa-check"></i><b>4.3.2.1</b> <code>sna</code>パッケージを用いる方法</a></li>
+<li class="chapter" data-level="4.3.2.2" data-path="Chapter4-3.html"><a href="Chapter4-3.html#antsパッケージを用いる方法-1"><i class="fa fa-check"></i><b>4.3.2.2</b> <code>ANTs</code>パッケージを用いる方法</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="Chapter4-3.html"><a href="Chapter4-3.html#pre-network-permutationの欠点"><i class="fa fa-check"></i><b>4.4</b> Pre-network permutationの欠点</a></li>
+<li class="chapter" data-level="4.5" data-path="Chapter4-4.html"><a href="Chapter4-4.html"><i class="fa fa-check"></i><b>4.5</b> パーミュテーション検定以外の統計的検定方法</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="Chapter4-4.html"><a href="Chapter4-4.html#指数ランダムグラフモデルと確率的アクター志向モデル"><i class="fa fa-check"></i><b>4.5.1</b> 指数ランダムグラフモデルと確率的アクター志向モデル</a></li>
+<li class="chapter" data-level="4.5.2" data-path="Chapter4-4.html"><a href="Chapter4-4.html#ランダム化を用いない方法"><i class="fa fa-check"></i><b>4.5.2</b> ランダム化を用いない方法</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="sessioninfo.html"><a href="sessioninfo.html"><i class="fa fa-check"></i>実行環境</a></li>
+<li class="chapter" data-level="5" data-path="sessioninfo.html"><a href="sessioninfo.html#references"><i class="fa fa-check"></i><b>5</b> References</a></li>
 </ul>
 
       </nav>
@@ -254,6 +267,8 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="s4-2" class="section level2 hasAnchor" number="4.2">
 <h2><span class="header-section-number">4.2</span> Network permutation<a href="Chapter4-2.html#s4-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="node-permutationの手法" class="section level3 hasAnchor" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Node permutationの手法<a href="Chapter4-2.html#node-permutationの手法" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Network permutationには大きく分けて<u>辺</u>をシャッフルする<strong>edge permutation</strong>と、<u>ノード</u>をシャッフルする<strong>node permutation</strong>に分けられるが、本節ではより一般的に用いられている後者についてのみ解説を行う。前者は生物のネットワークではあまり用いられないため<span class="citation">(<a href="#ref-Croft2011" role="doc-biblioref">D. P. Croft et al., 2011</a>; <a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>)</span>、ここでは解説しない。</p>
 <p>Node permutationでは、ノードの属性(性別、順位など)をランダムにシャッフルして生成したランダムなネットワークにおける統計検定量の分布を帰無分布とし、実際のデータの統計検定量をそれと比較することで有意性を判定する方法である。これにより、ネットワークの構造(e.g., ノード数、辺の数、密度など)や属性ごとのノード数(e.g., 性別の場合、オスとメスの数)を一定にしたまま検定を行うことができる。</p>
 <p>例えば、5個体からなる集団において、個体の社会的順位と固有ベクトル中心性の相関の有意性を検定するとしよう。Node permutationでは、以下のような手順で検定を行う(<a href="Chapter4-1.html#s4-1">4.1</a>も参照)。</p>
@@ -281,15 +296,16 @@ div.csl-indent {
 図4.3: Node permutationでの検定の例
 </p>
 </div>
-<div id="分析例" class="section level3 hasAnchor" number="4.2.1">
-<h3><span class="header-section-number">4.2.1</span> 分析例<a href="Chapter4-2.html#分析例" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div id="分析例" class="section level3 hasAnchor" number="4.2.2">
+<h3><span class="header-section-number">4.2.2</span> 分析例<a href="Chapter4-2.html#分析例" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Node permutationは様々な分析に適用可能である。以下では、実際の分析例をいくつか見ていく。</p>
-<div id="線形モデルglmglmmなど" class="section level4 hasAnchor" number="4.2.1.1">
-<h4><span class="header-section-number">4.2.1.1</span> 線形モデル(GLM、GLMMなど)<a href="Chapter4-2.html#線形モデルglmglmmなど" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="線形モデルglmglmmなど" class="section level4 hasAnchor" number="4.2.2.1">
+<h4><span class="header-section-number">4.2.2.1</span> 線形モデル(GLM、GLMMなど)<a href="Chapter4-2.html#線形モデルglmglmmなど" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>一般化線形モデル(GLM)や一般化線形混合モデル(GLMM)をはじめとした線形モデルは、2つ以上の変数間の関連を調べるうえで非常に有用な分析である<span class="citation">(<a href="#ref-Dunn2018" role="doc-biblioref">Dunn &amp; Smyth, 2018</a>; <a href="#ref-Ohigashi2010" role="doc-biblioref">大東, 2010</a>)</span>。これらの手法は、社会ネットワーク分析でノードレベルの検定(e.g., 各個体の属性と中心性指標の関連など)を行う際にも非常に有用である<span class="citation">(<a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>)</span>。</p>
 <p>GLMやGLMMでは、何かの原因となっていると想定される変数を<strong>説明変数</strong>(以下、<span class="math inline">\(x\)</span>とする)、それを受けて変化すると想定される変数を<strong>応答変数</strong>(以下、<span class="math inline">\(y\)</span>とする)という。</p>
-<div id="分析例1.-正規線形モデル" class="section level5 hasAnchor" number="4.2.1.1.1">
-<h5><span class="header-section-number">4.2.1.1.1</span> 分析例1. 正規線形モデル<a href="Chapter4-2.html#分析例1.-正規線形モデル" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<div id="分析例1.-正規線形モデル" class="section level5 hasAnchor" number="4.2.2.1.1">
+<h5><span class="header-section-number">4.2.2.1.1</span> 分析例1. 正規線形モデル<a href="Chapter4-2.html#分析例1.-正規線形モデル" class="anchor-section" aria-label="Anchor link to header"></a></h5>
 <p>以下では、シンプルな例として応答変数が正規分布から得られていると仮定するモデルを用いた分析を行う。金華山島<span class="math inline">\(B_1\)</span>群において、個体追跡中の6歳以上のメス間の近接時間割合を算出したところ、以下の隣接行列(<code>prox_mat</code>, <a href="Chapter4-2.html#tab:tab-prox">4.1</a>)が得られたとする。</p>
 <div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="Chapter4-2.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="do">## マトリックスの読み込み  </span></span>
 <span id="cb88-2"><a href="Chapter4-2.html#cb88-2" aria-hidden="true" tabindex="-1"></a>prox_mat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/prox_f.csv&quot;</span>,<span class="at">row.names=</span><span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
@@ -1119,7 +1135,7 @@ eigen_i &amp;\sim Normal(\mu_i, \sigma)
 
 \end{aligned}\]</span>
 <p>$$</p>
-<p>それでは、分析に移ろう。すでに隣接行列を算出してネットワークを作成しているので、個体ごとの固有ベクトル中心性を算出する(<strong>Step2</strong>)。個体ごとの属性を<code>att_females</code>としてデータフレームにまとめる。</p>
+<p>それでは、分析に移ろう。すでに隣接行列を算出してネットワークを作成しているので、個体ごとの固有ベクトル中心性を算出する(<strong>Step2</strong>)。個体ごとの属性を<code>att_females</code>としてデータフレームにまとめる(第<a href="Chapter2-2.html#s2-2">2.2</a>参照)。</p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="Chapter4-2.html#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 属性データの作成</span></span>
 <span id="cb89-2"><a href="Chapter4-2.html#cb89-2" aria-hidden="true" tabindex="-1"></a>att_females <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">femaleID =</span> <span class="fu">colnames</span>(prox_mat),</span>
 <span id="cb89-3"><a href="Chapter4-2.html#cb89-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">rank =</span> <span class="fu">c</span>(<span class="dv">8</span>,<span class="dv">9</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">13</span>,<span class="dv">15</span>,<span class="dv">14</span>,<span class="dv">6</span>,<span class="dv">7</span>,<span class="dv">10</span>),</span>
@@ -1146,10 +1162,10 @@ eigen_i &amp;\sim Normal(\mu_i, \sigma)
 </div>
 <p><br/></p>
 <p>続いて、先ほどの数式に基づいたモデリングを行う。Rでは以下のコードで実行することができる。</p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="Chapter4-2.html#cb91-1" aria-hidden="true" tabindex="-1"></a>r_lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data =</span> att_females,</span>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="Chapter4-2.html#cb91-1" aria-hidden="true" tabindex="-1"></a>r_glm <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">data =</span> att_females,</span>
 <span id="cb91-2"><a href="Chapter4-2.html#cb91-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">formula =</span> eigen <span class="sc">~</span> rank <span class="sc">+</span> age)</span></code></pre></div>
 <p>モデリングの結果推定された<span class="math inline">\(\beta_0\)</span>、<span class="math inline">\(\beta_1\)</span>、<span class="math inline">\(\beta_2\)</span>の推定値は以下のようになる。なお、<code>Intercept</code>は切片を表す。</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="Chapter4-2.html#cb92-1" aria-hidden="true" tabindex="-1"></a>r_lm</span></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="Chapter4-2.html#cb92-1" aria-hidden="true" tabindex="-1"></a>r_glm</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = eigen ~ rank + age, data = att_females)
@@ -1160,8 +1176,8 @@ eigen_i &amp;\sim Normal(\mu_i, \sigma)
 <p>パーミュテーション検定では、<span class="math inline">\(\beta_1\)</span>や<span class="math inline">\(\beta_2\)</span>などの<strong>回帰係数</strong>を統計検定量として検定を行うことで、説明変数と応答変数の関連が有意であるかをしらべることが推奨されている<span class="citation">(<a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>)</span>。そこで、それぞれの推定値を持つオブジェクトを作成する(<code>b_rank</code>と<code>b_age</code>)。</p>
 <div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="Chapter4-2.html#cb94-1" aria-hidden="true" tabindex="-1"></a>b_rank <span class="ot">&lt;-</span> <span class="fu">coef</span>(r_lm)[[<span class="dv">2</span>]]</span>
 <span id="cb94-2"><a href="Chapter4-2.html#cb94-2" aria-hidden="true" tabindex="-1"></a>b_age <span class="ot">&lt;-</span> <span class="fu">coef</span>(r_lm)[[<span class="dv">3</span>]]</span></code></pre></div>
-<div id="snaパッケージを用いる方法" class="section level6 hasAnchor" number="4.2.1.1.1.1">
-<h6><span class="header-section-number">4.2.1.1.1.1</span> <code>sna</code>パッケージを用いる方法<a href="Chapter4-2.html#snaパッケージを用いる方法" class="anchor-section" aria-label="Anchor link to header"></a></h6>
+<div id="snaパッケージを用いる方法" class="section level6 hasAnchor" number="4.2.2.1.1.1">
+<h6><span class="header-section-number">4.2.2.1.1.1</span> <code>sna</code>パッケージを用いる方法<a href="Chapter4-2.html#snaパッケージを用いる方法" class="anchor-section" aria-label="Anchor link to header"></a></h6>
 <p>続いて、node permutationを行ってランダムなネットワーク(隣接行列)を1000個生成し、それぞれのネットワークにおいて同じ回帰分析を行い、先ほど同様に<span class="math inline">\(\beta_1\)</span>と<span class="math inline">\(\beta_2\)</span>の推定値を算出する(<strong>Step3~4</strong>)。</p>
 <p>Rでは、<code>sna</code>パッケージの<code>rmperm</code>関数でnode permutationを行うことができる。<code>b_rank_rand</code>と<code>b_rank_age</code>という空のベクトルを作成し、そこにランダムネットワークから算出された<span class="math inline">\(\beta_1\)</span>と<span class="math inline">\(\beta_2\)</span>を入れている。</p>
 <div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="Chapter4-2.html#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 空の行列を作成</span></span>
@@ -1200,8 +1216,8 @@ eigen_i &amp;\sim Normal(\mu_i, \sigma)
 <pre><code>## [1] 0.726</code></pre>
 <p><br/></p>
 </div>
-<div id="antsパッケージを用いる方法" class="section level6 hasAnchor" number="4.2.1.1.1.2">
-<h6><span class="header-section-number">4.2.1.1.1.2</span> <code>ANTs</code>パッケージを用いる方法<a href="Chapter4-2.html#antsパッケージを用いる方法" class="anchor-section" aria-label="Anchor link to header"></a></h6>
+<div id="antsパッケージを用いる方法" class="section level6 hasAnchor" number="4.2.2.1.1.2">
+<h6><span class="header-section-number">4.2.2.1.1.2</span> <code>ANTs</code>パッケージを用いる方法<a href="Chapter4-2.html#antsパッケージを用いる方法" class="anchor-section" aria-label="Anchor link to header"></a></h6>
 <p>ここまで行ったnode permutation検定のstep3以降は、<code>ANTs</code>パッケージを用いるとより簡単に行うことができる。</p>
 <p><code>ANTs</code>パッケージでは、個体の属性や中心性指標が入ったデータフレームを用いて、node permutationを行うことができる。<br />
 <code>perm.net.nl</code>関数では、指定されたラベル(今回の場合は、応答変数である固有ベクトル中心性)について、指定した数だけパーミュテーションを行ってくれる(やっていることは<code>sna</code>パッケージを用いた場合と同じ)。</p>
@@ -1252,7 +1268,7 @@ eigen_i &amp;\sim Normal(\mu_i, \sigma)
 ## AIC: -9.692
 ## 
 ## Number of Fisher Scoring iterations: 2</code></pre>
-<p>分析結果は、<code>ant</code>パッケージを用いることで確認できる。<br />
+<p>分析結果は、<code>ant</code>関数を用いることで確認できる。<br />
 実データの回帰係数とランダムネットワークの回帰係数の分布の比較は以下のように可視化できる(図<a href="Chapter4-2.html#fig:fig-npermtest-b">4.6</a>)。</p>
 <div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="Chapter4-2.html#cb103-1" aria-hidden="true" tabindex="-1"></a>r_lm_ants <span class="ot">&lt;-</span> <span class="fu">ant</span>(r_lm_b)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-npermtest-b"></span>
@@ -1300,8 +1316,8 @@ eigen_i &amp;\sim Normal(\mu_i, \sigma)
 <p>モデルの診断結果を<code>r_lm_ants$model.diagnostic</code>で調べることもできる。</p>
 </div>
 </div>
-<div id="分析例2.-線形混合モデル" class="section level5 hasAnchor" number="4.2.1.1.2">
-<h5><span class="header-section-number">4.2.1.1.2</span> 分析例2. 線形混合モデル<a href="Chapter4-2.html#分析例2.-線形混合モデル" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<div id="分析例2.-線形混合モデル" class="section level5 hasAnchor" number="4.2.2.1.2">
+<h5><span class="header-section-number">4.2.2.1.2</span> 分析例2. 線形混合モデル<a href="Chapter4-2.html#分析例2.-線形混合モデル" class="anchor-section" aria-label="Anchor link to header"></a></h5>
 <p>同様の分析は、モデルにランダム効果を入れたGLMMなどの混合モデルについても適用できる。GLMMについては、<a href="https://kuboweb.github.io/-kubo/ce/LinksGlmm.html">こちら</a> などを参照。複数の調査期間に/複数の集団でデータを収集した場合などにすべてのデータをまとめて分析する際には、GLMMが適用される<span class="citation">(<a href="#ref-Sosa2020" role="doc-biblioref">Sosa et al., 2020</a>)</span>。</p>
 <p>例えば、ニホンザルの7つの集団(A~F)である年におけるメスの毛づくろいのデータを収集し、ダイアッドごとの毛づくろい頻度を算出したとしよう。以下の<code>list_mat</code>には、list形式で7つの隣接行列が収納されている(架空のデータである)。</p>
 <div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="Chapter4-2.html#cb106-1" aria-hidden="true" tabindex="-1"></a>list_mat <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/list_mat.obj&quot;</span>)</span></code></pre></div>
@@ -2117,9 +2133,9 @@ eigen_i &amp;\sim Normal(\mu_i, \sigma)
 </tbody>
 </table>
 <p><br /></p>
-<p>これらの集団において、各個体の<strong>固有ベクトル中心性が、その後10年間の産子数に影響しているか</strong>調べたいとする。各集団における各メスの順位・年齢・産子数・集団名が以下の<code>list_att</code>に入っている(もちろん架空のデータである)。</p>
+<p>これらの集団において、各個体の<strong>固有ベクトル中心性が、その後10年間の産子数に影響しているか</strong>調べたいとする。各集団における各メスの順位・年齢・産子数・集団名が以下の<code>list_att</code>にlist形式で入っている(もちろん架空のデータである)。</p>
 <div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="Chapter4-2.html#cb108-1" aria-hidden="true" tabindex="-1"></a>list_att <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/list_att.obj&quot;</span>)</span></code></pre></div>
-<p>例えば、C集団の属性テーブルは以下のようになる。</p>
+<p>例えば、C集団の属性データは以下のようになる。</p>
 <div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="Chapter4-2.html#cb109-1" aria-hidden="true" tabindex="-1"></a>list_att[[<span class="dv">3</span>]] <span class="sc">%&gt;%</span> </span>
 <span id="cb109-2"><a href="Chapter4-2.html#cb109-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(<span class="at">rownames =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-0a9dce5bff9e2d5baa8b" style="width:100%;height:auto;"></div>
@@ -2138,7 +2154,7 @@ no\_birth_{ji} &amp;\sim Poisson(\lambda_{ji})
 
 \end{aligned}\]</span>
 <p>$$</p>
-<p>それでは、分析に移ろう。各集団ごとに固有ベクトル中心性を算出する(<strong>Step2</strong>)。<code>ANTs</code>パッケージで以下のように求められる。</p>
+<p>それでは、分析に移ろう。各集団ごとに固有ベクトル中心性を算出する(<strong>Step2</strong>)。<code>ANTs</code>パッケージでは、複数の隣接行列と属性データをそれぞれlist形式でまとめることで、以下のように複数のネットワークについて同時に中心性を算出できる。</p>
 <div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="Chapter4-2.html#cb110-1" aria-hidden="true" tabindex="-1"></a>list_att <span class="ot">&lt;-</span> <span class="fu">met.eigen</span>(list_mat,</span>
 <span id="cb110-2"><a href="Chapter4-2.html#cb110-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">df =</span> list_att)</span></code></pre></div>
 <p>C集団ついての算出結果は以下のようになった。</p>
@@ -2310,13 +2326,13 @@ no\_birth_{ji} &amp;\sim Poisson(\lambda_{ji})
 ## age   -0.616  0.042  0.011</code></pre>
 </div>
 </div>
-<div id="ネットワーク同士の関連の検討" class="section level4 hasAnchor" number="4.2.1.2">
-<h4><span class="header-section-number">4.2.1.2</span> ネットワーク同士の関連の検討<a href="Chapter4-2.html#ネットワーク同士の関連の検討" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="ネットワーク同士の関連の検討" class="section level4 hasAnchor" number="4.2.2.2">
+<h4><span class="header-section-number">4.2.2.2</span> ネットワーク同士の関連の検討<a href="Chapter4-2.html#ネットワーク同士の関連の検討" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Node permutationはネットワーク同士の関連を調べる際にも用いられることが多い。</p>
-<div id="ネットワーク間の相関の検定" class="section level5 hasAnchor" number="4.2.1.2.1">
-<h5><span class="header-section-number">4.2.1.2.1</span> ネットワーク間の相関の検定<a href="Chapter4-2.html#ネットワーク間の相関の検定" class="anchor-section" aria-label="Anchor link to header"></a></h5>
-<div id="mantel検定" class="section level6 hasAnchor" number="4.2.1.2.1.1">
-<h6><span class="header-section-number">4.2.1.2.1.1</span> Mantel検定<a href="Chapter4-2.html#mantel検定" class="anchor-section" aria-label="Anchor link to header"></a></h6>
+<div id="ネットワーク間の相関の検定" class="section level5 hasAnchor" number="4.2.2.2.1">
+<h5><span class="header-section-number">4.2.2.2.1</span> ネットワーク間の相関の検定<a href="Chapter4-2.html#ネットワーク間の相関の検定" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<div id="mantel検定" class="section level6 hasAnchor" number="4.2.2.2.1.1">
+<h6><span class="header-section-number">4.2.2.2.1.1</span> Mantel検定<a href="Chapter4-2.html#mantel検定" class="anchor-section" aria-label="Anchor link to header"></a></h6>
 <p>ネットワーク間の相関の検定方法として、よく知られているのがMantel検定<span class="citation">(<a href="#ref-Mantel1967" role="doc-biblioref">Mantel, 1967</a>)</span>である。Mantel検定は一般的に以下の手順に沿って行う(2つの隣接行列の相関を調べる場合)。</p>
 <ol style="list-style-type: decimal">
 <li><p>2つの隣接行列の対応する行列成分同士の相関係数を算出する。このとき、Pearsonの積率相関係数、Spearmanの順位相関係数、Kendallの順位相関係数のどれでもよい。</p></li>
@@ -2392,8 +2408,8 @@ no\_birth_{ji} &amp;\sim Poisson(\lambda_{ji})
 ## Number of permutations: 1000</code></pre>
 <p><br/></p>
 </div>
-<div id="hemelrijkの行列相関検定" class="section level6 hasAnchor" number="4.2.1.2.1.2">
-<h6><span class="header-section-number">4.2.1.2.1.2</span> Hemelrijkの行列相関検定<a href="Chapter4-2.html#hemelrijkの行列相関検定" class="anchor-section" aria-label="Anchor link to header"></a></h6>
+<div id="hemelrijkの行列相関検定" class="section level6 hasAnchor" number="4.2.2.2.1.2">
+<h6><span class="header-section-number">4.2.2.2.1.2</span> Hemelrijkの行列相関検定<a href="Chapter4-2.html#hemelrijkの行列相関検定" class="anchor-section" aria-label="Anchor link to header"></a></h6>
 <p>ヘメリック<span class="citation">(<a href="#ref-Hemelrijk1990b" role="doc-biblioref">Hemelrijk, 1990a</a>; <a href="#ref-Hemelrijk1990a" role="doc-biblioref">Hemelrijk, 1990b</a>)</span>は、霊長類において互恵性が存在するかを検討するために、Kendallの順位相関係数を発展させたKr検定を考案している。この方法もnode permutationを用いたもので、<u>方向性のある隣接行列も扱うことができる</u>。詳細はヘメリックの論文を参照されたし<span class="citation">(<a href="#ref-Hemelrijk1990b" role="doc-biblioref">Hemelrijk, 1990a</a>; <a href="#ref-Hemelrijk1990a" role="doc-biblioref">Hemelrijk, 1990b</a>)</span>。<code>ANTs</code>パッケージの<code>stat.tauKr</code>関数はこの方法に基づく行列相関検定を行ってくれる。</p>
 <p>例えば、群れ内において毛づくろいの互恵性が成立しているか、つまり各ダイアッドが毛づくろいを交換しているかを調べたいとしよう。そのためには、方向性のある毛づくろい頻度隣接行列<code>groom_mat</code>(表<a href="Chapter2-1.html#tab:tab-groom">2.2</a>)とその転置行列(行と列を入れ替えた行列)の相関があるかを調べればよい。そうすれば、<strong>ある個体にたくさん毛づくろいをしているほど、その相手からも毛づくろいされているか</strong>、を調べることができる。転置行列は<code>t()</code>関数で求められる。</p>
 <p>分析の結果は以下のようになる。<code>pR</code>と<code>pL</code>はランダムなネットワークの相関係数が実際の相関係数より大きい/小さい確率を表す。この結果から、両者の間には有意な相関があり、毛づくろいの互恵性が成り立っていることが示唆される。つまり、毛づくろいをたくさん行うほど、その個体から毛づくろいをされている。</p>
@@ -2451,8 +2467,8 @@ no\_birth_{ji} &amp;\sim Poisson(\lambda_{ji})
 <p>同様の分析は、異なる行動から算出した2つの隣接行列に対しても適用できる。他の例については、 <span class="citation">Hemelrijk (<a href="#ref-Hemelrijk1990a" role="doc-biblioref">1990b</a>)</span> , <span class="citation">Hemelrijk (<a href="#ref-Hemelrijk1990b" role="doc-biblioref">1990a</a>)</span> , <span class="citation">D. Croft et al. (<a href="#ref-Croft2019" role="doc-biblioref">2008</a>)</span> などを参照。</p>
 </div>
 </div>
-<div id="ネットワークデータを用いた回帰分析" class="section level5 hasAnchor" number="4.2.1.2.2">
-<h5><span class="header-section-number">4.2.1.2.2</span> ネットワークデータを用いた回帰分析<a href="Chapter4-2.html#ネットワークデータを用いた回帰分析" class="anchor-section" aria-label="Anchor link to header"></a></h5>
+<div id="ネットワークデータを用いた回帰分析" class="section level5 hasAnchor" number="4.2.2.2.2">
+<h5><span class="header-section-number">4.2.2.2.2</span> ネットワークデータを用いた回帰分析<a href="Chapter4-2.html#ネットワークデータを用いた回帰分析" class="anchor-section" aria-label="Anchor link to header"></a></h5>
 <p>ネットワーク相関は有用な方法だが、2つ以上の変数を統制したい場合には用いることができない。また、相関分析では様々な形式のデータ(0/1データ、割合データ)などを扱う際に問題が生じることもある。これらの問題点を解決してくれるのが、<strong>MRQAP検定</strong><span class="citation">(<a href="#ref-Dekker2007" role="doc-biblioref">Dekker et al., 2007</a>)</span>と呼ばれる手法である。MRQAP検定は、簡単に言ってしまえばネットワークデータを用いた回帰分析である。Mantel検定などと同様に、2つ以上の隣接行列の対応する行列成分に対して回帰分析を施す。</p>
 <p>例えば、第<a href="Chapter2-1.html#c2">2</a>章で算出したSRI隣接行列(表<a href="Chapter2-2.html#tab:tab-SRI">2.4</a>)が、親密度(CSI)、血縁度、順位差と関連しているかを調べたいとする。MRQAPでは、通常の<strong>GLMやGLMMと同様に、こうした複数の隣接行列を用いた回帰分析を行うことができる</strong>(図<a href="Chapter4-2.html#fig:fig-mrqap">4.8</a>)。また、<code>aninet</code>パッケージの<code>glmqap</code>関数を用いれば、<strong>応答変数となる隣接行列の分布として様々なもの(e.g., 正規分布、ポワソン分布、二項分布など)を仮定することができる</strong>ので、データ形式に合った適切な分析を行うこともできる。</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-mrqap"></span>
@@ -3364,14 +3380,14 @@ Tot
 </div>
 </div>
 </div>
-<div id="network-permutationの欠点" class="section level3 hasAnchor" number="4.2.2">
-<h3><span class="header-section-number">4.2.2</span> Network permutationの欠点<a href="Chapter4-2.html#network-permutationの欠点" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>以上でみたように、network permutationは2つ以上の変数の関連を調べるうえで強力な方法である。一方で、この方法は観察にバイアスがあるときや、観察場所/時間の影響があるとき<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>には、誤った結論を導いてしまう可能性が高くなる<span class="citation">(<a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>; <a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>; <a href="#ref-Weiss2021" role="doc-biblioref">Weiss et al., 2021</a>)</span>。</p>
-<p>分析するモデルにこれらの要因(観察回数や行動圏の重複度合いなど)を限り取り入れることで、誤った結論を導いてしまう可能性を低減することはできるが<span class="citation">Hart et al. (<a href="#ref-Hart2022" role="doc-biblioref">2022</a>)</span>、すべての場合に対処できるわけではないようだ<span class="citation">(<a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>)</span>。この問題を解決するうえでは、次節で説明する pre-network permutation が有効な手段だと考えられている<span class="citation">(<a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>; <a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>; <a href="#ref-Farine2015" role="doc-biblioref">Farine &amp; Whitehead, 2015</a>)</span>。一方で、pre-network permutation も相関分析や回帰分析を行う上で問題点を抱えていることがわかってきている<span class="citation">(<a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>; <a href="#ref-PugaGonzalez2021" role="doc-biblioref">Puga‐Gonzalez et al., 2021</a>; <a href="#ref-Weiss2021" role="doc-biblioref">Weiss et al., 2021</a>)</span>。これについては、次節で詳述する。</p>
+<div id="node-permutationの欠点" class="section level3 hasAnchor" number="4.2.3">
+<h3><span class="header-section-number">4.2.3</span> Node permutationの欠点<a href="Chapter4-2.html#node-permutationの欠点" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>以上でみたように、node permutationは2つ以上の変数の関連を調べるうえで強力な方法である。一方で、この方法は観察にバイアスがあるときや、観察場所/時間の影響があるとき<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>には、誤った結論を導いてしまう可能性が高くなる<span class="citation">(<a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>; <a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>; <a href="#ref-Weiss2021" role="doc-biblioref">Weiss et al., 2021</a>)</span>。</p>
+<p>分析するモデルにこれらの要因(観察回数や行動圏の重複度合いなど)を限り取り入れることで、誤った結論を導いてしまう可能性を低減することはできるが<span class="citation">Weiss et al. (<a href="#ref-Weiss2021" role="doc-biblioref">2021</a>)</span>、すべての場合に対処できるわけではないようだ<span class="citation">(<a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>)</span>。この問題を解決するうえでは、次節で説明する pre-network permutation が有効な手段だと考えられている<span class="citation">(<a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>; <a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>; <a href="#ref-Farine2015" role="doc-biblioref">Farine &amp; Whitehead, 2015</a>)</span>。一方で、pre-network permutation も相関分析や回帰分析を行う上で問題点を抱えていることがわかってきている<span class="citation">(<a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>; <a href="#ref-PugaGonzalez2021" role="doc-biblioref">Puga‐Gonzalez et al., 2021</a>; <a href="#ref-Weiss2021" role="doc-biblioref">Weiss et al., 2021</a>)</span>。これについては、次節で詳述する。</p>
 
 </div>
 </div>
-<h3>References</h3>
+<h3> References<a href="sessioninfo.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-Borgatti2022" class="csl-entry">
 Borgatti, S. P., Everett, M. G., Johnson, J. C., &amp; Agneessens, F. (2022). <em>Analyzing social networks using <span>R</span></em>. SAGE.
@@ -3399,9 +3415,6 @@ Farine, D. R., &amp; Whitehead, H. (2015). Constructing, conducting and interpre
 </div>
 <div id="ref-Franks2021" class="csl-entry">
 Franks, D. W., Weiss, M. N., Silk, M. J., Perryman, R. J. Y., &amp; Croft, D. P. (2021). Calculating effect sizes in animal social network analysis. <em>Methods Ecol. Evol.</em>, <em>12</em>(1), 33–41.
-</div>
-<div id="ref-Hart2022" class="csl-entry">
-Hart, J. D. A., Weiss, M. N., Brent, L. J. N., &amp; Franks, D. W. (2022). Common permutation methods in animal social network analysis do not control for non-independence. <em>Behav. Ecol. Sociobiol.</em>, <em>76</em>(11), 151.
 </div>
 <div id="ref-Hemelrijk1990b" class="csl-entry">
 Hemelrijk, C. K. (1990a). A matrix partial correlation test used in investigations of reciprocity and other social interaction patterns at group level. <em>J. Theor. Biol.</em>, <em>143</em>(3), 405–420.

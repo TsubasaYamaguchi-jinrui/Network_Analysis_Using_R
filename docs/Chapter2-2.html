@@ -222,19 +222,32 @@ div.csl-indent {
 <li class="chapter" data-level="4.1" data-path="Chapter4-1.html"><a href="Chapter4-1.html#s4-1"><i class="fa fa-check"></i><b>4.1</b> なぜランダム化検定が必要か？</a></li>
 <li class="chapter" data-level="4.2" data-path="Chapter4-2.html"><a href="Chapter4-2.html"><i class="fa fa-check"></i><b>4.2</b> Network permutation</a>
 <ul>
-<li class="chapter" data-level="4.2.1" data-path="Chapter4-2.html"><a href="Chapter4-2.html#分析例"><i class="fa fa-check"></i><b>4.2.1</b> 分析例</a>
+<li class="chapter" data-level="4.2.1" data-path="Chapter4-2.html"><a href="Chapter4-2.html#node-permutationの手法"><i class="fa fa-check"></i><b>4.2.1</b> Node permutationの手法</a></li>
+<li class="chapter" data-level="4.2.2" data-path="Chapter4-2.html"><a href="Chapter4-2.html#分析例"><i class="fa fa-check"></i><b>4.2.2</b> 分析例</a>
 <ul>
-<li class="chapter" data-level="4.2.1.1" data-path="Chapter4-2.html"><a href="Chapter4-2.html#線形モデルglmglmmなど"><i class="fa fa-check"></i><b>4.2.1.1</b> 線形モデル(GLM、GLMMなど)</a></li>
-<li class="chapter" data-level="4.2.1.2" data-path="Chapter4-2.html"><a href="Chapter4-2.html#ネットワーク同士の関連の検討"><i class="fa fa-check"></i><b>4.2.1.2</b> ネットワーク同士の関連の検討</a></li>
+<li class="chapter" data-level="4.2.2.1" data-path="Chapter4-2.html"><a href="Chapter4-2.html#線形モデルglmglmmなど"><i class="fa fa-check"></i><b>4.2.2.1</b> 線形モデル(GLM、GLMMなど)</a></li>
+<li class="chapter" data-level="4.2.2.2" data-path="Chapter4-2.html"><a href="Chapter4-2.html#ネットワーク同士の関連の検討"><i class="fa fa-check"></i><b>4.2.2.2</b> ネットワーク同士の関連の検討</a></li>
 </ul></li>
-<li class="chapter" data-level="4.2.2" data-path="Chapter4-2.html"><a href="Chapter4-2.html#network-permutationの欠点"><i class="fa fa-check"></i><b>4.2.2</b> Network permutationの欠点</a></li>
+<li class="chapter" data-level="4.2.3" data-path="Chapter4-2.html"><a href="Chapter4-2.html#node-permutationの欠点"><i class="fa fa-check"></i><b>4.2.3</b> Node permutationの欠点</a></li>
 </ul></li>
 <li class="chapter" data-level="4.3" data-path="Chapter4-3.html"><a href="Chapter4-3.html"><i class="fa fa-check"></i><b>4.3</b> Pre-network permutation</a>
 <ul>
-<li class="chapter" data-level="4.3.1" data-path="Chapter4-3.html"><a href="Chapter4-3.html#分析例-1"><i class="fa fa-check"></i><b>4.3.1</b> 分析例</a></li>
+<li class="chapter" data-level="4.3.1" data-path="Chapter4-3.html"><a href="Chapter4-3.html#pre-network-permutationの手法"><i class="fa fa-check"></i><b>4.3.1</b> Pre-network permutationの手法</a></li>
+<li class="chapter" data-level="4.3.2" data-path="Chapter4-3.html"><a href="Chapter4-3.html#分析例-1"><i class="fa fa-check"></i><b>4.3.2</b> 分析例</a>
+<ul>
+<li class="chapter" data-level="4.3.2.1" data-path="Chapter4-3.html"><a href="Chapter4-3.html#snaパッケージを用いる方法-1"><i class="fa fa-check"></i><b>4.3.2.1</b> <code>sna</code>パッケージを用いる方法</a></li>
+<li class="chapter" data-level="4.3.2.2" data-path="Chapter4-3.html"><a href="Chapter4-3.html#antsパッケージを用いる方法-1"><i class="fa fa-check"></i><b>4.3.2.2</b> <code>ANTs</code>パッケージを用いる方法</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="Chapter4-3.html"><a href="Chapter4-3.html#pre-network-permutationの欠点"><i class="fa fa-check"></i><b>4.4</b> Pre-network permutationの欠点</a></li>
+<li class="chapter" data-level="4.5" data-path="Chapter4-4.html"><a href="Chapter4-4.html"><i class="fa fa-check"></i><b>4.5</b> パーミュテーション検定以外の統計的検定方法</a>
+<ul>
+<li class="chapter" data-level="4.5.1" data-path="Chapter4-4.html"><a href="Chapter4-4.html#指数ランダムグラフモデルと確率的アクター志向モデル"><i class="fa fa-check"></i><b>4.5.1</b> 指数ランダムグラフモデルと確率的アクター志向モデル</a></li>
+<li class="chapter" data-level="4.5.2" data-path="Chapter4-4.html"><a href="Chapter4-4.html#ランダム化を用いない方法"><i class="fa fa-check"></i><b>4.5.2</b> ランダム化を用いない方法</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="sessioninfo.html"><a href="sessioninfo.html"><i class="fa fa-check"></i>実行環境</a></li>
+<li class="chapter" data-level="5" data-path="sessioninfo.html"><a href="sessioninfo.html#references"><i class="fa fa-check"></i><b>5</b> References</a></li>
 </ul>
 
       </nav>
@@ -290,11 +303,12 @@ div.csl-indent {
 <p><br/></p>
 <p><code>asnipe</code>パッケージの<code>get_network()</code>関数では、こうしたデータからSRIとHWIを算出し、マトリックスを作成することが可能である。</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="Chapter2-2.html#cb19-1" aria-hidden="true" tabindex="-1"></a>presence_mat <span class="ot">&lt;-</span> <span class="fu">get_network</span>(presence <span class="sc">%&gt;%</span></span>
-<span id="cb19-2"><a href="Chapter2-2.html#cb19-2" aria-hidden="true" tabindex="-1"></a>                            dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>date),</span>
-<span id="cb19-3"><a href="Chapter2-2.html#cb19-3" aria-hidden="true" tabindex="-1"></a>                            <span class="do">## gambit of the group</span></span>
-<span id="cb19-4"><a href="Chapter2-2.html#cb19-4" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data_format =</span> <span class="st">&quot;GBI&quot;</span>,</span>
-<span id="cb19-5"><a href="Chapter2-2.html#cb19-5" aria-hidden="true" tabindex="-1"></a>                            <span class="do">## &quot;HWI&quot;の場合は、&quot;HWI&quot;</span></span>
-<span id="cb19-6"><a href="Chapter2-2.html#cb19-6" aria-hidden="true" tabindex="-1"></a>                            <span class="at">association_index =</span> <span class="st">&quot;SRI&quot;</span>)  </span></code></pre></div>
+<span id="cb19-2"><a href="Chapter2-2.html#cb19-2" aria-hidden="true" tabindex="-1"></a>                            <span class="do">## 日付の列は除く</span></span>
+<span id="cb19-3"><a href="Chapter2-2.html#cb19-3" aria-hidden="true" tabindex="-1"></a>                            dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>date),</span>
+<span id="cb19-4"><a href="Chapter2-2.html#cb19-4" aria-hidden="true" tabindex="-1"></a>                            <span class="do">## gambit of the group</span></span>
+<span id="cb19-5"><a href="Chapter2-2.html#cb19-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data_format =</span> <span class="st">&quot;GBI&quot;</span>,</span>
+<span id="cb19-6"><a href="Chapter2-2.html#cb19-6" aria-hidden="true" tabindex="-1"></a>                            <span class="do">## &quot;HWI&quot;の場合は、&quot;HWI&quot;</span></span>
+<span id="cb19-7"><a href="Chapter2-2.html#cb19-7" aria-hidden="true" tabindex="-1"></a>                            <span class="at">association_index =</span> <span class="st">&quot;SRI&quot;</span>)  </span></code></pre></div>
 <pre><code>## Generating  15  x  15  matrix</code></pre>
 得られた隣接行列は以下の通り(表<a href="Chapter2-2.html#tab:tab-SRI">2.4</a>)。<br />
 
@@ -1967,7 +1981,7 @@ Kun
 
 </div>
 </div>
-<h3>References</h3>
+<h3> References<a href="sessioninfo.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
 <div id="ref-Farine2015" class="csl-entry">
 Farine, D. R., &amp; Whitehead, H. (2015). Constructing, conducting and interpreting animal social network analysis. <em>J. Anim. Ecol.</em>, <em>84</em>(5), 1144–1163.
