@@ -1,3 +1,4 @@
+fig:fig-journal
 fig:fig-graph
 tab:unnamed-chunk-3
 fig:fig-ggraph

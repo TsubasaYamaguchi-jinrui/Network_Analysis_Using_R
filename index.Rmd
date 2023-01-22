@@ -28,13 +28,58 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE,
 ```
 
 # 本稿の目的 {-}   
-本稿はネットワーク分析の簡単な概要と、Rで分析を行う方法をまとめたものである。  
-扱うのは、以下の内容である。
+本稿は**社会ネットワーク分析（SNA: Social Network Analysis）**の概要をまとめたものである。また、Rでこうした分析を実行する方法についても解説している。新たに個人的に勉強した内容があれば、随時追加していく。      
+
+近年、動物行動学や霊長類ではSNAの手法を用いた研究が増加しており[@Sueur2011]、Primates誌でも2019年に特集号が組まれた[@Puga2019]。図\@ref(fig:fig-journal)は、動物行動学や霊長類学の分野で著名な学術雑誌において、"social network analysis"という単語を含む論文の割合がどのように変化してきたかを、Google scholarを用いて調べた結果を示したものである(2023年1月22日時点)。私たちが普段読むことが多いこれらの雑誌においても、2000年代後半以降社会ネットワーク分析を用いた論文が増加していることが示唆される。  
+
+こうした論文を適切に理解するためにも、SNAについてある程度理解することは必要だろう。また、自身のデータを解析する手法を増やすことで、従来の分析方法だけでは言えなかったことを説得力のある形で示せるようになるかもしれない。  
+
+```{r fig-journal, echo = FALSE, fig.dim = c(18,9), fig.cap = "socail network analysisという単語を含む論文の割合"}
+library(tidyverse)
+library(lemon)
+library(ggsci)
+
+## データのインポート
+journal <- read_csv("data/journal.csv") %>% 
+  mutate(journal = fct_relevel(journal,c("Animal","BES","AJP","IJP","Prim"))) %>% 
+  mutate(text = str_c(include,"/",total))
+
+labeller <- as_labeller(c("Prim" = "Primates",
+                          "Animal" = "Animal Behaviour",
+                          "BES" = "Behavioral Ecology and Sociobiology",
+                          "AJP" = "American Journal of Primatology",
+                          "IJP" = "International Journal of Primatology"))
+
+
+## グラフの描画
+journal %>% 
+  ggplot(aes(x = year, y = rate, group = journal))+
+  geom_point(aes(color = journal), size = 5, shape = 5, stroke = 1)+
+  geom_line(aes(color = journal), linewidth = 1)+
+  theme_bw(base_size = 30)+
+  theme(aspect.ratio=0.6,
+        legend.position = c(0.25,0.7),
+        axis.text.x = element_text(angle=-30,
+                                   size = 20),
+        legend.text = element_text(size = 20),
+        legend.spacing.y = unit(5,"mm"))+
+  scale_y_continuous(breaks = seq(0,0.5,0.02))+
+   guides(color = guide_legend(byrow = TRUE))+
+  labs(x = "",
+       y = "",
+       color = "")+
+  scale_color_nejm(label = labeller)+
+  coord_cartesian(ylim = c(0,0.1)) 
+```
+<br/>  
+
+本稿で扱うのは、以下の内容である。  
 
 - 社会ネットワーク分析の概要(第\@ref(c1)章)
 - rawデータからマトリックス(隣接行列)を作成する方法(第\@ref(c2)章)  
 - 各ネットワーク指標の解説と算出法(第\@ref(c3)章)   
 - ネットワークデータでの統計分析（第\@ref(c4)章)  
+<br/>  
 
 参考にしたのは主に以下の文献である。  
 なお、本稿の作成に使用したファイルとRのコードは筆者の[Github](https://github.com/TsubasaYamaguchi-jinrui/Network_Analysis_Using_R)ですべて閲覧できる。  

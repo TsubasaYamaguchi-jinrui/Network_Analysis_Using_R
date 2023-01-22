@@ -345,8 +345,8 @@ graph_groom %>%
   mutate(member = as.factor(cluster_groom$membership)) %>% 
   ggraph(layout = "nicely")+
   ## クラスターごとに囲う
-  geom_mark_hull(aes(x=x,y=y,fill = member),
-                 concavity = 10)+
+  #geom_mark_hull(aes(x=x,y=y,fill = member),
+   #              concavity = 10)+
   geom_node_point(aes(color = member),shape = 16, size = 12)+
   geom_edge_link(start_cap = circle(0.5,"cm"),
                  end_cap = circle(0.5,"cm"),
@@ -469,8 +469,8 @@ graph_groom %>%
   mutate(member = as.factor(membership_3$block)) %>% 
   ggraph(layout = "nicely")+
   ## ブロックごとに囲む
-  geom_mark_hull(aes(x=x,y=y,fill = member),
-                 concavity = 10)+
+  #geom_mark_hull(aes(x=x,y=y,fill = member),
+   #              concavity = 10)+
   geom_node_point(aes(color = member),shape = 16, size = 12)+
   geom_edge_link(start_cap = circle(0.5,"cm"),
                  end_cap = circle(0.5,"cm"),

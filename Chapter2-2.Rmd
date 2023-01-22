@@ -1,5 +1,5 @@
 ## Group by individual {#s2-2}    
-個体間のassociationを表したデータとして、以下のようにある時点・場所において確認された個体を各行に0/1で記録した"group by individual"と呼ばれる形式のものがある。  
+個体間のassociationを表したデータとしては、以下のようにある時点・場所において確認された個体を各行に0/1で記録した"group by individual"と呼ばれる形式のものがよく用いられる。  
 
 例えば、以下は金華山島$B_1$群で2021年交尾期の各観察日(`date`)に9歳以上のメスが観察されたか否かを示したものである。  
 ```{r}
@@ -15,8 +15,7 @@ presence %>%
 - $x$: 個体$a$と$b$が一緒に観察された回数  
 - $y_a$: $a$だけが確認された回数  
 - $y_b$: $b$だけが確認された回数  
-- $y_{ab}$: $a$と$B$が共に観察されたが、associateはしてない回数(今回の例では存在しない)  
-- $y_{null}$ どちらも観察されなかった回数  
+- $y_{ab}$: $a$と$b$が共に観察されたが、associateはしてない回数(今回の例では存在しない)  
 <br/>  
 
 <u>**SRI**: simple ratio index</u>    
@@ -39,7 +38,7 @@ $= HWI_{ab} \times \frac{\sum_i \sum_j HWI_{ij}}{\sum_i HWI_{ai} \times \sum_i H
 <br/>  
 
 
-`asnipe`パッケージの`get_network()`関数では、こうしたデータからSRIとHWIを算出し、マトリックスを作成することが可能である。
+`asnipe`パッケージの`get_network()`関数では、"group by individual"形式のデータからSRIとHWIを算出し、マトリックスを作成することが可能である。
 ```{r}
 presence_mat <- get_network(presence %>%
                             ## 日付の列は除く

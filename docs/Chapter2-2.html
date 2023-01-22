@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-01-19" />
+<meta name="date" content="2023-01-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -266,7 +266,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="s2-2" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> Group by individual<a href="Chapter2-2.html#s2-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>個体間のassociationを表したデータとして、以下のようにある時点・場所において確認された個体を各行に0/1で記録した”group by individual”と呼ばれる形式のものがある。</p>
+<p>個体間のassociationを表したデータとしては、以下のようにある時点・場所において確認された個体を各行に0/1で記録した”group by individual”と呼ばれる形式のものがよく用いられる。</p>
 <p>例えば、以下は金華山島<span class="math inline">\(B_1\)</span>群で2021年交尾期の各観察日(<code>date</code>)に9歳以上のメスが観察されたか否かを示したものである。</p>
 <div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="Chapter2-2.html#cb18-1" aria-hidden="true" tabindex="-1"></a>presence <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/presence_demo.csv&quot;</span>)</span>
 <span id="cb18-2"><a href="Chapter2-2.html#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -283,9 +283,7 @@ div.csl-indent {
 </li>
 <li><span class="math inline">\(y_b\)</span>: <span class="math inline">\(b\)</span>だけが確認された回数<br />
 </li>
-<li><span class="math inline">\(y_{ab}\)</span>: <span class="math inline">\(a\)</span>と<span class="math inline">\(B\)</span>が共に観察されたが、associateはしてない回数(今回の例では存在しない)<br />
-</li>
-<li><span class="math inline">\(y_{null}\)</span> どちらも観察されなかった回数<br />
+<li><span class="math inline">\(y_{ab}\)</span>: <span class="math inline">\(a\)</span>と<span class="math inline">\(b\)</span>が共に観察されたが、associateはしてない回数(今回の例では存在しない)<br />
 <br/></li>
 </ul>
 <p><u><strong>SRI</strong>: simple ratio index</u><br />
@@ -300,7 +298,7 @@ div.csl-indent {
 <span class="math inline">\(= HWI_{ab} \times \frac{\sum_i \sum_j HWI_{ij}}{\sum_i HWI_{ai} \times \sum_i HWI_{bi}}\)</span></p>
 <p>▶ それぞれの個体のgregariousnessを考慮したHWI。互いのgregariousnessを考慮したとき、ランダムにassociateしているのであれば1になり、１よりおおきければランダムの場合よりもよくassociateしていることになる。</p>
 <p><br/></p>
-<p><code>asnipe</code>パッケージの<code>get_network()</code>関数では、こうしたデータからSRIとHWIを算出し、マトリックスを作成することが可能である。</p>
+<p><code>asnipe</code>パッケージの<code>get_network()</code>関数では、“group by individual”形式のデータからSRIとHWIを算出し、マトリックスを作成することが可能である。</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="Chapter2-2.html#cb19-1" aria-hidden="true" tabindex="-1"></a>presence_mat <span class="ot">&lt;-</span> <span class="fu">get_network</span>(presence <span class="sc">%&gt;%</span></span>
 <span id="cb19-2"><a href="Chapter2-2.html#cb19-2" aria-hidden="true" tabindex="-1"></a>                            <span class="do">## 日付の列は除く</span></span>
 <span id="cb19-3"><a href="Chapter2-2.html#cb19-3" aria-hidden="true" tabindex="-1"></a>                            dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>date),</span>

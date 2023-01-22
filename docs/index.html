@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-01-19" />
+<meta name="date" content="2023-01-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -267,19 +267,29 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">Network Analysis Using R</h1>
 <p class="author"><em>Tsubasa Yamaguchi</em></p>
-<p class="date"><em>2023-01-19</em></p>
+<p class="date"><em>2023-01-22</em></p>
 </div>
 <div id="本稿の目的" class="section level1 unnumbered hasAnchor">
 <h1>本稿の目的<a href="index.html#本稿の目的" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>本稿はネットワーク分析の簡単な概要と、Rで分析を行う方法をまとめたものである。<br />
-扱うのは、以下の内容である。</p>
+<p>本稿は<strong>社会ネットワーク分析（SNA: Social Network Analysis）</strong>の概要をまとめたものである。また、Rでこうした分析を実行する方法についても解説している。新たに個人的に勉強した内容があれば、随時追加していく。</p>
+<p>近年、動物行動学や霊長類ではSNAの手法を用いた研究が増加しており<span class="citation">(<a href="#ref-Sueur2011" role="doc-biblioref">Sueur, Jacobs, et al., 2011</a>)</span>、Primates誌でも2019年に特集号が組まれた<span class="citation">(<a href="#ref-Puga2019" role="doc-biblioref">Puga-Gonzalez et al., 2019</a>)</span>。図<a href="index.html#fig:fig-journal">0.1</a>は、動物行動学や霊長類学の分野で著名な学術雑誌において、“social network analysis”という単語を含む論文の割合がどのように変化してきたかを、Google scholarを用いて調べた結果を示したものである(2023年1月22日時点)。私たちが普段読むことが多いこれらの雑誌においても、2000年代後半以降社会ネットワーク分析を用いた論文が増加していることが示唆される。</p>
+<p>こうした論文を適切に理解するためにも、SNAについてある程度理解することは必要だろう。また、自身のデータを解析する手法を増やすことで、従来の分析方法だけでは言えなかったことを説得力のある形で示せるようになるかもしれない。</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-journal"></span>
+<img src="Network_Analysis_Using_R_files/figure-html/fig-journal-1.png" alt="socail network analysisという単語を含む論文の割合" width="1728" />
+<p class="caption">
+図0.1: socail network analysisという単語を含む論文の割合
+</p>
+</div>
+<p><br/></p>
+<p>本稿で扱うのは、以下の内容である。</p>
 <ul>
 <li>社会ネットワーク分析の概要(第<a href="Chapter1-1.html#c1">1</a>章)</li>
 <li>rawデータからマトリックス(隣接行列)を作成する方法(第<a href="Chapter2-1.html#c2">2</a>章)<br />
 </li>
 <li>各ネットワーク指標の解説と算出法(第<a href="Chapter3-0.html#c3">3</a>章)<br />
 </li>
-<li>ネットワークデータでの統計分析（第<a href="Chapter4-1.html#c4">4</a>章)</li>
+<li>ネットワークデータでの統計分析（第<a href="Chapter4-1.html#c4">4</a>章)<br />
+<br/></li>
 </ul>
 <p>参考にしたのは主に以下の文献である。<br />
 なお、本稿の作成に使用したファイルとRのコードは筆者の<a href="https://github.com/TsubasaYamaguchi-jinrui/Network_Analysis_Using_R">Github</a>ですべて閲覧できる。</p>
@@ -316,8 +326,14 @@ Farine, D. R. (2017). A guide to null models for animal social network analysis.
 <div id="ref-Farine2015" class="csl-entry">
 Farine, D. R., &amp; Whitehead, H. (2015). Constructing, conducting and interpreting animal social network analysis. <em>J. Anim. Ecol.</em>, <em>84</em>(5), 1144–1163.
 </div>
+<div id="ref-Puga2019" class="csl-entry">
+Puga-Gonzalez, I., Sosa, S., &amp; Sueur, C. (2019). Editorial: Social networks analyses in primates, a multilevel perspective. <em>Primates</em>, <em>60</em>, 163–165.
+</div>
 <div id="ref-Sosa2020" class="csl-entry">
 Sosa, S., Puga-Gonzalez, I., Hu, F., Pansanel, J., Xie, X., &amp; Sueur, C. (2020). A multilevel statistical toolkit to study animal social networks: The animal network toolkit software (<span>ANTs</span>) <span>R</span> package. <em>Sci. Rep.</em>, <em>10</em>(1), 12507.
+</div>
+<div id="ref-Sueur2011" class="csl-entry">
+Sueur, C., Jacobs, A., Amblard, F., Petit, O., &amp; King, A. J. (2011). How can social network analysis improve the study of primate behavior? <em>American Journal of Primatology</em>, <em>73</em>(8), 703–719.
 </div>
 <div id="ref-Whitehead2008" class="csl-entry">
 Whitehead, H. (2008). <em>Analyzing animal societies</em>. The University of Chicago Press.

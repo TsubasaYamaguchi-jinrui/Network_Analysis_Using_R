@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-01-19" />
+<meta name="date" content="2023-01-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -603,8 +603,8 @@ bi
 <span id="cb81-6"><a href="Chapter3-2.html#cb81-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">member =</span> <span class="fu">as.factor</span>(cluster_groom<span class="sc">$</span>membership)) <span class="sc">%&gt;%</span> </span>
 <span id="cb81-7"><a href="Chapter3-2.html#cb81-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggraph</span>(<span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>)<span class="sc">+</span></span>
 <span id="cb81-8"><a href="Chapter3-2.html#cb81-8" aria-hidden="true" tabindex="-1"></a>  <span class="do">## クラスターごとに囲う</span></span>
-<span id="cb81-9"><a href="Chapter3-2.html#cb81-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_mark_hull</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y,<span class="at">fill =</span> member),</span>
-<span id="cb81-10"><a href="Chapter3-2.html#cb81-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">concavity =</span> <span class="dv">10</span>)<span class="sc">+</span></span>
+<span id="cb81-9"><a href="Chapter3-2.html#cb81-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#geom_mark_hull(aes(x=x,y=y,fill = member),</span></span>
+<span id="cb81-10"><a href="Chapter3-2.html#cb81-10" aria-hidden="true" tabindex="-1"></a>   <span class="co">#              concavity = 10)+</span></span>
 <span id="cb81-11"><a href="Chapter3-2.html#cb81-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> member),<span class="at">shape =</span> <span class="dv">16</span>, <span class="at">size =</span> <span class="dv">12</span>)<span class="sc">+</span></span>
 <span id="cb81-12"><a href="Chapter3-2.html#cb81-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">start_cap =</span> <span class="fu">circle</span>(<span class="fl">0.5</span>,<span class="st">&quot;cm&quot;</span>),</span>
 <span id="cb81-13"><a href="Chapter3-2.html#cb81-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">end_cap =</span> <span class="fu">circle</span>(<span class="fl">0.5</span>,<span class="st">&quot;cm&quot;</span>),</span>
@@ -900,8 +900,8 @@ modularity
 <span id="cb87-6"><a href="Chapter3-2.html#cb87-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">member =</span> <span class="fu">as.factor</span>(membership_3<span class="sc">$</span>block)) <span class="sc">%&gt;%</span> </span>
 <span id="cb87-7"><a href="Chapter3-2.html#cb87-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggraph</span>(<span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>)<span class="sc">+</span></span>
 <span id="cb87-8"><a href="Chapter3-2.html#cb87-8" aria-hidden="true" tabindex="-1"></a>  <span class="do">## ブロックごとに囲む</span></span>
-<span id="cb87-9"><a href="Chapter3-2.html#cb87-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_mark_hull</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y,<span class="at">fill =</span> member),</span>
-<span id="cb87-10"><a href="Chapter3-2.html#cb87-10" aria-hidden="true" tabindex="-1"></a>                 <span class="at">concavity =</span> <span class="dv">10</span>)<span class="sc">+</span></span>
+<span id="cb87-9"><a href="Chapter3-2.html#cb87-9" aria-hidden="true" tabindex="-1"></a>  <span class="co">#geom_mark_hull(aes(x=x,y=y,fill = member),</span></span>
+<span id="cb87-10"><a href="Chapter3-2.html#cb87-10" aria-hidden="true" tabindex="-1"></a>   <span class="co">#              concavity = 10)+</span></span>
 <span id="cb87-11"><a href="Chapter3-2.html#cb87-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> member),<span class="at">shape =</span> <span class="dv">16</span>, <span class="at">size =</span> <span class="dv">12</span>)<span class="sc">+</span></span>
 <span id="cb87-12"><a href="Chapter3-2.html#cb87-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="at">start_cap =</span> <span class="fu">circle</span>(<span class="fl">0.5</span>,<span class="st">&quot;cm&quot;</span>),</span>
 <span id="cb87-13"><a href="Chapter3-2.html#cb87-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">end_cap =</span> <span class="fu">circle</span>(<span class="fl">0.5</span>,<span class="st">&quot;cm&quot;</span>),</span>
