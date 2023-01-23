@@ -87,9 +87,9 @@ journal %>%
 - 鈴木努(2017) ネットワーク分析 第2版 [@Suzuki2017]  
 - Whitehead(2008) Analyzing Animal Societies [@Whitehead2008]  
 - Croft et al. (2008) Exploring Animal Social Network [@Croft2019]  
+- Borgatti et al.(2022) Analyzing Social Networks Using R. [@Borgatti2022]  
 - Farine & Whitehead (2015) Constructing, conducting and interpreting animal social network analysis [@Farine2015]  
 - Farine (2017) A guide to null models for animal social network analysis [@Farine2017]  
 - Sosa et al. (2020) A multilevel statistical toolkit to study animal social networks: the Animal Network Toolkit Software (ANTs) R package. [@Sosa2020]  
-- Borgatti et al.(2022) Analyzing Social Networks Using R. [@Borgatti2022]  
 - Network Analysis in R ([Dai Shizukaのホームページ](https://dshizuka.github.io/networkanalysis/tutorials.html))  
 
