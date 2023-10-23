@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>1.2 社会ネットワークの基礎 | Network Analysis Using R</title>
   <meta name="description" content="1.2 社会ネットワークの基礎 | Network Analysis Using R" />
-  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content="1.2 社会ネットワークの基礎 | Network Analysis Using R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-01-23" />
+<meta name="date" content="2023-10-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -129,6 +129,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -285,24 +289,24 @@ div.csl-indent {
 <h3><span class="header-section-number">1.2.2</span> 隣接行列(マトリックス)<a href="Chapter1-2.html#隣接行列マトリックス" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>ネットワーク分析では、データを<strong>隣接行列</strong>(adjacency matrix)の形で表現することが多い。隣接行列はグラフのノード間の関係が記された行列で、ノードの数が<span class="math inline">\(n\)</span>個ならば、<span class="math inline">\(n \times n\)</span>の正方行列になる。Rの分析でも、基本的に隣接行列を用いることが多い。</p>
 <p>Rでは、<code>matrix()</code>関数によって以下のように作成できる。</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="Chapter1-2.html#cb2-1" aria-hidden="true" tabindex="-1"></a>mat_example <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="do">## 数値のベクトル</span></span>
-<span id="cb2-2"><a href="Chapter1-2.html#cb2-2" aria-hidden="true" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">2</span>,</span>
-<span id="cb2-3"><a href="Chapter1-2.html#cb2-3" aria-hidden="true" tabindex="-1"></a>                       <span class="fl">1.5</span>,<span class="dv">0</span>,<span class="dv">2</span>,<span class="dv">0</span>,</span>
-<span id="cb2-4"><a href="Chapter1-2.html#cb2-4" aria-hidden="true" tabindex="-1"></a>                       <span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,</span>
-<span id="cb2-5"><a href="Chapter1-2.html#cb2-5" aria-hidden="true" tabindex="-1"></a>                       <span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">0</span>),</span>
-<span id="cb2-6"><a href="Chapter1-2.html#cb2-6" aria-hidden="true" tabindex="-1"></a>                       <span class="do">## 行数と列数</span></span>
-<span id="cb2-7"><a href="Chapter1-2.html#cb2-7" aria-hidden="true" tabindex="-1"></a>                       <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">nrow =</span> <span class="dv">4</span>,</span>
-<span id="cb2-8"><a href="Chapter1-2.html#cb2-8" aria-hidden="true" tabindex="-1"></a>                       <span class="do">## TRUEなら、1行目から順に数値を入れていく</span></span>
-<span id="cb2-9"><a href="Chapter1-2.html#cb2-9" aria-hidden="true" tabindex="-1"></a>                       <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb2-10"><a href="Chapter1-2.html#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-11"><a href="Chapter1-2.html#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 列名と行名を入れられる</span></span>
-<span id="cb2-12"><a href="Chapter1-2.html#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(mat_example) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;D&quot;</span>)</span>
-<span id="cb2-13"><a href="Chapter1-2.html#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(mat_example) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;D&quot;</span>)</span>
-<span id="cb2-14"><a href="Chapter1-2.html#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="Chapter1-2.html#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="do">## 完成したのがこちら</span></span>
-<span id="cb2-16"><a href="Chapter1-2.html#cb2-16" aria-hidden="true" tabindex="-1"></a>mat_example <span class="sc">%&gt;%</span> </span>
-<span id="cb2-17"><a href="Chapter1-2.html#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">align =</span> <span class="st">&quot;c&quot;</span>,<span class="at">caption =</span> <span class="st">&quot;作成した隣接行列&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb2-18"><a href="Chapter1-2.html#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">font_size =</span> <span class="dv">10</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="Chapter1-2.html#cb2-1" tabindex="-1"></a>mat_example <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="do">## 数値のベクトル</span></span>
+<span id="cb2-2"><a href="Chapter1-2.html#cb2-2" tabindex="-1"></a>                     <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">2</span>,</span>
+<span id="cb2-3"><a href="Chapter1-2.html#cb2-3" tabindex="-1"></a>                       <span class="fl">1.5</span>,<span class="dv">0</span>,<span class="dv">2</span>,<span class="dv">0</span>,</span>
+<span id="cb2-4"><a href="Chapter1-2.html#cb2-4" tabindex="-1"></a>                       <span class="dv">3</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,</span>
+<span id="cb2-5"><a href="Chapter1-2.html#cb2-5" tabindex="-1"></a>                       <span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">0</span>),</span>
+<span id="cb2-6"><a href="Chapter1-2.html#cb2-6" tabindex="-1"></a>                       <span class="do">## 行数と列数</span></span>
+<span id="cb2-7"><a href="Chapter1-2.html#cb2-7" tabindex="-1"></a>                       <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">nrow =</span> <span class="dv">4</span>,</span>
+<span id="cb2-8"><a href="Chapter1-2.html#cb2-8" tabindex="-1"></a>                       <span class="do">## TRUEなら、1行目から順に数値を入れていく</span></span>
+<span id="cb2-9"><a href="Chapter1-2.html#cb2-9" tabindex="-1"></a>                       <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb2-10"><a href="Chapter1-2.html#cb2-10" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="Chapter1-2.html#cb2-11" tabindex="-1"></a><span class="do">## 列名と行名を入れられる</span></span>
+<span id="cb2-12"><a href="Chapter1-2.html#cb2-12" tabindex="-1"></a><span class="fu">colnames</span>(mat_example) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;D&quot;</span>)</span>
+<span id="cb2-13"><a href="Chapter1-2.html#cb2-13" tabindex="-1"></a><span class="fu">rownames</span>(mat_example) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;A&quot;</span>,<span class="st">&quot;B&quot;</span>,<span class="st">&quot;C&quot;</span>,<span class="st">&quot;D&quot;</span>)</span>
+<span id="cb2-14"><a href="Chapter1-2.html#cb2-14" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="Chapter1-2.html#cb2-15" tabindex="-1"></a><span class="do">## 完成したのがこちら</span></span>
+<span id="cb2-16"><a href="Chapter1-2.html#cb2-16" tabindex="-1"></a>mat_example <span class="sc">%&gt;%</span> </span>
+<span id="cb2-17"><a href="Chapter1-2.html#cb2-17" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">align =</span> <span class="st">&quot;c&quot;</span>,<span class="at">caption =</span> <span class="st">&quot;作成した隣接行列&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb2-18"><a href="Chapter1-2.html#cb2-18" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">font_size =</span> <span class="dv">10</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <table class="table" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
 <caption style="font-size: initial !important;">
 <span id="tab:unnamed-chunk-3">表1.1: </span>作成した隣接行列
@@ -398,15 +402,15 @@ D
 </table>
 <p><br/></p>
 <p>Excel等で作成したcsvファイルをデータフレームとして読み込み、それをマトリックスに変換する方法もある。</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="Chapter1-2.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 1列目を行名に指定</span></span>
-<span id="cb3-2"><a href="Chapter1-2.html#cb3-2" aria-hidden="true" tabindex="-1"></a>mat_example2 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/example.csv&quot;</span>, <span class="at">row.names =</span> <span class="dv">1</span>) </span>
-<span id="cb3-3"><a href="Chapter1-2.html#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-4"><a href="Chapter1-2.html#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="do">## マトリックスに変換  </span></span>
-<span id="cb3-5"><a href="Chapter1-2.html#cb3-5" aria-hidden="true" tabindex="-1"></a>mat_example2 <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(mat_example2)</span>
-<span id="cb3-6"><a href="Chapter1-2.html#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="Chapter1-2.html#cb3-7" aria-hidden="true" tabindex="-1"></a>mat_example2 <span class="sc">%&gt;%</span> </span>
-<span id="cb3-8"><a href="Chapter1-2.html#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">align =</span> <span class="st">&quot;c&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb3-9"><a href="Chapter1-2.html#cb3-9" aria-hidden="true" tabindex="-1"></a>   <span class="fu">kable_styling</span>(<span class="at">font_size =</span> <span class="dv">10</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="Chapter1-2.html#cb3-1" tabindex="-1"></a><span class="do">## 1列目を行名に指定</span></span>
+<span id="cb3-2"><a href="Chapter1-2.html#cb3-2" tabindex="-1"></a>mat_example2 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/example.csv&quot;</span>, <span class="at">row.names =</span> <span class="dv">1</span>) </span>
+<span id="cb3-3"><a href="Chapter1-2.html#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="Chapter1-2.html#cb3-4" tabindex="-1"></a><span class="do">## マトリックスに変換  </span></span>
+<span id="cb3-5"><a href="Chapter1-2.html#cb3-5" tabindex="-1"></a>mat_example2 <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(mat_example2)</span>
+<span id="cb3-6"><a href="Chapter1-2.html#cb3-6" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="Chapter1-2.html#cb3-7" tabindex="-1"></a>mat_example2 <span class="sc">%&gt;%</span> </span>
+<span id="cb3-8"><a href="Chapter1-2.html#cb3-8" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">digits =</span> <span class="dv">2</span>, <span class="at">align =</span> <span class="st">&quot;c&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-9"><a href="Chapter1-2.html#cb3-9" tabindex="-1"></a>   <span class="fu">kable_styling</span>(<span class="at">font_size =</span> <span class="dv">10</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <table class="table" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -686,10 +690,10 @@ H
 <div id="tbl_graphクラスへの変換" class="section level4 hasAnchor" number="1.2.3.1">
 <h4><span class="header-section-number">1.2.3.1</span> <code>tbl_graph</code>クラスへの変換<a href="Chapter1-2.html#tbl_graphクラスへの変換" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p><code>ggraph</code>でグラフを描くには、データを<code>tbl_graph</code>クラスに変換する必要がある。隣接行列を<code>as_tbl_graph()</code>で変換してあげればよい。すると、ノードの名前<code>name</code>と辺リスト(辺の始点、終点、重みが書いてあるリスト)が入ったオブジェクトを返してくれる。</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="Chapter1-2.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 有向グラフであれば directed = TRUE、無向グラフならFALSE</span></span>
-<span id="cb4-2"><a href="Chapter1-2.html#cb4-2" aria-hidden="true" tabindex="-1"></a>graph_mat_example2 <span class="ot">&lt;-</span> <span class="fu">as_tbl_graph</span>(mat_example2, <span class="at">directed =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb4-3"><a href="Chapter1-2.html#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="Chapter1-2.html#cb4-4" aria-hidden="true" tabindex="-1"></a>graph_mat_example2 </span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="Chapter1-2.html#cb4-1" tabindex="-1"></a><span class="do">## 有向グラフであれば directed = TRUE、無向グラフならFALSE</span></span>
+<span id="cb4-2"><a href="Chapter1-2.html#cb4-2" tabindex="-1"></a>graph_mat_example2 <span class="ot">&lt;-</span> <span class="fu">as_tbl_graph</span>(mat_example2, <span class="at">directed =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-3"><a href="Chapter1-2.html#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="Chapter1-2.html#cb4-4" tabindex="-1"></a>graph_mat_example2 </span></code></pre></div>
 <pre><code>## # A tbl_graph: 8 nodes and 56 edges
 ## #
 ## # A directed simple graph with 1 component
@@ -713,10 +717,10 @@ H
 ## 3     1     4  0.930
 ## # … with 53 more rows</code></pre>
 <p>なお、各ノードの名前以外の情報もグラフに反映させたい場合は、以下のように情報を追加できる。ここでは、各個体の年齢の情報を追加した。</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="Chapter1-2.html#cb6-1" aria-hidden="true" tabindex="-1"></a>graph_mat_example2 <span class="sc">%&gt;%</span> </span>
-<span id="cb6-2"><a href="Chapter1-2.html#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="fu">c</span>(<span class="dv">12</span>,<span class="dv">10</span>,<span class="dv">15</span>,<span class="dv">6</span>,<span class="dv">20</span>,<span class="dv">13</span>,<span class="dv">8</span>,<span class="dv">7</span>)) <span class="ot">-&gt;</span> graph_mat_example2</span>
-<span id="cb6-3"><a href="Chapter1-2.html#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="Chapter1-2.html#cb6-4" aria-hidden="true" tabindex="-1"></a>graph_mat_example2</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="Chapter1-2.html#cb6-1" tabindex="-1"></a>graph_mat_example2 <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="Chapter1-2.html#cb6-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="fu">c</span>(<span class="dv">12</span>,<span class="dv">10</span>,<span class="dv">15</span>,<span class="dv">6</span>,<span class="dv">20</span>,<span class="dv">13</span>,<span class="dv">8</span>,<span class="dv">7</span>)) <span class="ot">-&gt;</span> graph_mat_example2</span>
+<span id="cb6-3"><a href="Chapter1-2.html#cb6-3" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="Chapter1-2.html#cb6-4" tabindex="-1"></a>graph_mat_example2</span></code></pre></div>
 <pre><code>## # A tbl_graph: 8 nodes and 56 edges
 ## #
 ## # A directed simple graph with 1 component
@@ -740,16 +744,16 @@ H
 ## 3     1     4  0.930
 ## # … with 53 more rows</code></pre>
 <p>グラフに使用するデータを絞り込むなどの作業をする場合は、一度隣接行列を辺リストのデータフレームに変換してから(<code>mat.to.edgl()</code>で可能)データフレームを加工し、その後に<code>as_tbl_graph()</code>を用いるとよい。以下では、重みが0.7以上の辺のみを抽出している。</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="Chapter1-2.html#cb8-1" aria-hidden="true" tabindex="-1"></a>mat_example2 <span class="sc">%&gt;%</span></span>
-<span id="cb8-2"><a href="Chapter1-2.html#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 辺リストのデータフレームに変換</span></span>
-<span id="cb8-3"><a href="Chapter1-2.html#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mat.to.edgl</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb8-4"><a href="Chapter1-2.html#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="do">## weightが0.5以上のものに限定する</span></span>
-<span id="cb8-5"><a href="Chapter1-2.html#cb8-5" aria-hidden="true" tabindex="-1"></a>　<span class="fu">filter</span>(weight <span class="sc">&gt;=</span> <span class="fl">0.5</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-6"><a href="Chapter1-2.html#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="do">## tbl_graphクラスに変換</span></span>
-<span id="cb8-7"><a href="Chapter1-2.html#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tbl_graph</span>(<span class="at">directed =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb8-8"><a href="Chapter1-2.html#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="fu">c</span>(<span class="dv">12</span>,<span class="dv">10</span>,<span class="dv">15</span>,<span class="dv">6</span>,<span class="dv">20</span>,<span class="dv">13</span>,<span class="dv">8</span>,<span class="dv">7</span>)) <span class="ot">-&gt;</span> graph_mat_example2_b</span>
-<span id="cb8-9"><a href="Chapter1-2.html#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-10"><a href="Chapter1-2.html#cb8-10" aria-hidden="true" tabindex="-1"></a>graph_mat_example2</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="Chapter1-2.html#cb8-1" tabindex="-1"></a>mat_example2 <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="Chapter1-2.html#cb8-2" tabindex="-1"></a>  <span class="do">## 辺リストのデータフレームに変換</span></span>
+<span id="cb8-3"><a href="Chapter1-2.html#cb8-3" tabindex="-1"></a>  <span class="fu">mat.to.edgl</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb8-4"><a href="Chapter1-2.html#cb8-4" tabindex="-1"></a>  <span class="do">## weightが0.5以上のものに限定する</span></span>
+<span id="cb8-5"><a href="Chapter1-2.html#cb8-5" tabindex="-1"></a>　<span class="fu">filter</span>(weight <span class="sc">&gt;=</span> <span class="fl">0.5</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-6"><a href="Chapter1-2.html#cb8-6" tabindex="-1"></a>  <span class="do">## tbl_graphクラスに変換</span></span>
+<span id="cb8-7"><a href="Chapter1-2.html#cb8-7" tabindex="-1"></a>  <span class="fu">as_tbl_graph</span>(<span class="at">directed =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-8"><a href="Chapter1-2.html#cb8-8" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="fu">c</span>(<span class="dv">12</span>,<span class="dv">10</span>,<span class="dv">15</span>,<span class="dv">6</span>,<span class="dv">20</span>,<span class="dv">13</span>,<span class="dv">8</span>,<span class="dv">7</span>)) <span class="ot">-&gt;</span> graph_mat_example2_b</span>
+<span id="cb8-9"><a href="Chapter1-2.html#cb8-9" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="Chapter1-2.html#cb8-10" tabindex="-1"></a>graph_mat_example2</span></code></pre></div>
 <pre><code>## # A tbl_graph: 8 nodes and 56 edges
 ## #
 ## # A directed simple graph with 1 component
@@ -789,31 +793,31 @@ H
 <p>図<a href="Chapter1-2.html#fig:fig-ggraph">1.2</a>は実際に以下のコードで描いた例である。<br />
 <code>layout = "nicely"</code>とすると、グラフが見やすいように配置してくれる。関係のある(= 辺がある)個体同士はより近くに配置される傾向があるため、絶対とはいえないが、結果的に多くの個体と繋がっている個体が中心部に来る傾向がある。</p>
 <p>何らかの指標を出さない限りグラフのみから何かを結論付けることはできないが、パッと見て関係構造の全体図を掴んだり、仮説を立てたりしようとする際にはグラフを見ることが非常に有用である。</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="Chapter1-2.html#cb10-1" aria-hidden="true" tabindex="-1"></a>graph_mat_example2_b <span class="sc">%&gt;%</span> </span>
-<span id="cb10-2"><a href="Chapter1-2.html#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># layoutの指定</span></span>
-<span id="cb10-3"><a href="Chapter1-2.html#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggraph</span>(<span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>)<span class="sc">+</span></span>
-<span id="cb10-4"><a href="Chapter1-2.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 曲線のエッジ、weightを太さに</span></span>
-<span id="cb10-5"><a href="Chapter1-2.html#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_fan</span>(<span class="fu">aes</span>(<span class="at">width =</span> weight),</span>
-<span id="cb10-6"><a href="Chapter1-2.html#cb10-6" aria-hidden="true" tabindex="-1"></a>                <span class="do">## 矢印について指定</span></span>
-<span id="cb10-7"><a href="Chapter1-2.html#cb10-7" aria-hidden="true" tabindex="-1"></a>                 <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">angle =</span> <span class="dv">15</span>, <span class="at">type =</span> <span class="st">&quot;closed&quot;</span>,<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.18</span>, <span class="st">&quot;inches&quot;</span>)),</span>
-<span id="cb10-8"><a href="Chapter1-2.html#cb10-8" aria-hidden="true" tabindex="-1"></a>                <span class="do">## 矢印の終点のノードからの距離</span></span>
-<span id="cb10-9"><a href="Chapter1-2.html#cb10-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">end_cap =</span> <span class="fu">circle</span>(<span class="fl">2.5</span>,<span class="st">&quot;mm&quot;</span>),</span>
-<span id="cb10-10"><a href="Chapter1-2.html#cb10-10" aria-hidden="true" tabindex="-1"></a>                <span class="do">## 矢印の始点のノードからの距離</span></span>
-<span id="cb10-11"><a href="Chapter1-2.html#cb10-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">start_cap =</span> <span class="fu">circle</span>(<span class="fl">2.5</span>,<span class="st">&quot;mm&quot;</span>),</span>
-<span id="cb10-12"><a href="Chapter1-2.html#cb10-12" aria-hidden="true" tabindex="-1"></a>                <span class="do">## 透明度(alpha)と色(color)指定</span></span>
-<span id="cb10-13"><a href="Chapter1-2.html#cb10-13" aria-hidden="true" tabindex="-1"></a>                 <span class="at">alpha =</span><span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">&quot;grey60&quot;</span>)<span class="sc">+</span></span>
-<span id="cb10-14"><a href="Chapter1-2.html#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># エッジの太さの範囲を決める  </span></span>
-<span id="cb10-15"><a href="Chapter1-2.html#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_edge_width</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.3</span>))<span class="sc">+</span></span>
-<span id="cb10-16"><a href="Chapter1-2.html#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 四角のノード。大きさは年齢によって変化するとする。  </span></span>
-<span id="cb10-17"><a href="Chapter1-2.html#cb10-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> age), <span class="at">shape =</span> <span class="dv">18</span>)<span class="sc">+</span></span>
-<span id="cb10-18"><a href="Chapter1-2.html#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="do">## ノードのラベルは個体名  </span></span>
-<span id="cb10-19"><a href="Chapter1-2.html#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">6</span>))<span class="sc">+</span></span>
-<span id="cb10-20"><a href="Chapter1-2.html#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), </span>
-<span id="cb10-21"><a href="Chapter1-2.html#cb10-21" aria-hidden="true" tabindex="-1"></a>                 <span class="do">## ノードと重ならないようにする </span></span>
-<span id="cb10-22"><a href="Chapter1-2.html#cb10-22" aria-hidden="true" tabindex="-1"></a>                 <span class="at">repel=</span><span class="cn">TRUE</span>, <span class="at">size =</span><span class="dv">6</span>)<span class="sc">+</span></span>
-<span id="cb10-23"><a href="Chapter1-2.html#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_graph</span>()<span class="sc">+</span></span>
-<span id="cb10-24"><a href="Chapter1-2.html#cb10-24" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 縦横比</span></span>
-<span id="cb10-25"><a href="Chapter1-2.html#cb10-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="fl">0.7</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="Chapter1-2.html#cb10-1" tabindex="-1"></a>graph_mat_example2_b <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="Chapter1-2.html#cb10-2" tabindex="-1"></a>  <span class="co"># layoutの指定</span></span>
+<span id="cb10-3"><a href="Chapter1-2.html#cb10-3" tabindex="-1"></a>  <span class="fu">ggraph</span>(<span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>)<span class="sc">+</span></span>
+<span id="cb10-4"><a href="Chapter1-2.html#cb10-4" tabindex="-1"></a>  <span class="co"># 曲線のエッジ、weightを太さに</span></span>
+<span id="cb10-5"><a href="Chapter1-2.html#cb10-5" tabindex="-1"></a>  <span class="fu">geom_edge_fan</span>(<span class="fu">aes</span>(<span class="at">width =</span> weight),</span>
+<span id="cb10-6"><a href="Chapter1-2.html#cb10-6" tabindex="-1"></a>                <span class="do">## 矢印について指定</span></span>
+<span id="cb10-7"><a href="Chapter1-2.html#cb10-7" tabindex="-1"></a>                 <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">angle =</span> <span class="dv">15</span>, <span class="at">type =</span> <span class="st">&quot;closed&quot;</span>,<span class="at">length =</span> <span class="fu">unit</span>(<span class="fl">0.18</span>, <span class="st">&quot;inches&quot;</span>)),</span>
+<span id="cb10-8"><a href="Chapter1-2.html#cb10-8" tabindex="-1"></a>                <span class="do">## 矢印の終点のノードからの距離</span></span>
+<span id="cb10-9"><a href="Chapter1-2.html#cb10-9" tabindex="-1"></a>                <span class="at">end_cap =</span> <span class="fu">circle</span>(<span class="fl">2.5</span>,<span class="st">&quot;mm&quot;</span>),</span>
+<span id="cb10-10"><a href="Chapter1-2.html#cb10-10" tabindex="-1"></a>                <span class="do">## 矢印の始点のノードからの距離</span></span>
+<span id="cb10-11"><a href="Chapter1-2.html#cb10-11" tabindex="-1"></a>                <span class="at">start_cap =</span> <span class="fu">circle</span>(<span class="fl">2.5</span>,<span class="st">&quot;mm&quot;</span>),</span>
+<span id="cb10-12"><a href="Chapter1-2.html#cb10-12" tabindex="-1"></a>                <span class="do">## 透明度(alpha)と色(color)指定</span></span>
+<span id="cb10-13"><a href="Chapter1-2.html#cb10-13" tabindex="-1"></a>                 <span class="at">alpha =</span><span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">&quot;grey60&quot;</span>)<span class="sc">+</span></span>
+<span id="cb10-14"><a href="Chapter1-2.html#cb10-14" tabindex="-1"></a>  <span class="co"># エッジの太さの範囲を決める  </span></span>
+<span id="cb10-15"><a href="Chapter1-2.html#cb10-15" tabindex="-1"></a>  <span class="fu">scale_edge_width</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.3</span>))<span class="sc">+</span></span>
+<span id="cb10-16"><a href="Chapter1-2.html#cb10-16" tabindex="-1"></a>  <span class="do">## 四角のノード。大きさは年齢によって変化するとする。  </span></span>
+<span id="cb10-17"><a href="Chapter1-2.html#cb10-17" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> age), <span class="at">shape =</span> <span class="dv">18</span>)<span class="sc">+</span></span>
+<span id="cb10-18"><a href="Chapter1-2.html#cb10-18" tabindex="-1"></a>  <span class="do">## ノードのラベルは個体名  </span></span>
+<span id="cb10-19"><a href="Chapter1-2.html#cb10-19" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">6</span>))<span class="sc">+</span></span>
+<span id="cb10-20"><a href="Chapter1-2.html#cb10-20" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), </span>
+<span id="cb10-21"><a href="Chapter1-2.html#cb10-21" tabindex="-1"></a>                 <span class="do">## ノードと重ならないようにする </span></span>
+<span id="cb10-22"><a href="Chapter1-2.html#cb10-22" tabindex="-1"></a>                 <span class="at">repel=</span><span class="cn">TRUE</span>, <span class="at">size =</span><span class="dv">6</span>)<span class="sc">+</span></span>
+<span id="cb10-23"><a href="Chapter1-2.html#cb10-23" tabindex="-1"></a>  <span class="fu">theme_graph</span>()<span class="sc">+</span></span>
+<span id="cb10-24"><a href="Chapter1-2.html#cb10-24" tabindex="-1"></a>  <span class="do">## 縦横比</span></span>
+<span id="cb10-25"><a href="Chapter1-2.html#cb10-25" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="fl">0.7</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-ggraph"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/fig-ggraph-1.png" alt="ggraphで描いたグラフの例" width="576" />
 <p class="caption">

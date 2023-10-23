@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Network Analysis Using R</title>
   <meta name="description" content="Network Analysis Using R" />
-  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Network Analysis Using R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-01-23" />
+<meta name="date" content="2023-10-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -129,6 +129,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -267,12 +271,12 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">Network Analysis Using R</h1>
 <p class="author"><em>Tsubasa Yamaguchi</em></p>
-<p class="date"><em>2023-01-23</em></p>
+<p class="date"><em>2023-10-23</em></p>
 </div>
 <div id="本稿の目的" class="section level1 unnumbered hasAnchor">
 <h1>本稿の目的<a href="index.html#本稿の目的" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p>本稿は<strong>社会ネットワーク分析（SNA: Social Network Analysis）</strong>の概要をまとめたものである。また、Rでこうした分析を実行する方法についても解説している。新たに個人的に勉強した内容があれば、随時追加していく。</p>
-<p>近年、動物行動学や霊長類ではSNAの手法を用いた研究が増加しており<span class="citation">(<a href="#ref-Sueur2011" role="doc-biblioref">Sueur, Jacobs, et al., 2011</a>)</span>、Primates誌でも2019年に特集号が組まれた<span class="citation">(<a href="#ref-Puga2019" role="doc-biblioref">Puga-Gonzalez et al., 2019</a>)</span>。図<a href="index.html#fig:fig-journal">0.1</a>は、動物行動学や霊長類学の分野で著名な学術雑誌において、“social network analysis”という単語を含む論文の割合がどのように変化してきたかを、Google scholarを用いて調べた結果を示したものである(2023年1月22日時点)。私たちが普段読むことが多いこれらの雑誌においても、2000年代後半以降社会ネットワーク分析を用いた論文が増加していることが示唆される。</p>
+<p>近年、動物行動学や霊長類ではSNAの手法を用いた研究が増加しており<span class="citation">(<a href="#ref-Sueur2011">Sueur, Jacobs, et al., 2011</a>)</span>、Primates誌でも2019年に特集号が組まれた<span class="citation">(<a href="#ref-Puga2019">Puga-Gonzalez et al., 2019</a>)</span>。図<a href="index.html#fig:fig-journal">0.1</a>は、動物行動学や霊長類学の分野で著名な学術雑誌において、“social network analysis”という単語を含む論文の割合がどのように変化してきたかを、Google scholarを用いて調べた結果を示したものである(2023年1月22日時点)。私たちが普段読むことが多いこれらの雑誌においても、2000年代後半以降社会ネットワーク分析を用いた論文が増加していることが示唆される。</p>
 <p>こうした論文を適切に理解するためにも、SNAについてある程度理解することは必要だろう。また、自身のデータを解析する手法を増やすことで、従来の分析方法だけでは言えなかったことを説得力のある形で示せるようになるかもしれない。</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-journal"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/fig-journal-1.png" alt="socail network analysisという単語を含む論文の割合" width="1728" />
@@ -294,19 +298,19 @@ div.csl-indent {
 <p>参考にしたのは主に以下の文献である。<br />
 なお、本稿の作成に使用したファイルとRのコードは筆者の<a href="https://github.com/TsubasaYamaguchi-jinrui/Network_Analysis_Using_R">Github</a>ですべて閲覧できる。</p>
 <ul>
-<li>鈴木努(2017) ネットワーク分析 第2版 <span class="citation">(<a href="#ref-Suzuki2017" role="doc-biblioref">鈴木, 2017</a>)</span><br />
+<li>鈴木努(2017) ネットワーク分析 第2版 <span class="citation">(<a href="#ref-Suzuki2017">鈴木, 2017</a>)</span><br />
 </li>
-<li>Whitehead(2008) Analyzing Animal Societies <span class="citation">(<a href="#ref-Whitehead2008" role="doc-biblioref">Whitehead, 2008</a>)</span><br />
+<li>Whitehead(2008) Analyzing Animal Societies <span class="citation">(<a href="#ref-Whitehead2008">Whitehead, 2008</a>)</span><br />
 </li>
-<li>Croft et al. (2008) Exploring Animal Social Network <span class="citation">(<a href="#ref-Croft2019" role="doc-biblioref">D. Croft et al., 2008</a>)</span><br />
+<li>Croft et al. (2008) Exploring Animal Social Network <span class="citation">(<a href="#ref-Croft2019">D. Croft et al., 2008</a>)</span><br />
 </li>
-<li>Borgatti et al.(2022) Analyzing Social Networks Using R. <span class="citation">(<a href="#ref-Borgatti2022" role="doc-biblioref">Borgatti et al., 2022</a>)</span><br />
+<li>Borgatti et al.(2022) Analyzing Social Networks Using R. <span class="citation">(<a href="#ref-Borgatti2022">Borgatti et al., 2022</a>)</span><br />
 </li>
-<li>Farine &amp; Whitehead (2015) Constructing, conducting and interpreting animal social network analysis <span class="citation">(<a href="#ref-Farine2015" role="doc-biblioref">Farine &amp; Whitehead, 2015</a>)</span><br />
+<li>Farine &amp; Whitehead (2015) Constructing, conducting and interpreting animal social network analysis <span class="citation">(<a href="#ref-Farine2015">Farine &amp; Whitehead, 2015</a>)</span><br />
 </li>
-<li>Farine (2017) A guide to null models for animal social network analysis <span class="citation">(<a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>)</span><br />
+<li>Farine (2017) A guide to null models for animal social network analysis <span class="citation">(<a href="#ref-Farine2017">Farine, 2017</a>)</span><br />
 </li>
-<li>Sosa et al. (2020) A multilevel statistical toolkit to study animal social networks: the Animal Network Toolkit Software (ANTs) R package. <span class="citation">(<a href="#ref-Sosa2020" role="doc-biblioref">Sosa et al., 2020</a>)</span><br />
+<li>Sosa et al. (2020) A multilevel statistical toolkit to study animal social networks: the Animal Network Toolkit Software (ANTs) R package. <span class="citation">(<a href="#ref-Sosa2020">Sosa et al., 2020</a>)</span><br />
 </li>
 <li>Network Analysis in R (<a href="https://dshizuka.github.io/networkanalysis/tutorials.html">Dai Shizukaのホームページ</a>)</li>
 </ul>

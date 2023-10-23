@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2.2 Group by individual | Network Analysis Using R</title>
   <meta name="description" content="2.2 Group by individual | Network Analysis Using R" />
-  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2.2 Group by individual | Network Analysis Using R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-01-23" />
+<meta name="date" content="2023-10-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -129,6 +129,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -268,14 +272,14 @@ div.csl-indent {
 <h2><span class="header-section-number">2.2</span> Group by individual<a href="Chapter2-2.html#s2-2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>個体間のassociationを表したデータとしては、以下のようにある時点・場所において確認された個体を各行に0/1で記録した”group by individual”と呼ばれる形式のものがよく用いられる。</p>
 <p>例えば、以下は金華山島<span class="math inline">\(B_1\)</span>群で2021年交尾期の各観察日(<code>date</code>)に9歳以上のメスが観察されたか否かを示したものである。</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="Chapter2-2.html#cb18-1" aria-hidden="true" tabindex="-1"></a>presence <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/presence_demo.csv&quot;</span>)</span>
-<span id="cb18-2"><a href="Chapter2-2.html#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-3"><a href="Chapter2-2.html#cb18-3" aria-hidden="true" tabindex="-1"></a>presence <span class="sc">%&gt;%</span> </span>
-<span id="cb18-4"><a href="Chapter2-2.html#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">datatable</span>(<span class="at">rownames =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="Chapter2-2.html#cb18-1" tabindex="-1"></a>presence <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/presence_demo.csv&quot;</span>)</span>
+<span id="cb18-2"><a href="Chapter2-2.html#cb18-2" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="Chapter2-2.html#cb18-3" tabindex="-1"></a>presence <span class="sc">%&gt;%</span> </span>
+<span id="cb18-4"><a href="Chapter2-2.html#cb18-4" tabindex="-1"></a>  <span class="fu">datatable</span>(<span class="at">rownames =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-e77f58d8238f9833df02" style="width:100%;height:auto;"></div>
 <script type="application/json" data-for="htmlwidget-e77f58d8238f9833df02">{"x":{"filter":"none","vertical":false,"data":[["2021/9/20","2021/9/21","2021/9/22","2021/9/23","2021/9/24","2021/9/25","2021/9/26","2021/9/27","2021/9/28","2021/9/29","2021/9/30","2021/10/2","2021/10/3","2021/10/4","2021/10/5","2021/10/6","2021/10/7","2021/10/8","2021/10/9","2021/10/10","2021/10/11","2021/10/13","2021/10/14","2021/10/15","2021/10/16","2021/10/17","2021/10/18","2021/10/19","2021/10/20","2021/10/21","2021/10/22","2021/10/23","2021/10/24","2021/10/25","2021/10/26","2021/10/27","2021/10/28","2021/10/29","2021/10/30","2021/10/31","2021/11/1","2021/11/2","2021/11/3","2021/11/4","2021/11/5","2021/11/6","2021/11/7","2021/11/8","2021/11/9","2021/11/10","2021/11/11","2021/11/13","2021/11/14","2021/11/15","2021/11/16","2021/11/17","2021/11/18","2021/11/19","2021/11/20","2021/11/21","2021/11/23","2021/11/24","2021/11/25","2021/11/26","2021/11/27","2021/11/28","2021/11/29","2021/11/30","2021/12/1","2021/12/2","2021/12/3","2021/12/4","2021/12/5","2021/12/6","2021/12/7","2021/12/8","2021/12/9","2021/12/10","2021/12/11","2021/12/12","2021/12/13","2021/12/14","2021/12/15","2021/12/16","2021/12/17"],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,0,0,1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[0,1,1,1,1,1,1,0,1,1,1,1,1,1,0,1,1,1,1,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,1,0,0,0,0,1,1,1,1,0,0,1,1,0,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,0,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[0,1,0,0,0,1,1,0,1,0,1,1,0,0,0,1,1,1,0,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[0,1,1,0,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0,0,0,1,1,1,0,0,0,0,1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,0,1,1,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],[1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>date<\/th>\n      <th>Mik<\/th>\n      <th>Kil<\/th>\n      <th>Koh<\/th>\n      <th>Aka<\/th>\n      <th>Ntr<\/th>\n      <th>Ten<\/th>\n      <th>Tot<\/th>\n      <th>Hen<\/th>\n      <th>Hot<\/th>\n      <th>Mei<\/th>\n      <th>Ako<\/th>\n      <th>Kor<\/th>\n      <th>Mal<\/th>\n      <th>Kit<\/th>\n      <th>Kun<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p><br/></p>
-<p>このようなデータでは、同じグループで観察された個体をassociateしていたとみなすことが多い(=gambit of the group)<span class="citation">(<a href="#ref-Farine2015" role="doc-biblioref">Farine &amp; Whitehead, 2015</a>)</span>。Group by individualの形式のデータでは、以下のような指標で個体間の強さを表すことが多い。なお、各指標の詳細については <span class="citation">Hoppitt &amp; Farine (<a href="#ref-Hoppitt2018" role="doc-biblioref">2018</a>)</span> を参照。</p>
+<p>このようなデータでは、同じグループで観察された個体をassociateしていたとみなすことが多い(=gambit of the group)<span class="citation">(<a href="#ref-Farine2015">Farine &amp; Whitehead, 2015</a>)</span>。Group by individualの形式のデータでは、以下のような指標で個体間の強さを表すことが多い。なお、各指標の詳細については <span class="citation">Hoppitt &amp; Farine (<a href="#ref-Hoppitt2018">2018</a>)</span> を参照。</p>
 <ul>
 <li><span class="math inline">\(x\)</span>: 個体<span class="math inline">\(a\)</span>と<span class="math inline">\(b\)</span>が一緒に観察された回数<br />
 </li>
@@ -294,18 +298,18 @@ div.csl-indent {
 <span class="math inline">\(= x/(\frac{1}{2}(y_a + y_b) + y_{ab} + x)\)</span></p>
 <p>▶ 観察ミスが多いと考えられる場合、補正を行う。<br />
 <br/></p>
-<p><u><strong>HWIG</strong></u> <span class="citation">(<a href="#ref-Godde2013" role="doc-biblioref">Godde et al., 2013</a>)</span><br />
+<p><u><strong>HWIG</strong></u> <span class="citation">(<a href="#ref-Godde2013">Godde et al., 2013</a>)</span><br />
 <span class="math inline">\(= HWI_{ab} \times \frac{\sum_i \sum_j HWI_{ij}}{\sum_i HWI_{ai} \times \sum_i HWI_{bi}}\)</span></p>
 <p>▶ それぞれの個体のgregariousnessを考慮したHWI。互いのgregariousnessを考慮したとき、ランダムにassociateしているのであれば1になり、１よりおおきければランダムの場合よりもよくassociateしていることになる。</p>
 <p><br/></p>
 <p><code>asnipe</code>パッケージの<code>get_network()</code>関数では、“group by individual”形式のデータからSRIとHWIを算出し、マトリックスを作成することが可能である。</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="Chapter2-2.html#cb19-1" aria-hidden="true" tabindex="-1"></a>presence_mat <span class="ot">&lt;-</span> <span class="fu">get_network</span>(presence <span class="sc">%&gt;%</span></span>
-<span id="cb19-2"><a href="Chapter2-2.html#cb19-2" aria-hidden="true" tabindex="-1"></a>                            <span class="do">## 日付の列は除く</span></span>
-<span id="cb19-3"><a href="Chapter2-2.html#cb19-3" aria-hidden="true" tabindex="-1"></a>                            dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>date),</span>
-<span id="cb19-4"><a href="Chapter2-2.html#cb19-4" aria-hidden="true" tabindex="-1"></a>                            <span class="do">## gambit of the group</span></span>
-<span id="cb19-5"><a href="Chapter2-2.html#cb19-5" aria-hidden="true" tabindex="-1"></a>                            <span class="at">data_format =</span> <span class="st">&quot;GBI&quot;</span>,</span>
-<span id="cb19-6"><a href="Chapter2-2.html#cb19-6" aria-hidden="true" tabindex="-1"></a>                            <span class="do">## &quot;HWI&quot;の場合は、&quot;HWI&quot;</span></span>
-<span id="cb19-7"><a href="Chapter2-2.html#cb19-7" aria-hidden="true" tabindex="-1"></a>                            <span class="at">association_index =</span> <span class="st">&quot;SRI&quot;</span>)  </span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="Chapter2-2.html#cb19-1" tabindex="-1"></a>presence_mat <span class="ot">&lt;-</span> <span class="fu">get_network</span>(presence <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="Chapter2-2.html#cb19-2" tabindex="-1"></a>                            <span class="do">## 日付の列は除く</span></span>
+<span id="cb19-3"><a href="Chapter2-2.html#cb19-3" tabindex="-1"></a>                            dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>date),</span>
+<span id="cb19-4"><a href="Chapter2-2.html#cb19-4" tabindex="-1"></a>                            <span class="do">## gambit of the group</span></span>
+<span id="cb19-5"><a href="Chapter2-2.html#cb19-5" tabindex="-1"></a>                            <span class="at">data_format =</span> <span class="st">&quot;GBI&quot;</span>,</span>
+<span id="cb19-6"><a href="Chapter2-2.html#cb19-6" tabindex="-1"></a>                            <span class="do">## &quot;HWI&quot;の場合は、&quot;HWI&quot;</span></span>
+<span id="cb19-7"><a href="Chapter2-2.html#cb19-7" tabindex="-1"></a>                            <span class="at">association_index =</span> <span class="st">&quot;SRI&quot;</span>)  </span></code></pre></div>
 <pre><code>## Generating  15  x  15  matrix</code></pre>
 得られた隣接行列は以下の通り(表<a href="Chapter2-2.html#tab:tab-SRI">2.4</a>)。<br />
 
@@ -1119,20 +1123,20 @@ Kun
 </table>
 <p><br/></p>
 <p>HWIGは<code>hwig</code>パッケージの<code>calc_hwig()</code>関数で算出することができる。</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="Chapter2-2.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="do">## まずHWIを算出  </span></span>
-<span id="cb21-2"><a href="Chapter2-2.html#cb21-2" aria-hidden="true" tabindex="-1"></a>presence_mat_HWI <span class="ot">&lt;-</span> <span class="fu">get_network</span>(presence <span class="sc">%&gt;%</span></span>
-<span id="cb21-3"><a href="Chapter2-2.html#cb21-3" aria-hidden="true" tabindex="-1"></a>                              dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>date),</span>
-<span id="cb21-4"><a href="Chapter2-2.html#cb21-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">data_format =</span> <span class="st">&quot;GBI&quot;</span>,</span>
-<span id="cb21-5"><a href="Chapter2-2.html#cb21-5" aria-hidden="true" tabindex="-1"></a>                              <span class="at">association_index =</span> <span class="st">&quot;HWI&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="Chapter2-2.html#cb21-1" tabindex="-1"></a><span class="do">## まずHWIを算出  </span></span>
+<span id="cb21-2"><a href="Chapter2-2.html#cb21-2" tabindex="-1"></a>presence_mat_HWI <span class="ot">&lt;-</span> <span class="fu">get_network</span>(presence <span class="sc">%&gt;%</span></span>
+<span id="cb21-3"><a href="Chapter2-2.html#cb21-3" tabindex="-1"></a>                              dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="sc">-</span>date),</span>
+<span id="cb21-4"><a href="Chapter2-2.html#cb21-4" tabindex="-1"></a>                              <span class="at">data_format =</span> <span class="st">&quot;GBI&quot;</span>,</span>
+<span id="cb21-5"><a href="Chapter2-2.html#cb21-5" tabindex="-1"></a>                              <span class="at">association_index =</span> <span class="st">&quot;HWI&quot;</span>)</span></code></pre></div>
 <pre><code>## Generating  15  x  15  matrix</code></pre>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="Chapter2-2.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="do">## HWIGの算出</span></span>
-<span id="cb23-2"><a href="Chapter2-2.html#cb23-2" aria-hidden="true" tabindex="-1"></a>presence_mat_HWIG <span class="ot">&lt;-</span> presence_mat_HWI <span class="sc">%&gt;%</span> </span>
-<span id="cb23-3"><a href="Chapter2-2.html#cb23-3" aria-hidden="true" tabindex="-1"></a>                         <span class="do">## data.table形式に直す必要</span></span>
-<span id="cb23-4"><a href="Chapter2-2.html#cb23-4" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">as.data.table</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb23-5"><a href="Chapter2-2.html#cb23-5" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">calc_hwig</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb23-6"><a href="Chapter2-2.html#cb23-6" aria-hidden="true" tabindex="-1"></a>                         <span class="fu">as.matrix</span>()   </span>
-<span id="cb23-7"><a href="Chapter2-2.html#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-8"><a href="Chapter2-2.html#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(presence_mat_HWIG)  <span class="ot">&lt;-</span> <span class="fu">rownames</span>(presence_mat_HWI)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="Chapter2-2.html#cb23-1" tabindex="-1"></a><span class="do">## HWIGの算出</span></span>
+<span id="cb23-2"><a href="Chapter2-2.html#cb23-2" tabindex="-1"></a>presence_mat_HWIG <span class="ot">&lt;-</span> presence_mat_HWI <span class="sc">%&gt;%</span> </span>
+<span id="cb23-3"><a href="Chapter2-2.html#cb23-3" tabindex="-1"></a>                         <span class="do">## data.table形式に直す必要</span></span>
+<span id="cb23-4"><a href="Chapter2-2.html#cb23-4" tabindex="-1"></a>                         <span class="fu">as.data.table</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb23-5"><a href="Chapter2-2.html#cb23-5" tabindex="-1"></a>                         <span class="fu">calc_hwig</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb23-6"><a href="Chapter2-2.html#cb23-6" tabindex="-1"></a>                         <span class="fu">as.matrix</span>()   </span>
+<span id="cb23-7"><a href="Chapter2-2.html#cb23-7" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="Chapter2-2.html#cb23-8" tabindex="-1"></a><span class="fu">rownames</span>(presence_mat_HWIG)  <span class="ot">&lt;-</span> <span class="fu">rownames</span>(presence_mat_HWI)</span></code></pre></div>
 得られた隣接行列は以下の通り(表<a href="Chapter2-2.html#tab:tab-HWIG">2.5</a>)。<br />
 
 <table class="table" style="font-size: 6px; width: auto !important; margin-left: auto; margin-right: auto;">
@@ -1945,30 +1949,30 @@ Kun
 </table>
 <p><br/></p>
 <p>得られたSRIの隣接行列についてグラフを描画すると図<a href="Chapter2-2.html#fig:fig-gbi">2.2</a>のようになる。ノードの大きさは年齢、色は順位を、辺の太さはHWIGを表す。MikとAkaは他の個体と一緒にいることが少ないことが分かるだろう(年齢も影響しそう？)。順位の高い個体はネットワークの中心にいることが多そう?</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="Chapter2-2.html#cb24-1" aria-hidden="true" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">18</span>,<span class="dv">17</span>,<span class="dv">15</span>,<span class="dv">15</span>,<span class="dv">13</span>,<span class="dv">13</span>,<span class="dv">13</span>,<span class="dv">13</span>,<span class="dv">13</span>,<span class="dv">13</span>,<span class="dv">12</span>,<span class="dv">11</span>,<span class="dv">11</span>,<span class="dv">10</span>,<span class="dv">9</span>)</span>
-<span id="cb24-2"><a href="Chapter2-2.html#cb24-2" aria-hidden="true" tabindex="-1"></a>rank2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">16</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">9</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">12</span>,<span class="dv">13</span>,<span class="dv">14</span>,<span class="dv">17</span>,<span class="dv">10</span>,<span class="dv">6</span>,<span class="dv">15</span>,<span class="dv">2</span>,<span class="dv">5</span>)</span>
-<span id="cb24-3"><a href="Chapter2-2.html#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="Chapter2-2.html#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">129</span>)</span>
-<span id="cb24-5"><a href="Chapter2-2.html#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-6"><a href="Chapter2-2.html#cb24-6" aria-hidden="true" tabindex="-1"></a>presence_mat <span class="sc">%&gt;%</span> </span>
-<span id="cb24-7"><a href="Chapter2-2.html#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tbl_graph</span>(<span class="at">directed =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb24-8"><a href="Chapter2-2.html#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggraph</span>(<span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>)<span class="sc">+</span></span>
-<span id="cb24-9"><a href="Chapter2-2.html#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 曲線のエッジ、weightを太さに</span></span>
-<span id="cb24-10"><a href="Chapter2-2.html#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="fu">aes</span>(<span class="at">width =</span> weight),</span>
-<span id="cb24-11"><a href="Chapter2-2.html#cb24-11" aria-hidden="true" tabindex="-1"></a>                <span class="do">## 透明度(alpha)と色(color)指定</span></span>
-<span id="cb24-12"><a href="Chapter2-2.html#cb24-12" aria-hidden="true" tabindex="-1"></a>                <span class="at">alpha =</span><span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">&quot;grey67&quot;</span>)<span class="sc">+</span></span>
-<span id="cb24-13"><a href="Chapter2-2.html#cb24-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># エッジの太さの範囲を決める  </span></span>
-<span id="cb24-14"><a href="Chapter2-2.html#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_edge_width</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.5</span>))<span class="sc">+</span></span>
-<span id="cb24-15"><a href="Chapter2-2.html#cb24-15" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 四角のノード。大きさは年齢によって変化するとする。  </span></span>
-<span id="cb24-16"><a href="Chapter2-2.html#cb24-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> age, <span class="at">color =</span> rank2),<span class="at">shape =</span> <span class="dv">16</span>)<span class="sc">+</span></span>
-<span id="cb24-17"><a href="Chapter2-2.html#cb24-17" aria-hidden="true" tabindex="-1"></a>  <span class="do">## ノードのラベルは個体名  </span></span>
-<span id="cb24-18"><a href="Chapter2-2.html#cb24-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>))<span class="sc">+</span></span>
-<span id="cb24-19"><a href="Chapter2-2.html#cb24-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), </span>
-<span id="cb24-20"><a href="Chapter2-2.html#cb24-20" aria-hidden="true" tabindex="-1"></a>                 <span class="do">## ノードと重ならないようにする </span></span>
-<span id="cb24-21"><a href="Chapter2-2.html#cb24-21" aria-hidden="true" tabindex="-1"></a>                 <span class="at">repel=</span><span class="cn">TRUE</span>, <span class="at">size =</span><span class="dv">6</span>)<span class="sc">+</span></span>
-<span id="cb24-22"><a href="Chapter2-2.html#cb24-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_graph</span>()<span class="sc">+</span></span>
-<span id="cb24-23"><a href="Chapter2-2.html#cb24-23" aria-hidden="true" tabindex="-1"></a>  <span class="do">## 縦横比</span></span>
-<span id="cb24-24"><a href="Chapter2-2.html#cb24-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="fl">0.7</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="Chapter2-2.html#cb24-1" tabindex="-1"></a>age <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">18</span>,<span class="dv">17</span>,<span class="dv">15</span>,<span class="dv">15</span>,<span class="dv">13</span>,<span class="dv">13</span>,<span class="dv">13</span>,<span class="dv">13</span>,<span class="dv">13</span>,<span class="dv">13</span>,<span class="dv">12</span>,<span class="dv">11</span>,<span class="dv">11</span>,<span class="dv">10</span>,<span class="dv">9</span>)</span>
+<span id="cb24-2"><a href="Chapter2-2.html#cb24-2" tabindex="-1"></a>rank2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">16</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">9</span>,<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">12</span>,<span class="dv">13</span>,<span class="dv">14</span>,<span class="dv">17</span>,<span class="dv">10</span>,<span class="dv">6</span>,<span class="dv">15</span>,<span class="dv">2</span>,<span class="dv">5</span>)</span>
+<span id="cb24-3"><a href="Chapter2-2.html#cb24-3" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="Chapter2-2.html#cb24-4" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">129</span>)</span>
+<span id="cb24-5"><a href="Chapter2-2.html#cb24-5" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="Chapter2-2.html#cb24-6" tabindex="-1"></a>presence_mat <span class="sc">%&gt;%</span> </span>
+<span id="cb24-7"><a href="Chapter2-2.html#cb24-7" tabindex="-1"></a>  <span class="fu">as_tbl_graph</span>(<span class="at">directed =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-8"><a href="Chapter2-2.html#cb24-8" tabindex="-1"></a>  <span class="fu">ggraph</span>(<span class="at">layout =</span> <span class="st">&quot;nicely&quot;</span>)<span class="sc">+</span></span>
+<span id="cb24-9"><a href="Chapter2-2.html#cb24-9" tabindex="-1"></a>  <span class="co"># 曲線のエッジ、weightを太さに</span></span>
+<span id="cb24-10"><a href="Chapter2-2.html#cb24-10" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>(<span class="fu">aes</span>(<span class="at">width =</span> weight),</span>
+<span id="cb24-11"><a href="Chapter2-2.html#cb24-11" tabindex="-1"></a>                <span class="do">## 透明度(alpha)と色(color)指定</span></span>
+<span id="cb24-12"><a href="Chapter2-2.html#cb24-12" tabindex="-1"></a>                <span class="at">alpha =</span><span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">&quot;grey67&quot;</span>)<span class="sc">+</span></span>
+<span id="cb24-13"><a href="Chapter2-2.html#cb24-13" tabindex="-1"></a>  <span class="co"># エッジの太さの範囲を決める  </span></span>
+<span id="cb24-14"><a href="Chapter2-2.html#cb24-14" tabindex="-1"></a>  <span class="fu">scale_edge_width</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">1.5</span>))<span class="sc">+</span></span>
+<span id="cb24-15"><a href="Chapter2-2.html#cb24-15" tabindex="-1"></a>  <span class="do">## 四角のノード。大きさは年齢によって変化するとする。  </span></span>
+<span id="cb24-16"><a href="Chapter2-2.html#cb24-16" tabindex="-1"></a>  <span class="fu">geom_node_point</span>(<span class="fu">aes</span>(<span class="at">size =</span> age, <span class="at">color =</span> rank2),<span class="at">shape =</span> <span class="dv">16</span>)<span class="sc">+</span></span>
+<span id="cb24-17"><a href="Chapter2-2.html#cb24-17" tabindex="-1"></a>  <span class="do">## ノードのラベルは個体名  </span></span>
+<span id="cb24-18"><a href="Chapter2-2.html#cb24-18" tabindex="-1"></a>  <span class="fu">scale_size</span>(<span class="at">range =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">5</span>))<span class="sc">+</span></span>
+<span id="cb24-19"><a href="Chapter2-2.html#cb24-19" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), </span>
+<span id="cb24-20"><a href="Chapter2-2.html#cb24-20" tabindex="-1"></a>                 <span class="do">## ノードと重ならないようにする </span></span>
+<span id="cb24-21"><a href="Chapter2-2.html#cb24-21" tabindex="-1"></a>                 <span class="at">repel=</span><span class="cn">TRUE</span>, <span class="at">size =</span><span class="dv">6</span>)<span class="sc">+</span></span>
+<span id="cb24-22"><a href="Chapter2-2.html#cb24-22" tabindex="-1"></a>  <span class="fu">theme_graph</span>()<span class="sc">+</span></span>
+<span id="cb24-23"><a href="Chapter2-2.html#cb24-23" tabindex="-1"></a>  <span class="do">## 縦横比</span></span>
+<span id="cb24-24"><a href="Chapter2-2.html#cb24-24" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> <span class="fl">0.7</span>)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-gbi"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/fig-gbi-1.png" alt="SRIネットワークのグラフ" width="576" />
 <p class="caption">

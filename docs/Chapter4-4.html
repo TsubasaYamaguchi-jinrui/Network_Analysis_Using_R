@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>4.4 パーミュテーション検定以外の統計的検定方法 | Network Analysis Using R</title>
   <meta name="description" content="4.4 パーミュテーション検定以外の統計的検定方法 | Network Analysis Using R" />
-  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content="4.4 パーミュテーション検定以外の統計的検定方法 | Network Analysis Using R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-01-23" />
+<meta name="date" content="2023-10-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -129,6 +129,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -266,15 +270,15 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="パーミュテーション検定以外の統計的検定方法" class="section level2 hasAnchor" number="4.4">
 <h2><span class="header-section-number">4.4</span> パーミュテーション検定以外の統計的検定方法<a href="Chapter4-4.html#パーミュテーション検定以外の統計的検定方法" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>前節まではパーミュテーション検定に焦点を当ててネットワークデータの統計的検定の枠組みを説明してきた。この手法はネットワークデータの検定に最もよく使用されるものではあるが、これ以外にも統計的検定の手法は存在する<span class="citation">(<a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>; <a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>)</span>。</p>
+<p>前節まではパーミュテーション検定に焦点を当ててネットワークデータの統計的検定の枠組みを説明してきた。この手法はネットワークデータの検定に最もよく使用されるものではあるが、これ以外にも統計的検定の手法は存在する<span class="citation">(<a href="#ref-Farine2017">Farine, 2017</a>; <a href="#ref-Farine2022">Farine &amp; Carter, 2022</a>)</span>。</p>
 <div id="指数ランダムグラフモデルと確率的アクター志向モデル" class="section level3 hasAnchor" number="4.4.1">
 <h3><span class="header-section-number">4.4.1</span> 指数ランダムグラフモデルと確率的アクター志向モデル<a href="Chapter4-4.html#指数ランダムグラフモデルと確率的アクター志向モデル" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>パーミュテーション検定以外によく用いられる手法としては、指数ランダムグラフモデル(expoential random graph model: ERGM)があげられる。ERGMは、グラフ上の辺をランダムに除いたり加えたりすることで生じるネットワークの変化をもとに、様々な要因(ノードの属性やノード間の関係)がネットワーク構造に与える影響を調べる手法である。具体的な理論や方法については、<span class="citation">鈴木 (<a href="#ref-Suzuki2017" role="doc-biblioref">2017</a>)</span> や <span class="citation">Borgatti et al. (<a href="#ref-Borgatti2022" role="doc-biblioref">2022</a>)</span> を参照。ERGMがネットワークデータに対する検定方法として不適切であることを指摘する研究者もいる一方で<span class="citation">(<a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>)</span>、パーミュテーション検定と同等かそれ以上にうまく機能する手法であると考える研究者もいる<span class="citation">(<a href="#ref-Evans2020" role="doc-biblioref">Evans et al., 2020</a>)</span>。</p>
-<p>そのほかに経時的なネットワークデータを用いた手法として確率的アクター志向モデル(stochastic actor-oriented model)などもよく用いられる。詳細については <span class="citation">鈴木 (<a href="#ref-Suzuki2017" role="doc-biblioref">2017</a>)</span> や <span class="citation">Borgatti et al. (<a href="#ref-Borgatti2022" role="doc-biblioref">2022</a>)</span> を参照。</p>
+<p>パーミュテーション検定以外によく用いられる手法としては、指数ランダムグラフモデル(expoential random graph model: ERGM)があげられる。ERGMは、グラフ上の辺をランダムに除いたり加えたりすることで生じるネットワークの変化をもとに、様々な要因(ノードの属性やノード間の関係)がネットワーク構造に与える影響を調べる手法である。具体的な理論や方法については、<span class="citation">鈴木 (<a href="#ref-Suzuki2017">2017</a>)</span> や <span class="citation">Borgatti et al. (<a href="#ref-Borgatti2022">2022</a>)</span> を参照。ERGMがネットワークデータに対する検定方法として不適切であることを指摘する研究者もいる一方で<span class="citation">(<a href="#ref-Farine2017">Farine, 2017</a>)</span>、パーミュテーション検定と同等かそれ以上にうまく機能する手法であると考える研究者もいる<span class="citation">(<a href="#ref-Evans2020">Evans et al., 2020</a>)</span>。</p>
+<p>そのほかに経時的なネットワークデータを用いた手法として確率的アクター志向モデル(stochastic actor-oriented model)などもよく用いられる。詳細については <span class="citation">鈴木 (<a href="#ref-Suzuki2017">2017</a>)</span> や <span class="citation">Borgatti et al. (<a href="#ref-Borgatti2022">2022</a>)</span> を参照。</p>
 </div>
 <div id="ランダム化を用いない方法" class="section level3 hasAnchor" number="4.4.2">
 <h3><span class="header-section-number">4.4.2</span> ランダム化を用いない方法<a href="Chapter4-4.html#ランダム化を用いない方法" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>パラメトリックな検定方法であっても、GLMMなどの混合モデルを用いてデータの非独立性や観察バイアスなどの情報をモデルに取り込むことで、パーミュテーション検定よりも適切な分析を行うことができると主張する研究者もいる<span class="citation">(<a href="#ref-Hart2022" role="doc-biblioref">Hart et al., 2022</a>)</span>。また、P値ばかりに着目した分析を行うのは望ましくなく、ベイズ統計の枠組みを用いるなどして効果量により焦点を当てた分析を行うべきだという主張もある<span class="citation">(<a href="#ref-Franks2021" role="doc-biblioref">Franks et al., 2021</a>; <a href="#ref-Hart2022" role="doc-biblioref">Hart et al., 2022</a>)</span>。今後、パラメトリックな分析方法だけでもネットワークデータを適切に分析できるのかが検証されることが期待される<span class="citation">(<a href="#ref-Farine2022" role="doc-biblioref">Farine &amp; Carter, 2022</a>)</span>。</p>
+<p>パラメトリックな検定方法であっても、GLMMなどの混合モデルを用いてデータの非独立性や観察バイアスなどの情報をモデルに取り込むことで、パーミュテーション検定よりも適切な分析を行うことができると主張する研究者もいる<span class="citation">(<a href="#ref-Hart2022">Hart et al., 2022</a>)</span>。また、P値ばかりに着目した分析を行うのは望ましくなく、ベイズ統計の枠組みを用いるなどして効果量により焦点を当てた分析を行うべきだという主張もある<span class="citation">(<a href="#ref-Franks2021">Franks et al., 2021</a>; <a href="#ref-Hart2022">Hart et al., 2022</a>)</span>。今後、パラメトリックな分析方法だけでもネットワークデータを適切に分析できるのかが検証されることが期待される<span class="citation">(<a href="#ref-Farine2022">Farine &amp; Carter, 2022</a>)</span>。</p>
 
 </div>
 </div>

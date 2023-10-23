@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>1 社会ネットワーク分析の概説 | Network Analysis Using R</title>
   <meta name="description" content="1 社会ネットワーク分析の概説 | Network Analysis Using R" />
-  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content="1 社会ネットワーク分析の概説 | Network Analysis Using R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-01-23" />
+<meta name="date" content="2023-10-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -129,6 +129,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -268,23 +272,23 @@ div.csl-indent {
 <h1><span class="header-section-number">1</span> 社会ネットワーク分析の概説<a href="Chapter1-1.html#c1" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="社会ネットワーク分析snaとは" class="section level2 hasAnchor" number="1.1">
 <h2><span class="header-section-number">1.1</span> 社会ネットワーク分析(SNA)とは<a href="Chapter1-1.html#社会ネットワーク分析snaとは" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><strong>社会ネットワーク</strong>とは，相互に社会的なつながりをもつ個体の集まりのことを指す<span class="citation">(<a href="#ref-Krause2015" role="doc-biblioref">Krause et al., 2015</a>)</span>。多くの生物において、集団を構成する個体たちはランダム・均一に他個体と関わりあっているわけではなく、その関係の強度やタイプ、ダイナミクスは非常に多様である。社会ネットワークは、このような多様な関係によって構成されている<span class="citation">(<a href="#ref-Croft2019" role="doc-biblioref">D. Croft et al., 2008</a>)</span>。</p>
-<p>霊長類のように多くの個体が集団生活を行う種においては、個体の行動は一対一の社会関係だけではなく、集団全体の関係構造(e.g., 誰と誰がどのような関係を持つか)に強く影響を受ける<span class="citation">(<a href="#ref-Croft2019" role="doc-biblioref">D. Croft et al., 2008</a>; <a href="#ref-Krause2015" role="doc-biblioref">Krause et al., 2015</a>)</span>。例えば、個体<span class="math inline">\(A\)</span>が個体<span class="math inline">\(B\)</span>に対してどのような行動をとるのかには、個体<span class="math inline">\(A\)</span>と<span class="math inline">\(B\)</span>がそれぞれ誰とどのようなな関係を持つかや、その関係の強度が大きく影響するだろう。また社会ネットワークの構造は、こうした個体の行動の集積を通じて、集団の土地利用パターンや疾病・情報の伝播、離合集散パターンなど集団レベルの現象に対しても影響を与える。以上のように、集団で生活する種を対象に研究を行う際には、その背後にある社会ネットワークについて理解することで、一対一の関係のみに着目するよりもはるかに多くのことを理解できる<span class="citation">(<a href="#ref-Krause2015" role="doc-biblioref">Krause et al., 2015</a>; <a href="#ref-Sueur2011" role="doc-biblioref">Sueur, Jacobs, et al., 2011</a>)</span>。</p>
-<p><strong>社会ネットワーク分析（SNA: Social Network Analysis）</strong>とは、集団内の2個体間の社会関係に基づいて社会ネットワークを描写することで、その社会関係の構造や構成個体の特性を調べる分析手法のことである<span class="citation">(<a href="#ref-Croft2019" role="doc-biblioref">D. Croft et al., 2008</a>; <a href="#ref-Krause2015" role="doc-biblioref">Krause et al., 2015</a>)</span>。SNAの手法を用いることで、社会ネットワークの構造が個体の行動や集団レベルの現象に与える影響を検討することが可能になる。</p>
-<p>近年、動物行動学や霊長類でもSNAの手法を用いた研究が増加している<span class="citation">(<a href="#ref-Puga2019" role="doc-biblioref">Puga-Gonzalez et al., 2019</a>; <a href="#ref-Sueur2011" role="doc-biblioref">Sueur, Jacobs, et al., 2011</a>)</span>。
+<p><strong>社会ネットワーク</strong>とは，相互に社会的なつながりをもつ個体の集まりのことを指す<span class="citation">(<a href="#ref-Krause2015">Krause et al., 2015</a>)</span>。多くの生物において、集団を構成する個体たちはランダム・均一に他個体と関わりあっているわけではなく、その関係の強度やタイプ、ダイナミクスは非常に多様である。社会ネットワークは、このような多様な関係によって構成されている<span class="citation">(<a href="#ref-Croft2019">D. Croft et al., 2008</a>)</span>。</p>
+<p>霊長類のように多くの個体が集団生活を行う種においては、個体の行動は一対一の社会関係だけではなく、集団全体の関係構造(e.g., 誰と誰がどのような関係を持つか)に強く影響を受ける<span class="citation">(<a href="#ref-Croft2019">D. Croft et al., 2008</a>; <a href="#ref-Krause2015">Krause et al., 2015</a>)</span>。例えば、個体<span class="math inline">\(A\)</span>が個体<span class="math inline">\(B\)</span>に対してどのような行動をとるのかには、個体<span class="math inline">\(A\)</span>と<span class="math inline">\(B\)</span>がそれぞれ誰とどのようなな関係を持つかや、その関係の強度が大きく影響するだろう。また社会ネットワークの構造は、こうした個体の行動の集積を通じて、集団の土地利用パターンや疾病・情報の伝播、離合集散パターンなど集団レベルの現象に対しても影響を与える。以上のように、集団で生活する種を対象に研究を行う際には、その背後にある社会ネットワークについて理解することで、一対一の関係のみに着目するよりもはるかに多くのことを理解できる<span class="citation">(<a href="#ref-Krause2015">Krause et al., 2015</a>; <a href="#ref-Sueur2011">Sueur, Jacobs, et al., 2011</a>)</span>。</p>
+<p><strong>社会ネットワーク分析（SNA: Social Network Analysis）</strong>とは、集団内の2個体間の社会関係に基づいて社会ネットワークを描写することで、その社会関係の構造や構成個体の特性を調べる分析手法のことである<span class="citation">(<a href="#ref-Croft2019">D. Croft et al., 2008</a>; <a href="#ref-Krause2015">Krause et al., 2015</a>)</span>。SNAの手法を用いることで、社会ネットワークの構造が個体の行動や集団レベルの現象に与える影響を検討することが可能になる。</p>
+<p>近年、動物行動学や霊長類でもSNAの手法を用いた研究が増加している<span class="citation">(<a href="#ref-Puga2019">Puga-Gonzalez et al., 2019</a>; <a href="#ref-Sueur2011">Sueur, Jacobs, et al., 2011</a>)</span>。
 例えば、SNAを用いた霊長類の研究には以下のようなものがある。</p>
 <ul>
-<li>オス間の親和的交渉のネットワークが移籍の成否や繁殖成功に与える影響を調べた研究<span class="citation">(<a href="#ref-Gilby2013" role="doc-biblioref">Gilby et al., 2013</a>; <a href="#ref-Kawazoe2019" role="doc-biblioref">Kawazoe &amp; Sosa, 2019</a>)</span><br />
+<li>オス間の親和的交渉のネットワークが移籍の成否や繁殖成功に与える影響を調べた研究<span class="citation">(<a href="#ref-Gilby2013">Gilby et al., 2013</a>; <a href="#ref-Kawazoe2019">Kawazoe &amp; Sosa, 2019</a>)</span><br />
 </li>
-<li>メス間の親和的交渉のネットワークがメスの適応度に与える影響を調べた研究<span class="citation">(<a href="#ref-Cheney2016" role="doc-biblioref">Cheney et al., 2016</a>; <a href="#ref-Lehmann2016" role="doc-biblioref">Lehmann et al., 2016</a>)</span><br />
+<li>メス間の親和的交渉のネットワークがメスの適応度に与える影響を調べた研究<span class="citation">(<a href="#ref-Cheney2016">Cheney et al., 2016</a>; <a href="#ref-Lehmann2016">Lehmann et al., 2016</a>)</span><br />
 </li>
-<li>毛づくろいネットワークが寄生虫への感染に与える影響を調べた研究<span class="citation">(<a href="#ref-Duboscq2016" role="doc-biblioref">Duboscq et al., 2016</a>; <a href="#ref-MacIntosh2012" role="doc-biblioref">MacIntosh et al., 2012</a>)</span><br />
+<li>毛づくろいネットワークが寄生虫への感染に与える影響を調べた研究<span class="citation">(<a href="#ref-Duboscq2016">Duboscq et al., 2016</a>; <a href="#ref-MacIntosh2012">MacIntosh et al., 2012</a>)</span><br />
 </li>
-<li>社会ネットワークが行動の社会的伝達に与える影響を検討した研究<span class="citation">(<a href="#ref-Canteloup2020" role="doc-biblioref">Canteloup et al., 2020</a>; <a href="#ref-Hobaiter2014" role="doc-biblioref">Hobaiter et al., 2014</a>)</span><br />
+<li>社会ネットワークが行動の社会的伝達に与える影響を検討した研究<span class="citation">(<a href="#ref-Canteloup2020">Canteloup et al., 2020</a>; <a href="#ref-Hobaiter2014">Hobaiter et al., 2014</a>)</span><br />
 </li>
-<li>異なる行動指標のネットワーク間の関連を調べた研究<span class="citation">(<a href="#ref-Campbell2018" role="doc-biblioref">Campbell et al., 2018</a>; <a href="#ref-Shimada2018" role="doc-biblioref">Shimada &amp; Sueur, 2018</a>)</span><br />
+<li>異なる行動指標のネットワーク間の関連を調べた研究<span class="citation">(<a href="#ref-Campbell2018">Campbell et al., 2018</a>; <a href="#ref-Shimada2018">Shimada &amp; Sueur, 2018</a>)</span><br />
 </li>
-<li>種間のネットワークを比較した研究<span class="citation">(<a href="#ref-Bala2018" role="doc-biblioref">Balasubramaniam et al., 2018</a>; <a href="#ref-Sueur2011b" role="doc-biblioref">Sueur, Petit, et al., 2011</a>)</span></li>
+<li>種間のネットワークを比較した研究<span class="citation">(<a href="#ref-Bala2018">Balasubramaniam et al., 2018</a>; <a href="#ref-Sueur2011b">Sueur, Petit, et al., 2011</a>)</span></li>
 </ul>
 
 </div>

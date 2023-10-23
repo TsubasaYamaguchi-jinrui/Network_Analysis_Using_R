@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>4 統計的検定 | Network Analysis Using R</title>
   <meta name="description" content="4 統計的検定 | Network Analysis Using R" />
-  <meta name="generator" content="bookdown 0.31 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
 
   <meta property="og:title" content="4 統計的検定 | Network Analysis Using R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-01-23" />
+<meta name="date" content="2023-10-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -129,6 +129,10 @@ code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
 <style type="text/css">
 /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
 div.csl-bib-body { }
@@ -268,7 +272,7 @@ div.csl-indent {
 <h1><span class="header-section-number">4</span> 統計的検定<a href="Chapter4-1.html#c4" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <div id="s4-1" class="section level2 hasAnchor" number="4.1">
 <h2><span class="header-section-number">4.1</span> なぜランダム化検定が必要か？<a href="Chapter4-1.html#s4-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><strong>隣接行列(ネットワーク)内の数値(= 交渉頻度やSRIなどのassociation index)は互いに独立ではない</strong><span class="citation">(<a href="#ref-Croft2011" role="doc-biblioref">D. P. Croft et al., 2011</a>; <a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>; <a href="#ref-Farine2015" role="doc-biblioref">Farine &amp; Whitehead, 2015</a>)</span>。これは、同じ個体が関連する交渉/association同士は、その個体に由来する何らかの傾向を含んでいるからである。例えば、図<a href="Chapter4-1.html#fig:fig-ind">4.1</a>のグラフにおいて、ノードAが(相手に依らず)そもそも他個体とよく交渉を行う個体だったとしよう。そうすると、ノードAに関連する交渉の頻度(= AとB, AとC, AとD, AとEの間の辺の重み)は全体的に高い傾向になると考えられる。このように、ノードAが関連するの辺の重みは独立ではない。これは、他のノードが関連する交渉についても同様に当てはまる。</p>
+<p><strong>隣接行列(ネットワーク)内の数値(= 交渉頻度やSRIなどのassociation index)は互いに独立ではない</strong><span class="citation">(<a href="#ref-Croft2011">D. P. Croft et al., 2011</a>; <a href="#ref-Farine2017">Farine, 2017</a>; <a href="#ref-Farine2015">Farine &amp; Whitehead, 2015</a>)</span>。これは、同じ個体が関連する交渉/association同士は、その個体に由来する何らかの傾向を含んでいるからである。例えば、図<a href="Chapter4-1.html#fig:fig-ind">4.1</a>のグラフにおいて、ノードAが(相手に依らず)そもそも他個体とよく交渉を行う個体だったとしよう。そうすると、ノードAに関連する交渉の頻度(= AとB, AとC, AとD, AとEの間の辺の重み)は全体的に高い傾向になると考えられる。このように、ノードAが関連するの辺の重みは独立ではない。これは、他のノードが関連する交渉についても同様に当てはまる。</p>
 <p><strong>このような非独立性はネットワークの中心性指標についてもいえる</strong>。例えば、図<a href="Chapter4-1.html#fig:fig-ind">4.1</a>のグラフの重みづけ中心性について考える。ノードAとCの重みづけ中心性をそれぞれ計算するとき、どちらの計算にもAとCをつなぐ辺の重み(3)が入ってくる(A:1+1+2+<span style="color: red;">3</span>; C: 2+2+<span style="color: red;">3</span>)。つまり、<u>これらのノードの重みづけ中心性は互いに関連しあっている(= 独立ではない)</u>。これは、辺で繋がっている全てのノード同士の重み付き中心性について言える。</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-ind"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/fig-ind-1.png" alt="ネットワークデータの非独立性の説明のためのグラフ" width="576" />
@@ -276,11 +280,11 @@ div.csl-indent {
 図4.1: ネットワークデータの非独立性の説明のためのグラフ
 </p>
 </div>
-<p>これは、統計的な分析を行おうとするときに大きな問題になる。なぜなら、ほとんどの統計分析(t検定、相関分析、GLMなどの回帰分析、…)ではデータが互いに独立していることが仮定されているからである<span class="citation">(<a href="#ref-Croft2011" role="doc-biblioref">D. P. Croft et al., 2011</a>)</span>。そのため、<strong>ネットワークデータにそのままこのような分析を適用すると、誤った結果が得られる確率(= 第一種の過誤や第二種の過誤が生じる確率)が高くなってしまう</strong>のである。</p>
-<p>この問題に対処するために最もよく用いられる方法が<strong>ランダム化検定(randomization test)</strong>である<span class="citation">(<a href="#ref-Croft2011" role="doc-biblioref">D. P. Croft et al., 2011</a>; <a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a>; <a href="#ref-Farine2015" role="doc-biblioref">Farine &amp; Whitehead, 2015</a>)</span>。ランダム化検定とは、「ランダムな」ネットワークを大量(少なくとも1000回以上)に生成した後、それらから得られた統計検定量(e.g., t検定量や回帰係数など)の分布を帰無分布<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>として、実際の統計検定量の有意性を判定する方法である。ここでの<strong>「ランダム」なネットワークは、帰無仮説が正しいときの個体間の交渉やassociationを表すものでなくてはならない</strong>。例えば、「毛づくろいネットワークにおける中心性と年齢に関連がある」という仮説を検証するのであれば、年齢にかかわらずランダムに毛づくろいが行われているネットワークをランダムネットワークとして生成する必要がある。</p>
+<p>これは、統計的な分析を行おうとするときに大きな問題になる。なぜなら、ほとんどの統計分析(t検定、相関分析、GLMなどの回帰分析、…)ではデータが互いに独立していることが仮定されているからである<span class="citation">(<a href="#ref-Croft2011">D. P. Croft et al., 2011</a>)</span>。そのため、<strong>ネットワークデータにそのままこのような分析を適用すると、誤った結果が得られる確率(= 第一種の過誤や第二種の過誤が生じる確率)が高くなってしまう</strong>のである。</p>
+<p>この問題に対処するために最もよく用いられる方法が<strong>ランダム化検定(randomization test)</strong>である<span class="citation">(<a href="#ref-Croft2011">D. P. Croft et al., 2011</a>; <a href="#ref-Farine2017">Farine, 2017</a>; <a href="#ref-Farine2015">Farine &amp; Whitehead, 2015</a>)</span>。ランダム化検定とは、「ランダムな」ネットワークを大量(少なくとも1000回以上)に生成した後、それらから得られた統計検定量(e.g., t検定量や回帰係数など)の分布を帰無分布<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>として、実際の統計検定量の有意性を判定する方法である。ここでの<strong>「ランダム」なネットワークは、帰無仮説が正しいときの個体間の交渉やassociationを表すものでなくてはならない</strong>。例えば、「毛づくろいネットワークにおける中心性と年齢に関連がある」という仮説を検証するのであれば、年齢にかかわらずランダムに毛づくろいが行われているネットワークをランダムネットワークとして生成する必要がある。</p>
 <p>加えて、適切にランダム化検定を行うためには、検定の対象となる側面(e.g., 中心性指標と順位の関係、個体間の交渉頻度と性別・年齢の関係など)についてはランダム化する一方で、それ以外の側面(e.g., 各個体の観察回数、ノードと辺の数、ネットワークの構造など)については可能な限り一定になるようにランダムネットワークを生成することが重要である。この点を考慮するため、ネットワーク分析では実データをシャッフルすることでランダムなネットワークを生成する<strong>パーミュテーション検定(permutation test)</strong>がよく用いられる。</p>
 <p><br/><br />
-ネットワークデータへのパーミュテーション検定は、通常以下の5つのステップで行われる<span class="citation">(<a href="#ref-Farine2017" role="doc-biblioref">Farine, 2017</a> を改変)</span>。</p>
+ネットワークデータへのパーミュテーション検定は、通常以下の5つのステップで行われる<span class="citation">(<a href="#ref-Farine2017">Farine, 2017</a> を改変)</span>。</p>
 <ol style="list-style-type: decimal">
 <li>観察データから社会ネットワークを生成する。<br />
 </li>
@@ -293,7 +297,7 @@ div.csl-indent {
 <li>2の統計検定量を4の統計検定量の分布と比較する。両者に大きな乖離があれば、仮説が正しいと結論付ける。例えば有意水準が5%のときには、<strong>2の統計検定量が4の統計検定量の95%より大き/小さければ</strong>、帰無仮説を棄却することになる。</li>
 </ol>
 <p><br/><br />
-パーミュテーション検定は、どの段階のデータをシャッフルするかによって大きく2つに分けられる。以下では、それぞれについて詳しくみていく。より詳しい解説は <span class="citation">D. P. Croft et al. (<a href="#ref-Croft2011" role="doc-biblioref">2011</a>)</span>、 <span class="citation">Farine &amp; Whitehead (<a href="#ref-Farine2015" role="doc-biblioref">2015</a>)</span>、 <span class="citation">Farine (<a href="#ref-Farine2017" role="doc-biblioref">2017</a>)</span> を参照。</p>
+パーミュテーション検定は、どの段階のデータをシャッフルするかによって大きく2つに分けられる。以下では、それぞれについて詳しくみていく。より詳しい解説は <span class="citation">D. P. Croft et al. (<a href="#ref-Croft2011">2011</a>)</span>、 <span class="citation">Farine &amp; Whitehead (<a href="#ref-Farine2015">2015</a>)</span>、 <span class="citation">Farine (<a href="#ref-Farine2017">2017</a>)</span> を参照。</p>
 <ul>
 <li><strong>Network permutation</strong>: 既に作られたネットワーク上のノードや辺をシャッフルする。<br />
 </li>
