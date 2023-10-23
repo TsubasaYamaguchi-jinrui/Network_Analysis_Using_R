@@ -9,7 +9,9 @@ Pre-network permutationは、もともと<u>"group by individual"(第\@ref(s2-2)
 presence <- read_csv("data/presence_demo.csv")
 
 presence %>% 
-  datatable(rownames = FALSE)
+  datatable(rownames = FALSE,
+            options = list(scrollX = 50),
+            filter = "top")
 ```
 <br/>  
 

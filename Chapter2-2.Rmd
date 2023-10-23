@@ -6,7 +6,9 @@
 presence <- read_csv("data/presence_demo.csv")
 
 presence %>% 
-  datatable(rownames = FALSE)
+  datatable(rownames = FALSE,
+            options = list(scrollX = 50),
+            filter = "top")
 ```
 <br/>  
 
