@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-10-23" />
+<meta name="date" content="2023-10-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -2150,17 +2150,13 @@ eigen_i &amp;\sim Normal(\mu_i, \sigma)
 <p><br/></p>
 <p>さて、これらのデータに対して仮説(<strong>固有ベクトル中心性が、産子数に影響するか</strong>)を検証するために以下のモデルを考える。ただし、添え字の<span class="math inline">\(ji\)</span>はそれが<span class="math inline">\(j\)</span>番目の集団の<span class="math inline">\(i\)</span>番目の個体のデータであることを表す。なお、<code>eigen</code>、<code>rank</code>、<code>age</code>、<code>no_birth</code>はそれぞれ固有ベクトル中心性、順位、年齢、産子数を表す。</p>
 <p><span class="math inline">\(r_j\)</span>はランダム切片を表し、集団による産子数(<code>no_birth</code>)のばらつきがあることを示している。3行目の数式は、<span class="math inline">\(j\)</span>番目の集団の<span class="math inline">\(i\)</span>番目の個体の産子数(<span class="math inline">\(no\_birth_{ji}\)</span>)が、平均<span class="math inline">\(\lambda_{ji}\)</span>のポワソン分布から得られることを表す。</p>
-<p>$$</p>
-<span class="math display">\[\begin{aligned}
-
+<p><span class="math display">\[
+\begin{aligned}
 r_j &amp;\sim Normal(0, \sigma)\\
-
 \lambda_{ji} &amp;= exp(\beta_0 + \beta_1 \times eigen_{ji} + \beta_2 \times rank_{ji} + \beta_3 \times age_{ji} + r_j)  \\
-
 no\_birth_{ji} &amp;\sim Poisson(\lambda_{ji})
-
-\end{aligned}\]</span>
-<p>$$</p>
+\end{aligned}
+\]</span></p>
 <p>それでは、分析に移ろう。各集団ごとに固有ベクトル中心性を算出する(<strong>Step2</strong>)。<code>ANTs</code>パッケージでは、複数の隣接行列と属性データをそれぞれlist形式でまとめることで、以下のように複数のネットワークについて同時に中心性を算出できる。</p>
 <div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="Chapter4-2.html#cb110-1" tabindex="-1"></a>list_att <span class="ot">&lt;-</span> <span class="fu">met.eigen</span>(list_mat,</span>
 <span id="cb110-2"><a href="Chapter4-2.html#cb110-2" tabindex="-1"></a>                      <span class="at">df =</span> list_att)</span></code></pre></div>

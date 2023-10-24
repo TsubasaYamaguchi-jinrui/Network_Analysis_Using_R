@@ -422,17 +422,11 @@ list_att[[3]] %>%
 $r_j$はランダム切片を表し、集団による産子数(`no_birth`)のばらつきがあることを示している。3行目の数式は、$j$番目の集団の$i$番目の個体の産子数($no\_birth_{ji}$)が、平均$\lambda_{ji}$のポワソン分布から得られることを表す。 
 
 $$
-
 \begin{aligned}
-
 r_j &\sim Normal(0, \sigma)\\
-
 \lambda_{ji} &= exp(\beta_0 + \beta_1 \times eigen_{ji} + \beta_2 \times rank_{ji} + \beta_3 \times age_{ji} + r_j)  \\
-
 no\_birth_{ji} &\sim Poisson(\lambda_{ji})
-
 \end{aligned}
-
 $$
 
 それでは、分析に移ろう。各集団ごとに固有ベクトル中心性を算出する(**Step2**)。`ANTs`パッケージでは、複数の隣接行列と属性データをそれぞれlist形式でまとめることで、以下のように複数のネットワークについて同時に中心性を算出できる。  
