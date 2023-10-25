@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-10-24" />
+<meta name="date" content="2023-10-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -1134,14 +1134,12 @@ Tot
 <p><br/></p>
 <p>このネットワークにおいて、<u>各メスの固有ベクトル中心性(<code>eigen</code>)と順位(<code>rank</code>)・年齢(<code>age</code>)との関連を調べる</u>ため、以下のモデルを考える。ただし、添え字の<span class="math inline">\(i\)</span>はそれが<span class="math inline">\(i\)</span>番目の個体のデータであることを表す(<span class="math inline">\(i = 1,2,3,...,16\)</span>)。</p>
 <p><span class="math inline">\(\beta_0\)</span>はモデルの切片を、<span class="math inline">\(\beta_1\)</span>と<span class="math inline">\(\beta_2\)</span>はそれぞれ順位と年齢が1増えたときに、固有ベクトル中心性がどのくらい上昇すると期待されるかを表す(= <strong>回帰係数</strong>)。また、2行目の数式は、<span class="math inline">\(i\)</span>番目の個体の固有ベクトル中心性(<span class="math inline">\(eigen_i\)</span>)が、平均<span class="math inline">\(\mu_i\)</span>、分散<span class="math inline">\(\sigma\)</span>の正規分布から得られることを表す。GLMやGLMMでは、実際のデータが得られる確率が最も高くなるようにモデルのパラメータ(ここでは、<span class="math inline">\(\beta_0, \beta_1, \beta_2. \sigma\)</span>)を推定していく。</p>
-<p>$$</p>
-<span class="math display">\[\begin{aligned}
-
+<p><span class="math display">\[
+\begin{aligned}
 \mu_i &amp;= \beta_0 + \beta_1 \times rank_i + \beta_2 \times age_i  \\
 eigen_i &amp;\sim Normal(\mu_i, \sigma)
-
-\end{aligned}\]</span>
-<p>$$</p>
+\end{aligned}
+\]</span></p>
 <p>それでは、分析に移ろう。すでに隣接行列を算出してネットワークを作成しているので、個体ごとの固有ベクトル中心性を算出する(<strong>Step2</strong>)。個体ごとの属性を<code>att_females</code>としてデータフレームにまとめる(第<a href="Chapter2-2.html#s2-2">2.2</a>参照)。</p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="Chapter4-2.html#cb89-1" tabindex="-1"></a><span class="do">## 属性データの作成</span></span>
 <span id="cb89-2"><a href="Chapter4-2.html#cb89-2" tabindex="-1"></a>att_females <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">femaleID =</span> <span class="fu">colnames</span>(prox_mat),</span>
