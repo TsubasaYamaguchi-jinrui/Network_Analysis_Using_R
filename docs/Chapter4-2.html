@@ -2473,7 +2473,7 @@ no\_birth_{ji} &amp;\sim Poisson(\lambda_{ji})
 <p>ネットワーク相関は有用な方法だが、2つ以上の変数を統制したい場合には用いることができない。また、相関分析では様々な形式のデータ(0/1データ、割合データ)などを扱う際に問題が生じることもある。これらの問題点を解決してくれるのが、<strong>MRQAP検定</strong><span class="citation">(<a href="#ref-Dekker2007">Dekker et al., 2007</a>)</span>と呼ばれる手法である。MRQAP検定は、簡単に言ってしまえばネットワークデータを用いた回帰分析である。Mantel検定などと同様に、2つ以上の隣接行列の対応する行列成分に対して回帰分析を施す。</p>
 <p>例えば、第<a href="Chapter2-1.html#c2">2</a>章で算出したSRI隣接行列(表<a href="Chapter2-2.html#tab:tab-SRI">2.4</a>)が、親密度(CSI)、血縁度、順位差と関連しているかを調べたいとする。MRQAPでは、通常の<strong>GLMやGLMMと同様に、こうした複数の隣接行列を用いた回帰分析を行うことができる</strong>(図<a href="Chapter4-2.html#fig:fig-mrqap">4.8</a>)。また、<code>aninet</code>パッケージの<code>glmqap</code>関数を用いれば、<strong>応答変数となる隣接行列の分布として様々なもの(e.g., 正規分布、ポワソン分布、二項分布など)を仮定することができる</strong>ので、データ形式に合った適切な分析を行うこともできる。</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-mrqap"></span>
-<img src="image/mrqap.png" alt="MRQAP検定のイメージ図" width="100%" />
+<img src="image/MRQAP.png" alt="MRQAP検定のイメージ図" width="100%" />
 <p class="caption">
 図4.8: MRQAP検定のイメージ図
 </p>

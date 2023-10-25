@@ -593,7 +593,7 @@ stat.tauKr(X = groom_mat,
 例えば、第\@ref(c2)章で算出したSRI隣接行列(表\@ref(tab:tab-SRI))が、親密度(CSI)、血縁度、順位差と関連しているかを調べたいとする。MRQAPでは、通常の**GLMやGLMMと同様に、こうした複数の隣接行列を用いた回帰分析を行うことができる**(図\@ref(fig:fig-mrqap))。また、`aninet`パッケージの`glmqap`関数を用いれば、**応答変数となる隣接行列の分布として様々なもの(e.g., 正規分布、ポワソン分布、二項分布など)を仮定することができる**ので、データ形式に合った適切な分析を行うこともできる。  
 
 ```{r fig-mrqap, echo=FALSE, out.width="100%", fig.cap="MRQAP検定のイメージ図"}
-knitr::include_graphics("image/mrqap.png")
+knitr::include_graphics("image/MRQAP.png")
 ```
 <br/>  
 
