@@ -1,0 +1,64 @@
+```{r}
+library(tidyverse)
+library(rvest)
+
+journal <- c("American Journal of Primatology",
+            "International Journal of Primatology",
+            "Primates",
+            "Folia Primatologica",
+            "Animal Behaviour",
+            "Behavioral ecology and sociobiology",
+            "Ecology",
+            "Ethology")
+
+start <- seq(1980,2020,by = 5)
+end <- seq(1984, 2024, by = 5)
+final_sna <- NULL
+final_all <- NULL
+
+for(i in seq_along(journal)){
+  for(j in seq_along(start)){
+    Sys.sleep(300)
+    URL_sna <- paste0("https://scholar.google.co.jp/scholar?as_q=&as_epq=&as_oq=%22social+network+analysis%22+%22network+analysis%22&as_eq=&as_occt=any&as_sauthors=&as_publication=%22",
+                       str_replace_all(journal[i], " ", "+"),
+                       "%22&as_ylo=",start[j],"&as_yhi=",end[j],"&hl=en&as_sdt=0%2C5")
+    
+    URL_all <- paste0("https://scholar.google.co.jp/scholar?as_q=&as_epq=&as_oq=&as_eq=&as_occt=any&as_sauthors=&as_publication=%22",
+                      str_replace_all(journal[i], " ", "+"),
+                      "%22&as_ylo=",start[j],"&as_yhi=", end[j], "&hl=en&as_sdt=0%2C5")
+
+    result_sna <- read_html(URL_sna) %>% 
+      html_elements(xpath = "//*[@id='gs_ab_md']/div/text()[1]") %>% 
+      html_text() 
+    
+    result_all <- read_html(URL_all) %>% 
+      html_elements(xpath = "//*[@id='gs_ab_md']/div/text()[1]") %>% 
+      html_text() 
+    
+    if(length(result_sna) == 0){
+      num_sna <- 0
+    }else{
+      num_sna <- parse_number(result_sna)
+    }
+    
+    if(length(result_all) == 0){
+      num_all <- 0
+    }else{
+      num_all <- parse_number(result_all)
+    }
+
+    final_sna <- c(final_sna, num_sna)
+    final_all <- c(final_all, num_all)
+  }
+}
+
+data <- crossing(journal_name = journal, nesting(start, end)) %>% 
+  mutate(journal_name = fct_relevel(journal_name, journal)) %>% 
+  arrange(journal_name) %>% 
+  mutate(total = final_all,
+         include = final_sna) %>% 
+  mutate(rate = include/total)
+
+write_csv(data, "data/journal.csv")
+```
+

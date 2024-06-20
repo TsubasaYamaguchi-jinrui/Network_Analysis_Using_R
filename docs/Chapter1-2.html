@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>1.2 社会ネットワークの基礎 | Network Analysis Using R</title>
   <meta name="description" content="1.2 社会ネットワークの基礎 | Network Analysis Using R" />
-  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
   <meta property="og:title" content="1.2 社会ネットワークの基礎 | Network Analysis Using R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-10-25" />
+<meta name="date" content="2024-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -54,18 +54,21 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.27/datatables.js"></script>
-<link href="libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="libs/datatables-binding-0.33/datatables.js"></script>
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
 <link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
 <script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
 <link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
 <script src="libs/selectize-0.12.0/selectize.min.js"></script>
-<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
 
 
 <style type="text/css">
@@ -254,6 +257,20 @@ div.csl-indent {
 <li class="chapter" data-level="4.4.2" data-path="Chapter4-4.html"><a href="Chapter4-4.html#ランダム化を用いない方法"><i class="fa fa-check"></i><b>4.4.2</b> ランダム化を用いない方法</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="5" data-path="Chapter5-1.html"><a href="Chapter5-1.html"><i class="fa fa-check"></i><b>5</b> ネットワークベース拡散分析(NBDA)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="Chapter5-1.html"><a href="Chapter5-1.html#s5-1"><i class="fa fa-check"></i><b>5.1</b> ネットワークベース拡散分析とは</a></li>
+<li class="chapter" data-level="5.2" data-path="Chapter5-2.html"><a href="Chapter5-2.html"><i class="fa fa-check"></i><b>5.2</b> NBDAの基礎</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="Chapter5-2.html"><a href="Chapter5-2.html#基本的なモデル"><i class="fa fa-check"></i><b>5.2.1</b> 基本的なモデル</a></li>
+<li class="chapter" data-level="5.2.2" data-path="Chapter5-2.html"><a href="Chapter5-2.html#nbdaに用いる社会ネットワーク"><i class="fa fa-check"></i><b>5.2.2</b> NBDAに用いる社会ネットワーク</a>
+<ul>
+<li class="chapter" data-level="5.2.2.1" data-path="Chapter5-2.html"><a href="Chapter5-2.html#どのような種類の社会ネットワークを用いるべきか"><i class="fa fa-check"></i><b>5.2.2.1</b> どのような種類の社会ネットワークを用いるべきか</a></li>
+<li class="chapter" data-level="5.2.2.2" data-path="Chapter5-2.html"><a href="Chapter5-2.html#行動頻度で重みづける"><i class="fa fa-check"></i><b>5.2.2.2</b> 行動頻度で重みづける</a></li>
+<li class="chapter" data-level="5.2.2.3" data-path="Chapter5-2.html"><a href="Chapter5-2.html#動的なネットワーク"><i class="fa fa-check"></i><b>5.2.2.3</b> 動的なネットワーク</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="sessioninfo.html"><a href="sessioninfo.html"><i class="fa fa-check"></i>実行環境</a></li>
 </ul>
 
@@ -313,7 +330,7 @@ div.csl-indent {
 <span id="cb2-18"><a href="Chapter1-2.html#cb2-18" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="at">font_size =</span> <span class="dv">10</span>, <span class="at">full_width =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <table class="table" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
 <caption style="font-size: initial !important;">
-<span id="tab:unnamed-chunk-3">表1.1: </span>作成した隣接行列
+<span id="tab:unnamed-chunk-3">表1.1: </span><span id="tab:unnamed-chunk-3">表1.2: </span>作成した隣接行列
 </caption>
 <thead>
 <tr>
@@ -711,7 +728,8 @@ H
 ## 4 D    
 ## 5 E    
 ## 6 F    
-## # … with 2 more rows
+## 7 G    
+## 8 H    
 ## #
 ## # Edge Data: 56 × 3
 ##    from    to weight
@@ -719,7 +737,7 @@ H
 ## 1     1     2  0.552
 ## 2     1     3  0.153
 ## 3     1     4  0.930
-## # … with 53 more rows</code></pre>
+## # ℹ 53 more rows</code></pre>
 <p>なお、各ノードの名前以外の情報もグラフに反映させたい場合は、以下のように情報を追加できる。ここでは、各個体の年齢の情報を追加した。</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="Chapter1-2.html#cb6-1" tabindex="-1"></a>graph_mat_example2 <span class="sc">%&gt;%</span> </span>
 <span id="cb6-2"><a href="Chapter1-2.html#cb6-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> <span class="fu">c</span>(<span class="dv">12</span>,<span class="dv">10</span>,<span class="dv">15</span>,<span class="dv">6</span>,<span class="dv">20</span>,<span class="dv">13</span>,<span class="dv">8</span>,<span class="dv">7</span>)) <span class="ot">-&gt;</span> graph_mat_example2</span>
@@ -738,7 +756,8 @@ H
 ## 4 D         6
 ## 5 E        20
 ## 6 F        13
-## # … with 2 more rows
+## 7 G         8
+## 8 H         7
 ## #
 ## # Edge Data: 56 × 3
 ##    from    to weight
@@ -746,7 +765,7 @@ H
 ## 1     1     2  0.552
 ## 2     1     3  0.153
 ## 3     1     4  0.930
-## # … with 53 more rows</code></pre>
+## # ℹ 53 more rows</code></pre>
 <p>グラフに使用するデータを絞り込むなどの作業をする場合は、一度隣接行列を辺リストのデータフレームに変換してから(<code>mat.to.edgl()</code>で可能)データフレームを加工し、その後に<code>as_tbl_graph()</code>を用いるとよい。以下では、重みが0.7以上の辺のみを抽出している。</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="Chapter1-2.html#cb8-1" tabindex="-1"></a>mat_example2 <span class="sc">%&gt;%</span></span>
 <span id="cb8-2"><a href="Chapter1-2.html#cb8-2" tabindex="-1"></a>  <span class="do">## 辺リストのデータフレームに変換</span></span>
@@ -771,7 +790,8 @@ H
 ## 4 D         6
 ## 5 E        20
 ## 6 F        13
-## # … with 2 more rows
+## 7 G         8
+## 8 H         7
 ## #
 ## # Edge Data: 56 × 3
 ##    from    to weight
@@ -779,7 +799,7 @@ H
 ## 1     1     2  0.552
 ## 2     1     3  0.153
 ## 3     1     4  0.930
-## # … with 53 more rows</code></pre>
+## # ℹ 53 more rows</code></pre>
 </div>
 <div id="ggraphを用いた描画" class="section level4 hasAnchor" number="1.2.3.2">
 <h4><span class="header-section-number">1.2.3.2</span> <code>ggraph</code>を用いた描画<a href="Chapter1-2.html#ggraphを用いた描画" class="anchor-section" aria-label="Anchor link to header"></a></h4>

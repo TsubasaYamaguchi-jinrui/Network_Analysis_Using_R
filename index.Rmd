@@ -41,34 +41,41 @@ library(ggsci)
 
 ## データのインポート
 journal <- read_csv("data/journal.csv") %>% 
-  mutate(journal = fct_relevel(journal,c("Animal","BES","AJP","IJP","Prim"))) %>% 
-  mutate(text = str_c(include,"/",total))
-
-labeller <- as_labeller(c("Prim" = "Primates",
-                          "Animal" = "Animal Behaviour",
-                          "BES" = "Behavioral Ecology and Sociobiology",
-                          "AJP" = "American Journal of Primatology",
-                          "IJP" = "International Journal of Primatology"))
+  mutate(text = str_c(include,"/",total)) %>% 
+  mutate(year = str_c(start, "-",end)) %>% 
+  mutate(journal_name = str_replace_all(journal_name,
+                                        c("Ethology" = "'Ethology'を含む雑誌",
+                                        "Ecology" = "'Ecology'を含む雑誌",
+                                        "Animal Behaviour" =
+                                          "'Animal behaviour'を含む雑誌")))%>% 
+  mutate(journal_name = fct_relevel(journal_name,
+                                    "American Journal of Primatology",
+                                    "International Journal of Primatology",
+                                    "Primates",
+                                    "Behavioral ecology and sociobiology",
+                                    "'Animal behaviour'を含む雑誌",
+                                    "'Ecology'を含む雑誌",
+                                    "'Ethology'を含む雑誌")) 
 
 
 ## グラフの描画
 journal %>% 
-  ggplot(aes(x = year, y = rate, group = journal))+
-  geom_point(aes(color = journal), size = 5, shape = 5, stroke = 1)+
-  geom_line(aes(color = journal), linewidth = 1)+
+  ggplot(aes(x = year, y = rate, group = journal_name))+
+  geom_point(aes(color = journal_name), size = 5, shape = 5, stroke = 1)+
+  geom_line(aes(color = journal_name), linewidth = 1)+
   theme_bw(base_size = 30)+
   theme(aspect.ratio=0.6,
-        legend.position = c(0.25,0.7),
+        legend.position = c(0.3,0.75),
         axis.text.x = element_text(angle=-30,
                                    size = 20),
-        legend.text = element_text(size = 20),
+        legend.text = element_text(size = 22),
         legend.spacing.y = unit(5,"mm"))+
   scale_y_continuous(breaks = seq(0,0.5,0.02))+
    guides(color = guide_legend(byrow = TRUE))+
   labs(x = "",
        y = "",
        color = "")+
-  scale_color_nejm(label = labeller)+
+  scale_color_nejm()+
   coord_cartesian(ylim = c(0,0.1)) 
 ```
 <br/>  

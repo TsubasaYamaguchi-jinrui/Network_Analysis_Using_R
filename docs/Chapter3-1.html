@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>3.1 ノードについての諸指標(中心性指標) | Network Analysis Using R</title>
   <meta name="description" content="3.1 ノードについての諸指標(中心性指標) | Network Analysis Using R" />
-  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
 
   <meta property="og:title" content="3.1 ノードについての諸指標(中心性指標) | Network Analysis Using R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Tsubasa Yamaguchi" />
 
 
-<meta name="date" content="2023-10-25" />
+<meta name="date" content="2024-06-20" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -54,18 +54,21 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="libs/datatables-binding-0.27/datatables.js"></script>
-<link href="libs/dt-core-1.12.1/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="libs/dt-core-1.12.1/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="libs/dt-core-1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="libs/datatables-binding-0.33/datatables.js"></script>
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
 <link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
 <script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
 <link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
 <script src="libs/selectize-0.12.0/selectize.min.js"></script>
-<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
 
 
 <style type="text/css">
@@ -254,6 +257,20 @@ div.csl-indent {
 <li class="chapter" data-level="4.4.2" data-path="Chapter4-4.html"><a href="Chapter4-4.html#ランダム化を用いない方法"><i class="fa fa-check"></i><b>4.4.2</b> ランダム化を用いない方法</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="5" data-path="Chapter5-1.html"><a href="Chapter5-1.html"><i class="fa fa-check"></i><b>5</b> ネットワークベース拡散分析(NBDA)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="Chapter5-1.html"><a href="Chapter5-1.html#s5-1"><i class="fa fa-check"></i><b>5.1</b> ネットワークベース拡散分析とは</a></li>
+<li class="chapter" data-level="5.2" data-path="Chapter5-2.html"><a href="Chapter5-2.html"><i class="fa fa-check"></i><b>5.2</b> NBDAの基礎</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="Chapter5-2.html"><a href="Chapter5-2.html#基本的なモデル"><i class="fa fa-check"></i><b>5.2.1</b> 基本的なモデル</a></li>
+<li class="chapter" data-level="5.2.2" data-path="Chapter5-2.html"><a href="Chapter5-2.html#nbdaに用いる社会ネットワーク"><i class="fa fa-check"></i><b>5.2.2</b> NBDAに用いる社会ネットワーク</a>
+<ul>
+<li class="chapter" data-level="5.2.2.1" data-path="Chapter5-2.html"><a href="Chapter5-2.html#どのような種類の社会ネットワークを用いるべきか"><i class="fa fa-check"></i><b>5.2.2.1</b> どのような種類の社会ネットワークを用いるべきか</a></li>
+<li class="chapter" data-level="5.2.2.2" data-path="Chapter5-2.html"><a href="Chapter5-2.html#行動頻度で重みづける"><i class="fa fa-check"></i><b>5.2.2.2</b> 行動頻度で重みづける</a></li>
+<li class="chapter" data-level="5.2.2.3" data-path="Chapter5-2.html"><a href="Chapter5-2.html#動的なネットワーク"><i class="fa fa-check"></i><b>5.2.2.3</b> 動的なネットワーク</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="" data-path="sessioninfo.html"><a href="sessioninfo.html"><i class="fa fa-check"></i>実行環境</a></li>
 </ul>
 
@@ -283,8 +300,8 @@ div.csl-indent {
 <span id="cb25-4"><a href="Chapter3-1.html#cb25-4" tabindex="-1"></a></span>
 <span id="cb25-5"><a href="Chapter3-1.html#cb25-5" tabindex="-1"></a>attr <span class="sc">%&gt;%</span> </span>
 <span id="cb25-6"><a href="Chapter3-1.html#cb25-6" tabindex="-1"></a>  <span class="fu">datatable</span>(<span class="at">rownames =</span> <span class="cn">FALSE</span>, <span class="at">width =</span> <span class="st">&quot;55%&quot;</span>)</span></code></pre></div>
-<div id="htmlwidget-2492170e630ddcf0f96a" style="width:55%;height:auto;" class="datatables html-widget "></div>
-<script type="application/json" data-for="htmlwidget-2492170e630ddcf0f96a">{"x":{"filter":"none","vertical":false,"data":[["A","B","C","D","E","F","G","H"],[12,13,12,11,14,15,18,9],[2,3,4,1,8,1,7,6]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>name<\/th>\n      <th>age<\/th>\n      <th>rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-87add0b2dfe2f1f90b81" style="width:55%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-87add0b2dfe2f1f90b81">{"x":{"filter":"none","vertical":false,"data":[["A","B","C","D","E","F","G","H"],[12,13,12,11,14,15,18,9],[2,3,4,1,8,1,7,6]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>name<\/th>\n      <th>age<\/th>\n      <th>rank<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,2]},{"name":"name","targets":0},{"name":"age","targets":1},{"name":"rank","targets":2}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 <p><br/></p>
 <div id="近接中心性closeness-centrality" class="section level3 hasAnchor" number="3.1.1">
 <h3><span class="header-section-number">3.1.1</span> 近接中心性(closeness centrality)<a href="Chapter3-1.html#近接中心性closeness-centrality" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -657,7 +674,7 @@ H
 <p><strong>重み付き中心性</strong>は、各ノードに接続している辺の重みの合計で表される中心性である。図<a href="Chapter3-1.html#fig:fig-strength">3.3</a>は表<a href="Chapter3-1.html#tab:tab-strength">3.1</a>の隣接行列(<code>mat_undir_b</code>)のグラフである。グラフの辺上の数字は重みを表す。このとき、Aの重み付き中心性は<span class="math inline">\(3 + 2+ 2+ 1 +1=9\)</span>、Cの重み付き中心性は<span class="math inline">\(3 + 2 = 5\)</span>である。</p>
 <table class="table" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
 <caption style="font-size: initial !important;">
-<span id="tab:tab-strength">表3.1: </span>隣接行列(mat_undir_b)
+<span id="tab:tab-strength">表3.1: </span><span id="tab:tab-strength">表3.2: </span>隣接行列(mat_undir_b)
 </caption>
 <thead>
 <tr>
@@ -1245,7 +1262,7 @@ c &amp;= \frac{1}{\lambda} Ac\\
 <li><p><strong>outeigen</strong>: 他の個体をよく毛づくろいする個体にたくさん毛づくろいするとき、outeigenが大きくなる。</p></li>
 </ul>
 <p><br/></p>
-<p>例えば、第<a href="Chapter2-1.html#c2">2</a>章で算出した表<a href="Chapter2-1.html#tab:tab-groom">2.2</a>の隣接行列(<code>groom_mat</code>)のineigenとouteigenは、<code>ANTs</code>パッケージを用いて以下のように求められる。</p>
+<p>例えば、第<a href="Chapter2-1.html#c2">2</a>章で算出した表<a href="Chapter2-1.html#tab:tab-groom">2.3</a>の隣接行列(<code>groom_mat</code>)のineigenとouteigenは、<code>ANTs</code>パッケージを用いて以下のように求められる。</p>
 <div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="Chapter3-1.html#cb41-1" tabindex="-1"></a><span class="do">## 属性テーブル  </span></span>
 <span id="cb41-2"><a href="Chapter3-1.html#cb41-2" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">femaleID =</span> <span class="fu">colnames</span>(groom_mat))</span>
 <span id="cb41-3"><a href="Chapter3-1.html#cb41-3" tabindex="-1"></a></span>
@@ -1272,8 +1289,8 @@ c &amp;= \frac{1}{\lambda} Ac\\
 <span id="cb41-24"><a href="Chapter3-1.html#cb41-24" tabindex="-1"></a>          <span class="do">## ineigenの場合はFALSE</span></span>
 <span id="cb41-25"><a href="Chapter3-1.html#cb41-25" tabindex="-1"></a>          <span class="at">out =</span> <span class="cn">TRUE</span></span>
 <span id="cb41-26"><a href="Chapter3-1.html#cb41-26" tabindex="-1"></a>          ) <span class="ot">-&gt;</span> df</span></code></pre></div>
-<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-91e4bd387e56e8aca50d" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-91e4bd387e56e8aca50d">{"x":{"filter":"none","vertical":false,"data":[["Aka","Ako","Hen","Hot","Kil","Kit","Koh","Kor","Kun","Kur","Mal","Mei","Mik","Ntr","Tam","Ten","Tot"],[0.76036700308375,1,0.0695217117308252,0.059042259281535,0.0158045825429297,0.0261505069519921,0.0420828763565201,0.0545843809013336,0.0260563004816436,0.0327762964076979,0.0639410608247011,0.251550138844253,0.0664628656544623,0.0771733982842424,0.0543869722920617,0.090003393293631,0.0509103233593297],[1,0.802027928320219,0.102657017323234,0.0604731495699513,0.12676266632486,0.148224230493757,0.120605943417836,0.14733205959475,0.0690625070869645,0.149891444705315,0.0734539344323567,0.229354707723829,0.074058543595848,0.117501734876174,0.046690854995725,0.12394653055692,0.0751177963161335]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>femaleID<\/th>\n      <th>outeigen<\/th>\n      <th>ineigen<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render"],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-360e52f16de4f566bc6e" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-360e52f16de4f566bc6e">{"x":{"filter":"none","vertical":false,"data":[["Aka","Ako","Hen","Hot","Kil","Kit","Koh","Kor","Kun","Kur","Mal","Mei","Mik","Ntr","Tam","Ten","Tot"],[1,0.8020279283202192,0.1026570173232337,0.0604731495699513,0.1267626663248604,0.1482242304937574,0.1206059434178356,0.1473320595947498,0.06906250708696454,0.1498914447053147,0.0734539344323567,0.2293547077238293,0.07405854359584803,0.1175017348761744,0.04669085499572496,0.1239465305569196,0.07511779631613349],[0.7603670030837502,1,0.06952171173082519,0.059042259281535,0.01580458254292968,0.02615050695199212,0.0420828763565201,0.05458438090133362,0.02605630048164364,0.03277629640769792,0.06394106082470111,0.2515501388442533,0.06646286565446227,0.07717339828424244,0.05438697229206172,0.09000339329363095,0.05091032335932966]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>femaleID<\/th>\n      <th>ineigen<\/th>\n      <th>outeigen<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"targets":1,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"targets":2,"render":"function(data, type, row, meta) {\n    return type !== 'display' ? data : DTWidget.formatRound(data, 3, 3, \",\", \".\", null);\n  }"},{"className":"dt-right","targets":[1,2]},{"name":"femaleID","targets":0},{"name":"ineigen","targets":1},{"name":"outeigen","targets":2}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":["options.columnDefs.0.render","options.columnDefs.1.render"],"jsHooks":[]}</script>
 <p><br/></p>
 <p>それぞれineigen(左)とouteigen(右)の値をノードの大きさに反映させたグラフが図<a href="Chapter3-1.html#fig:fig-eigen-b">3.5</a>である。</p>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-eigen-b"></span>
@@ -1286,10 +1303,10 @@ c &amp;= \frac{1}{\lambda} Ac\\
 <div id="pagerank" class="section level3 hasAnchor" number="3.1.5">
 <h3><span class="header-section-number">3.1.5</span> PageRank<a href="Chapter3-1.html#pagerank" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>固有ベクトル中心性は、分離したグラフや有向グラフの中心性分析には使いにくい。<strong>PageRankは</strong>固有ベクトルに基づきながら、これらのグラフにも適用できる中心性指標である。もともとはウェブページの評価法として、Google創業者であるラリー・ペイジとセルゲイ・ブリンらによって開発され<span class="citation">(<a href="#ref-Page1999">Page et al., 1999</a>)</span>、他ページからのリンクが多いページほどランキングが高く、ランキングの高いページからのリンクや、他のページへのリンクが少ないページからのリンクを高く評価するというアルゴリズムに従う。詳細な算出方法は複雑なので、ここでは説明しない。詳しくは <span class="citation">鈴木 (<a href="#ref-Suzuki2017">2017</a>)</span> を参照。</p>
-<p>PageRankは<code>igraph</code>パッケージを用いて算出できる。表<a href="Chapter3-1.html#tab:tab-pagerank">3.2</a>の隣接行列(<code>mat_dir_b</code>)のPageRankを算出する。</p>
+<p>PageRankは<code>igraph</code>パッケージを用いて算出できる。表<a href="Chapter3-1.html#tab:tab-pagerank">3.3</a>の隣接行列(<code>mat_dir_b</code>)のPageRankを算出する。</p>
 <table class="table" style="font-size: 10px; width: auto !important; margin-left: auto; margin-right: auto;">
 <caption style="font-size: initial !important;">
-<span id="tab:tab-pagerank">表3.2: </span>隣接行列(mat_dir_b)
+<span id="tab:tab-pagerank">表3.3: </span><span id="tab:tab-pagerank">表3.4: </span>隣接行列(mat_dir_b)
 </caption>
 <thead>
 <tr>
@@ -1608,7 +1625,7 @@ H
 C_b(i) = \sum_{i \neq j \neq k} \frac {g_{jk}(i)}{g_{jk}}
 \]</span>
 <br/></p>
-<p><code>ANTs</code>パッケージでは<code>met.betweeness()</code>関数で、<code>sna</code>パッケージでは<code>sna::betweeness()</code>関数で媒介中心性を求められる。表<a href="Chapter3-1.html#tab:tab-pagerank">3.2</a>の隣接行列(<code>mat_dir_b</code>)について算出すると、以下のようになる。</p>
+<p><code>ANTs</code>パッケージでは<code>met.betweeness()</code>関数で、<code>sna</code>パッケージでは<code>sna::betweeness()</code>関数で媒介中心性を求められる。表<a href="Chapter3-1.html#tab:tab-pagerank">3.3</a>の隣接行列(<code>mat_dir_b</code>)について算出すると、以下のようになる。</p>
 <div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="Chapter3-1.html#cb45-1" tabindex="-1"></a><span class="do">## ANTs</span></span>
 <span id="cb45-2"><a href="Chapter3-1.html#cb45-2" tabindex="-1"></a><span class="fu">met.betweenness</span>(mat_dir_b,</span>
 <span id="cb45-3"><a href="Chapter3-1.html#cb45-3" tabindex="-1"></a>                <span class="do">## 重みなしならTRUE</span></span>
@@ -1786,7 +1803,7 @@ H
 <p>このとき、各ノード<span class="math inline">\(i\)</span>の情報中心性(<span class="math inline">\(C_{inf}(i)\)</span>)は、<strong>ノード</strong><span class="math inline">\(i\)</span><strong>が含まれるノードペアの情報量の調和平均</strong><a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>になる。数式では以下のように書ける。ただし、<span class="math inline">\(n\)</span>は全ノードの数である。</p>
 <p><span class="math inline">\(C_{inf}(i) = \frac{n}{\sum_{j=1}^n 1/I_{ij}}\)</span></p>
 <p><br/></p>
-<p>情報中心性は<code>sna</code>パッケージの<code>infocent()</code>関数で求められる。表<a href="Chapter3-1.html#tab:tab-pagerank">3.2</a>の隣接行列(<code>mat_dir_b</code>)について算出すると、以下のようになる。</p>
+<p>情報中心性は<code>sna</code>パッケージの<code>infocent()</code>関数で求められる。表<a href="Chapter3-1.html#tab:tab-pagerank">3.3</a>の隣接行列(<code>mat_dir_b</code>)について算出すると、以下のようになる。</p>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="Chapter3-1.html#cb48-1" tabindex="-1"></a><span class="fu">infocent</span>(mat_dir_b,</span>
 <span id="cb48-2"><a href="Chapter3-1.html#cb48-2" tabindex="-1"></a>         <span class="do">##無向グラフなら &quot;graph&quot;</span></span>
 <span id="cb48-3"><a href="Chapter3-1.html#cb48-3" tabindex="-1"></a>         <span class="at">gmode =</span> <span class="st">&quot;digraph&quot;</span>)</span></code></pre></div>

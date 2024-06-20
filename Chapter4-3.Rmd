@@ -272,8 +272,8 @@ glm_ants <- stat.glm(ant = att_list,
 ```
 
 分析結果は、`ant`関数を用いることで確認できる。  
-実データの回帰係数とランダムネットワークの回帰係数の分布の比較は以下のように可視化できる(図\@ref(fig:fig-npermtest-e))。  
-```{r fig-npermtest-e, fig.dim = c(12,5.5), fig.cap = "実データの回帰係数とランダムネットワークの回帰係数の分布の比較"}
+実データの回帰係数とランダムネットワークの回帰係数の分布の比較は以下のように可視化できる。  
+```{r fig-npermteste, fig.dim = c(12,5.5), fig.cap = "実データの回帰係数とランダムネットワークの回帰係数の分布の比較"}
 r_glm_ants <- ant(glm_ants)
 ```
 <br/>  

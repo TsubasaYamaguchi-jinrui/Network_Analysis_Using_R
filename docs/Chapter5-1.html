@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>5 ネットワークベース拡散分析(NBDA) | Network Analysis Using R</title>
+  <meta name="description" content="5 ネットワークベース拡散分析(NBDA) | Network Analysis Using R" />
+  <meta name="generator" content="bookdown 0.39 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="5 ネットワークベース拡散分析(NBDA) | Network Analysis Using R" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="5 ネットワークベース拡散分析(NBDA) | Network Analysis Using R" />
+  
+  
+  
+
+<meta name="author" content="Tsubasa Yamaguchi" />
+
+
+<meta name="date" content="2024-06-20" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="Chapter4-4.html"/>
+<link rel="next" href="Chapter5-2.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
+<script src="libs/datatables-binding-0.33/datatables.js"></script>
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="libs/nouislider-7.0.10/jquery.nouislider.min.css" rel="stylesheet" />
+<script src="libs/nouislider-7.0.10/jquery.nouislider.min.js"></script>
+<link href="libs/selectize-0.12.0/selectize.bootstrap3.css" rel="stylesheet" />
+<script src="libs/selectize-0.12.0/selectize.min.js"></script>
+<link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="custom_style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>本稿の目的</a></li>
+<li class="chapter" data-level="" data-path="Chapter0.html"><a href="Chapter0.html"><i class="fa fa-check"></i>0. パッケージの読み込み</a></li>
+<li class="chapter" data-level="1" data-path="Chapter1-1.html"><a href="Chapter1-1.html"><i class="fa fa-check"></i><b>1</b> 社会ネットワーク分析の概説</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="Chapter1-1.html"><a href="Chapter1-1.html#社会ネットワーク分析snaとは"><i class="fa fa-check"></i><b>1.1</b> 社会ネットワーク分析(SNA)とは</a></li>
+<li class="chapter" data-level="1.2" data-path="Chapter1-2.html"><a href="Chapter1-2.html"><i class="fa fa-check"></i><b>1.2</b> 社会ネットワークの基礎</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="Chapter1-2.html"><a href="Chapter1-2.html#グラフ"><i class="fa fa-check"></i><b>1.2.1</b> グラフ</a></li>
+<li class="chapter" data-level="1.2.2" data-path="Chapter1-2.html"><a href="Chapter1-2.html#隣接行列マトリックス"><i class="fa fa-check"></i><b>1.2.2</b> 隣接行列(マトリックス)</a></li>
+<li class="chapter" data-level="1.2.3" data-path="Chapter1-2.html"><a href="Chapter1-2.html#rでのグラフの描画"><i class="fa fa-check"></i><b>1.2.3</b> Rでのグラフの描画</a>
+<ul>
+<li class="chapter" data-level="1.2.3.1" data-path="Chapter1-2.html"><a href="Chapter1-2.html#tbl_graphクラスへの変換"><i class="fa fa-check"></i><b>1.2.3.1</b> <code>tbl_graph</code>クラスへの変換</a></li>
+<li class="chapter" data-level="1.2.3.2" data-path="Chapter1-2.html"><a href="Chapter1-2.html#ggraphを用いた描画"><i class="fa fa-check"></i><b>1.2.3.2</b> <code>ggraph</code>を用いた描画</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="Chapter2-1.html"><a href="Chapter2-1.html"><i class="fa fa-check"></i><b>2</b> データの読み込みとマトリックスの作成</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="Chapter2-1.html"><a href="Chapter2-1.html#s2-1"><i class="fa fa-check"></i><b>2.1</b> 2個体間の交渉を記録したデータフレーム</a></li>
+<li class="chapter" data-level="2.2" data-path="Chapter2-2.html"><a href="Chapter2-2.html"><i class="fa fa-check"></i><b>2.2</b> Group by individual</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="Chapter3-0.html"><a href="Chapter3-0.html"><i class="fa fa-check"></i><b>3</b> ネットワーク指標の算出</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="Chapter3-1.html"><a href="Chapter3-1.html"><i class="fa fa-check"></i><b>3.1</b> ノードについての諸指標(中心性指標)</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="Chapter3-1.html"><a href="Chapter3-1.html#近接中心性closeness-centrality"><i class="fa fa-check"></i><b>3.1.1</b> 近接中心性(closeness centrality)</a></li>
+<li class="chapter" data-level="3.1.2" data-path="Chapter3-1.html"><a href="Chapter3-1.html#次数中心性degree-centrality"><i class="fa fa-check"></i><b>3.1.2</b> 次数中心性(Degree centrality)</a></li>
+<li class="chapter" data-level="3.1.3" data-path="Chapter3-1.html"><a href="Chapter3-1.html#重み付き中心性strength-centrality"><i class="fa fa-check"></i><b>3.1.3</b> 重み付き中心性(Strength centrality)</a></li>
+<li class="chapter" data-level="3.1.4" data-path="Chapter3-1.html"><a href="Chapter3-1.html#固有ベクトル中心性eigenvector-centrality"><i class="fa fa-check"></i><b>3.1.4</b> 固有ベクトル中心性(Eigenvector centrality)</a></li>
+<li class="chapter" data-level="3.1.5" data-path="Chapter3-1.html"><a href="Chapter3-1.html#pagerank"><i class="fa fa-check"></i><b>3.1.5</b> PageRank</a></li>
+<li class="chapter" data-level="3.1.6" data-path="Chapter3-1.html"><a href="Chapter3-1.html#媒介中心性betweeness-centrality"><i class="fa fa-check"></i><b>3.1.6</b> 媒介中心性(Betweeness centrality)</a></li>
+<li class="chapter" data-level="3.1.7" data-path="Chapter3-1.html"><a href="Chapter3-1.html#情報中心性information-centrality"><i class="fa fa-check"></i><b>3.1.7</b> 情報中心性(Information centrality)</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="Chapter3-2.html"><a href="Chapter3-2.html"><i class="fa fa-check"></i><b>3.2</b> ネットワーク構造の諸指標</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="Chapter3-2.html"><a href="Chapter3-2.html#集中度centralization"><i class="fa fa-check"></i><b>3.2.1</b> 集中度(Centralization)</a></li>
+<li class="chapter" data-level="3.2.2" data-path="Chapter3-2.html"><a href="Chapter3-2.html#密度density"><i class="fa fa-check"></i><b>3.2.2</b> 密度(Density)</a></li>
+<li class="chapter" data-level="3.2.3" data-path="Chapter3-2.html"><a href="Chapter3-2.html#同類性assortativity"><i class="fa fa-check"></i><b>3.2.3</b> 同類性(Assortativity)</a>
+<ul>
+<li class="chapter" data-level="3.2.3.1" data-path="Chapter3-2.html"><a href="Chapter3-2.html#連続的な属性の場合"><i class="fa fa-check"></i><b>3.2.3.1</b> 連続的な属性の場合</a></li>
+<li class="chapter" data-level="3.2.3.2" data-path="Chapter3-2.html"><a href="Chapter3-2.html#離散的な属性の場合"><i class="fa fa-check"></i><b>3.2.3.2</b> 離散的な属性の場合</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2.4" data-path="Chapter3-2.html"><a href="Chapter3-2.html#推移性transitivity"><i class="fa fa-check"></i><b>3.2.4</b> 推移性(Transitivity)</a></li>
+<li class="chapter" data-level="3.2.5" data-path="Chapter3-2.html"><a href="Chapter3-2.html#modularity"><i class="fa fa-check"></i><b>3.2.5</b> Modularity</a></li>
+<li class="chapter" data-level="3.2.6" data-path="Chapter3-2.html"><a href="Chapter3-2.html#応用例下位集団の検出"><i class="fa fa-check"></i><b>3.2.6</b> 応用例(下位集団の検出)</a>
+<ul>
+<li class="chapter" data-level="3.2.6.1" data-path="Chapter3-2.html"><a href="Chapter3-2.html#modularityを用いる方法"><i class="fa fa-check"></i><b>3.2.6.1</b> Modularityを用いる方法</a></li>
+<li class="chapter" data-level="3.2.6.2" data-path="Chapter3-2.html"><a href="Chapter3-2.html#構造類似性を用いる方法"><i class="fa fa-check"></i><b>3.2.6.2</b> 構造類似性を用いる方法</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2.7" data-path="Chapter3-2.html"><a href="Chapter3-2.html#その他"><i class="fa fa-check"></i><b>3.2.7</b> その他</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="Chapter4-1.html"><a href="Chapter4-1.html"><i class="fa fa-check"></i><b>4</b> 統計的検定</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="Chapter4-1.html"><a href="Chapter4-1.html#s4-1"><i class="fa fa-check"></i><b>4.1</b> なぜランダム化検定が必要か？</a></li>
+<li class="chapter" data-level="4.2" data-path="Chapter4-2.html"><a href="Chapter4-2.html"><i class="fa fa-check"></i><b>4.2</b> Network permutation</a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="Chapter4-2.html"><a href="Chapter4-2.html#node-permutationの手法"><i class="fa fa-check"></i><b>4.2.1</b> Node permutationの手法</a></li>
+<li class="chapter" data-level="4.2.2" data-path="Chapter4-2.html"><a href="Chapter4-2.html#分析例"><i class="fa fa-check"></i><b>4.2.2</b> 分析例</a>
+<ul>
+<li class="chapter" data-level="4.2.2.1" data-path="Chapter4-2.html"><a href="Chapter4-2.html#線形モデルglmglmmなど"><i class="fa fa-check"></i><b>4.2.2.1</b> 線形モデル(GLM、GLMMなど)</a></li>
+<li class="chapter" data-level="4.2.2.2" data-path="Chapter4-2.html"><a href="Chapter4-2.html#ネットワーク同士の関連の検討"><i class="fa fa-check"></i><b>4.2.2.2</b> ネットワーク同士の関連の検討</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2.3" data-path="Chapter4-2.html"><a href="Chapter4-2.html#node-permutationの欠点"><i class="fa fa-check"></i><b>4.2.3</b> Node permutationの欠点</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="Chapter4-3.html"><a href="Chapter4-3.html"><i class="fa fa-check"></i><b>4.3</b> Pre-network permutation</a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="Chapter4-3.html"><a href="Chapter4-3.html#pre-network-permutationの手法"><i class="fa fa-check"></i><b>4.3.1</b> Pre-network permutationの手法</a></li>
+<li class="chapter" data-level="4.3.2" data-path="Chapter4-3.html"><a href="Chapter4-3.html#分析例-1"><i class="fa fa-check"></i><b>4.3.2</b> 分析例</a>
+<ul>
+<li class="chapter" data-level="4.3.2.1" data-path="Chapter4-3.html"><a href="Chapter4-3.html#snaパッケージを用いる方法-1"><i class="fa fa-check"></i><b>4.3.2.1</b> <code>sna</code>パッケージを用いる方法</a></li>
+<li class="chapter" data-level="4.3.2.2" data-path="Chapter4-3.html"><a href="Chapter4-3.html#antsパッケージを用いる方法-1"><i class="fa fa-check"></i><b>4.3.2.2</b> <code>ANTs</code>パッケージを用いる方法</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3.3" data-path="Chapter4-3.html"><a href="Chapter4-3.html#pre-network-permutationの欠点"><i class="fa fa-check"></i><b>4.3.3</b> Pre-network permutationの欠点</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="Chapter4-4.html"><a href="Chapter4-4.html"><i class="fa fa-check"></i><b>4.4</b> パーミュテーション検定以外の統計的検定方法</a>
+<ul>
+<li class="chapter" data-level="4.4.1" data-path="Chapter4-4.html"><a href="Chapter4-4.html#指数ランダムグラフモデルと確率的アクター志向モデル"><i class="fa fa-check"></i><b>4.4.1</b> 指数ランダムグラフモデルと確率的アクター志向モデル</a></li>
+<li class="chapter" data-level="4.4.2" data-path="Chapter4-4.html"><a href="Chapter4-4.html#ランダム化を用いない方法"><i class="fa fa-check"></i><b>4.4.2</b> ランダム化を用いない方法</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="Chapter5-1.html"><a href="Chapter5-1.html"><i class="fa fa-check"></i><b>5</b> ネットワークベース拡散分析(NBDA)</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="Chapter5-1.html"><a href="Chapter5-1.html#s5-1"><i class="fa fa-check"></i><b>5.1</b> ネットワークベース拡散分析とは</a></li>
+<li class="chapter" data-level="5.2" data-path="Chapter5-2.html"><a href="Chapter5-2.html"><i class="fa fa-check"></i><b>5.2</b> NBDAの基礎</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="Chapter5-2.html"><a href="Chapter5-2.html#基本的なモデル"><i class="fa fa-check"></i><b>5.2.1</b> 基本的なモデル</a></li>
+<li class="chapter" data-level="5.2.2" data-path="Chapter5-2.html"><a href="Chapter5-2.html#nbdaに用いる社会ネットワーク"><i class="fa fa-check"></i><b>5.2.2</b> NBDAに用いる社会ネットワーク</a>
+<ul>
+<li class="chapter" data-level="5.2.2.1" data-path="Chapter5-2.html"><a href="Chapter5-2.html#どのような種類の社会ネットワークを用いるべきか"><i class="fa fa-check"></i><b>5.2.2.1</b> どのような種類の社会ネットワークを用いるべきか</a></li>
+<li class="chapter" data-level="5.2.2.2" data-path="Chapter5-2.html"><a href="Chapter5-2.html#行動頻度で重みづける"><i class="fa fa-check"></i><b>5.2.2.2</b> 行動頻度で重みづける</a></li>
+<li class="chapter" data-level="5.2.2.3" data-path="Chapter5-2.html"><a href="Chapter5-2.html#動的なネットワーク"><i class="fa fa-check"></i><b>5.2.2.3</b> 動的なネットワーク</a></li>
+</ul></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="sessioninfo.html"><a href="sessioninfo.html"><i class="fa fa-check"></i>実行環境</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Network Analysis Using R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="c5" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">5</span> ネットワークベース拡散分析(NBDA)<a href="Chapter5-1.html#c5" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="s5-1" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> ネットワークベース拡散分析とは<a href="Chapter5-1.html#s5-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><strong>社会的学習</strong>(social learning)とは、同種個体やその産物を観察したり、他個体と交流したりすることによって影響を受ける学習のことを指す。また、社会的学習によってある行動形質が集団内に広がるとき、それをを社会的伝達(social transmission)という<span class="citation">(<a href="#ref-Hoppitt2011">Hoppitt &amp; Laland, 2011</a>)</span>。ヒトの社会的学習能力は他の類人猿と比べても顕著に高く<span class="citation">(<a href="#ref-Herrmann2007">Herrmann et al., 2007</a>)</span>、ヒトが多様な環境に適応して繫栄することができたのは、この能力に依るところが大きいと考えられている<span class="citation">(<a href="#ref-Henrich2015">Henrich, 2015</a>)</span>。近年、多様な種において社会的学習が見られることが明らかになっており<span class="citation">(cf. <a href="#ref-Galef2005">Galef &amp; Laland, 2005</a>)</span>、社会的学習能力がどのように進化してきたかを探るために数多くの研究が行われている。</p>
+<p>野生の動物を対象に社会的学習・社会的伝達が生じているかを調べるとき、これまでは主に以下のような方法がとられてきた。</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>「民族誌」的方法</strong>: 複数の地域個体群における行動レパートリーを調べる。その違いが遺伝的・環境的要因によるものでなければ、それぞれの地域個体群で行動レパートリーが社会的伝達によって広まったものであるとみなすという方法<span class="citation">(<a href="#ref-Nakagawa2015">Nakagawa et al., 2015</a>; <a href="#ref-Perry2003">Perry et al., 2003</a>; <a href="#ref-VanSchaik2003">Schaik et al., 2003</a>; <a href="#ref-Whiten1999">Whiten et al., 1999</a>)</span>。</p></li>
+<li><p><strong>拡散曲線分析(diffusion curve analysis: DCA)</strong>: 行動を獲得した累積個体数を経過時間を横軸にとってプロットし(= 拡散曲線)、それに数理的なモデルを当てはめる方法<span class="citation">(<a href="#ref-Franz2009">Franz &amp; Nunn, 2009</a>; <a href="#ref-Hoppitt2011">Hoppitt &amp; Laland, 2011</a>)</span>。もし学習が社会的であれば、すでに学習した個体が多いほどモデル(手本)が増えて未学習の個体が新たに学習する確率が増加するので、S字型の曲線になる(図<a href="Chapter5-1.html#fig:DCA">5.1</a>)。一方で、学習が非社会的(= 試行錯誤学習)であれば、未学習の個体が新たに学習する確率は常に一定なのでr字型の曲線になる(図<a href="Chapter5-1.html#fig:DCA">5.1</a>)と予想される。<br />
+</p>
+<div class="figure" style="text-align: center"><span style="display:block;" id="fig:DCA"></span>
+<img src="image/DCA.png" alt="社会的学習・非社会学的学習のときに数理モデルから予測される曲線。Franz &amp; Nunn(2009)から引用。" width="60%" />
+<p class="caption">
+図5.1: 社会的学習・非社会学的学習のときに数理モデルから予測される曲線。Franz &amp; Nunn(2009)から引用。
+</p>
+</div>
+<p><br/></p></li>
+</ol>
+<p>しかし、1の方法では遺伝や環境の影響を完全に排除することが難しいため、実際には遺伝や環境による違いによるものを社会的学習によるものとみなしてしまう可能性があるとの批判がある<span class="citation">(e.g., <a href="#ref-Laland2006">Laland &amp; Janik, 2006</a>)</span>。また2の方法についても、近年の理論的研究から拡散曲線をもとにした学習メカニズムの推定は信頼性が低いことが指摘されるようになっている<span class="citation">(<a href="#ref-Franz2009">Franz &amp; Nunn, 2009</a>; <a href="#ref-Hoppitt2011">Hoppitt &amp; Laland, 2011</a>)</span>。こうした状況を受け、学習が社会的か否かを分析するより信頼性の高い方法として、<strong>ネットワークベース拡散分析(network-based diffusion analysis: NBDA)</strong>が開発された<span class="citation">(<a href="#ref-Franz2009">Franz &amp; Nunn, 2009</a>; <a href="#ref-Hasenjager2021">Hasenjager et al., 2021</a>; <a href="#ref-Hoppitt2010">Hoppitt et al., 2010</a>; <a href="#ref-Hoppitt2017">Hoppitt, 2017</a>; <a href="#ref-Hoppitt2011">Hoppitt &amp; Laland, 2011</a>)</span>。</p>
+<p>NBDAとは、ある行動形質の拡散パターンが社会学習の潜在的機会を表すと考えられる社会ネットワーク(e.g., 毛づくろい、採食、近接ネットワークなど)に沿っているかを統計的に分析することで、学習が社会的に生じているか否かを検討する方法である<span class="citation">(<a href="#ref-Franz2009">Franz &amp; Nunn, 2009</a>; <a href="#ref-Hoppitt2010">Hoppitt et al., 2010</a>; <a href="#ref-Hoppitt2011">Hoppitt &amp; Laland, 2011</a>)</span>。この分析は、<u>もし社会的学習が生じているのであれば、社会的ネットワーク上でつながりが強い個体同士で学習が起きる可能性が高い</u>というということを前提にしている。NBDAでは非社会的学習に対して社会的学習がどの程度強く働いているかを推定することで、遺伝的・系統的・環境的要因などの非社会的要因が学習に与える影響を検討することもできる。</p>
+<p>NBDAはこれまでに様々な種を対象とした研究に適応され、その過程で様々な拡張がなされてきた<span class="citation">(<a href="#ref-Hasenjager2021">Hasenjager et al., 2021</a>; <a href="#ref-Hoppitt2011">Hoppitt &amp; Laland, 2011</a>)</span>。例えば、行動を学習したタイミングが正確にわからなくても、学習した順番のデータがあれば適用できるように拡張されたり(order of acquisition analysis: OADA)、個体の情報(順位、性別、年齢)を考慮できるように拡張されたり、複数の社会ネットワークを通した社会的伝達を分析できるように拡張されたりしている。こうした拡張はRの<code>NBDA</code>パッケージ<span class="citation">(<a href="#ref-Hoppitt2019">Hoppitt et al., 2020</a>)</span>によって実装されており、 <span class="citation">Hasenjager et al. (<a href="#ref-Hasenjager2021">2021</a>)</span> がそれぞれのモデルの解説やRでの実行方法をまとめている。そこで以下では、主に <span class="citation">Hasenjager et al. (<a href="#ref-Hasenjager2021">2021</a>)</span> を参考にNBDAとそれを拡張したモデルについて解説を行うとともに、それらをRで実行する方法についてまとめる。</p>
+
+</div>
+<h3>References</h3>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-Franz2009" class="csl-entry">
+Franz, M., &amp; Nunn, C. L. (2009). Network-based diffusion analysis: A new method for detecting social learning. <em>Proc. Biol. Sci.</em>, <em>276</em>(1663), 1829–1836.
+</div>
+<div id="ref-Galef2005" class="csl-entry">
+Galef, B. G., &amp; Laland, K. N. (2005). Social learning in animals: Empirical studies and theoretical models. <em>Bioscience</em>, <em>55</em>(6), 489–499.
+</div>
+<div id="ref-Hasenjager2021" class="csl-entry">
+Hasenjager, M. J., Leadbeater, E., &amp; Hoppitt, W. (2021). Detecting and quantifying social transmission using network-based diffusion analysis. <em>J. Anim. Ecol.</em>, <em>90</em>(1), 8–26.
+</div>
+<div id="ref-Henrich2015" class="csl-entry">
+Henrich, J. (2015). <em>The secret of our success</em>. Princeton University Press.
+</div>
+<div id="ref-Herrmann2007" class="csl-entry">
+Herrmann, E., Call, J., Hernández-Lloreda, M. V., Hare, B., &amp; Tomasello, M. (2007). Humans have evolved specialized skills of social cognition: The cultural intelligence hypothesis. <em>Science</em>, <em>317</em>(5843), 1360–1366.
+</div>
+<div id="ref-Hoppitt2017" class="csl-entry">
+Hoppitt, W. (2017). The conceptual foundations of network-based diffusion analysis: Choosing networks and interpreting results. <em>Philos. Trans. R. Soc. Lond. B Biol. Sci.</em>, <em>372</em>(1735).
+</div>
+<div id="ref-Hoppitt2010" class="csl-entry">
+Hoppitt, W., Boogert, N. J., &amp; Laland, K. N. (2010). Detecting social transmission in networks. <em>J. Theor. Biol.</em>, <em>263</em>(4), 544–555.
+</div>
+<div id="ref-Hoppitt2011" class="csl-entry">
+Hoppitt, W., &amp; Laland, K. N. (2011). Detecting social learning using networks: A users guide. <em>Am. J. Primatol.</em>, <em>73</em>(8), 834–844.
+</div>
+<div id="ref-Hoppitt2019" class="csl-entry">
+Hoppitt, W., Photopoulou, T., Hasenjager, M., &amp; Leadbeater, E. (2020). <em>NBDA: A package for implementing network-based diffusion analysis</em>. <a href="https://github.com/whoppitt/NBDA">https://github.com/whoppitt/NBDA</a>
+</div>
+<div id="ref-Laland2006" class="csl-entry">
+Laland, K. N., &amp; Janik, V. M. (2006). The animal cultures debate. <em>Trends Ecol. Evol.</em>, <em>21</em>(10), 542–547.
+</div>
+<div id="ref-Nakagawa2015" class="csl-entry">
+Nakagawa, N., Matsubara, M., Shimooka, Y., &amp; Nishikawa, M. (2015). Embracing in a wild group of yakushima macaques ( <em>macaca fuscata yakui</em> ) as an example of social customs. <em>Curr. Anthropol.</em>, <em>56</em>(1), 104–120.
+</div>
+<div id="ref-Perry2003" class="csl-entry">
+Perry, S., Baker, M., Fedigan, L., Gros-Louis, J., Jack, K., MacKinnon, K. C., Manson, J. H., Panger, M., Pyle, K., &amp; Rose, L. (2003). Social conventions in wild white‐faced capuchin monkeys. <em>Curr. Anthropol.</em>, <em>44</em>(2), 241–268.
+</div>
+<div id="ref-VanSchaik2003" class="csl-entry">
+Schaik, C. P. van, Ancrenaz, M., Borgen, G., Galdikas, B., Knott, C. D., Singleton, I., Suzuki, A., Utami, S. S., &amp; Merrill, M. (2003). Orangutan cultures and the evolution of material culture. <em>Science</em>, <em>299</em>(5603), 102–105.
+</div>
+<div id="ref-Whiten1999" class="csl-entry">
+Whiten, A., Goodall, J., McGrew, W. C., Nishida, T., Reynolds, V., Sugiyama, Y., Tutin, C. E., Wrangham, R. W., &amp; Boesch, C. (1999). Cultures in chimpanzees. <em>Nature</em>, <em>399</em>(6737), 682–685.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="Chapter4-4.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="Chapter5-2.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

@@ -39,7 +39,6 @@ library(lemon)
 ## フォント関連
 library(extrafont)
 require(systemfonts)
-require(fontregisterer)
 ```
 
 なお、本稿はRの基本操作と`tidyverse`パッケージによるデータハンドリングができることを前提としている。`tidyverse`パッケージを用いたデータ処理については、以下の書籍などを参照。  
