@@ -1257,21 +1257,13 @@ eigen_i &amp;\sim Normal(\mu_i, \sigma)
 <span id="cb101-2"><a href="Chapter4-2.html#cb101-2" tabindex="-1"></a>              <span class="do">## 式</span></span>
 <span id="cb101-3"><a href="Chapter4-2.html#cb101-3" tabindex="-1"></a>              <span class="at">formula =</span> eigen <span class="sc">~</span> age <span class="sc">+</span> rank,</span>
 <span id="cb101-4"><a href="Chapter4-2.html#cb101-4" tabindex="-1"></a>              <span class="do">## 応答変数が従う分布を指定。二項分布なら&quot;binomial&quot;、ポワソン分布なら&quot;poisson&quot;</span></span>
-<span id="cb101-5"><a href="Chapter4-2.html#cb101-5" tabindex="-1"></a>              <span class="at">family =</span> <span class="fu">gaussian</span>(<span class="at">link =</span> <span class="st">&quot;identity&quot;</span>),</span>
+<span id="cb101-5"><a href="Chapter4-2.html#cb101-5" tabindex="-1"></a>              <span class="at">family =</span> <span class="st">&quot;gaussian&quot;</span>,</span>
 <span id="cb101-6"><a href="Chapter4-2.html#cb101-6" tabindex="-1"></a>              <span class="at">progress =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
 <pre><code>## Original model :  
 ##  
 ## 
 ## Call:
-## c(&quot;eigen ~ age + rank , family = gaussian&quot;, &quot;eigen ~ age + rank , family = identity&quot;, 
-## &quot;eigen ~ age + rank , family = function (mu) \nmu&quot;, &quot;eigen ~ age + rank , family = function (eta) \neta&quot;, 
-## &quot;eigen ~ age + rank , family = function (mu) \nrep.int(1, length(mu))&quot;, 
-## &quot;eigen ~ age + rank , family = function (y, mu, wt) \nwt * ((y - mu)^2)&quot;, 
-## &quot;eigen ~ age + rank , family = function (y, n, mu, wt, dev) \n{\n    nobs &lt;- length(y)\n    nobs * (log(dev/nobs * 2 * pi) + 1) + 2 - sum(log(wt))\n}&quot;, 
-## &quot;eigen ~ age + rank , family = function (eta) \nrep.int(1, length(eta))&quot;, 
-## &quot;eigen ~ age + rank , family = expression({\n    n &lt;- rep.int(1, nobs)\n    if (is.null(etastart) &amp;&amp; is.null(start) &amp;&amp; is.null(mustart) &amp;&amp; ((family$link == \&quot;inverse\&quot; &amp;&amp; any(y == 0)) || (family$link == \&quot;log\&quot; &amp;&amp; any(y &lt;= 0)))) \n        stop(\&quot;cannot find valid starting values: please specify some\&quot;)\n    mustart &lt;- y\n})&quot;, 
-## &quot;eigen ~ age + rank , family = function (mu) \nTRUE&quot;, &quot;eigen ~ age + rank , family = function (eta) \nTRUE&quot;, 
-## &quot;eigen ~ age + rank , family = NA&quot;)
+## &quot;eigen ~ age + rank , family = gaussian&quot;
 ## 
 ## Coefficients:
 ##              Estimate Std. Error t value
@@ -1287,7 +1279,7 @@ eigen_i &amp;\sim Normal(\mu_i, \sigma)
 ## 
 ## Number of Fisher Scoring iterations: 2</code></pre>
 <p>分析結果は、<code>ant</code>関数を用いることで確認できる。<br />
-実データの回帰係数とランダムネットワークの回帰係数の分布の比較は以下のように可視化できる。</p>
+モデルの診断プロット（残差 vs 予測値、QQプロット）および実データの回帰係数とランダムネットワークの回帰係数の分布の比較は以下のように可視化できる。</p>
 <div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="Chapter4-2.html#cb103-1" tabindex="-1"></a>r_lm_ants <span class="ot">&lt;-</span> <span class="fu">ant</span>(r_lm_b)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-54-1"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/unnamed-chunk-54-1.png" alt="実データの回帰係数とランダムネットワークの回帰係数の分布の比較" width="1152" />
@@ -1303,8 +1295,15 @@ eigen_i &amp;\sim Normal(\mu_i, \sigma)
 </div>
 <p><br/></p>
 <p>検定結果は以下の通り。<code>p.left</code>と<code>p_right</code>はランダムネットワークの係数が実際の係数よりも小さい/大きい確率を表す。<code>sna</code>パッケージを用いた場合と概ね同じ結果が得られている。</p>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="Chapter4-2.html#cb104-1" tabindex="-1"></a>r_lm_ants<span class="sc">$</span>model</span></code></pre></div>
-<pre><code>## NULL</code></pre>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="Chapter4-2.html#cb104-1" tabindex="-1"></a>r_lm_ants<span class="sc">$</span>coefficients</span></code></pre></div>
+<pre><code>##                Estimate Std. Error    t value p.left p.rigth p.two.sides
+## (Intercept)  0.76714876 0.17728013  4.3273252  0.639   0.361       0.722
+## age          0.01125765 0.01663024  0.6769383  0.707   0.293       0.586
+## rank        -0.02340526 0.00905074 -2.5860055  0.012   0.988       0.024
+##                lower.ci    uper.ci         mean
+## (Intercept)  0.37160954 1.01698268 6.923941e-01
+## age         -0.03231765 0.03319796 7.270721e-05
+## rank        -0.01674872 0.01713235 1.345814e-05</code></pre>
 <p>モデルの診断結果を<code>r_lm_ants$model.diagnostic</code>で調べることもできる。</p>
 </div>
 </div>
@@ -2236,7 +2235,7 @@ no\_birth_{ji} &amp;\sim Poisson(\lambda_{ji})
 ## rank  -0.515  0.239       
 ## age   -0.616  0.042  0.011</code></pre>
 <p>分析結果は、<code>ant</code>パッケージを用いることで確認できる(<strong>Step5</strong>)。<br />
-実データの回帰係数とランダムネットワークの回帰係数の分布の比較は以下のようになる。</p>
+モデルの診断プロット（残差 vs 予測値、QQプロット）および実データの回帰係数とランダムネットワークの回帰係数の分布の比較は以下のようになる。</p>
 <div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="Chapter4-2.html#cb115-1" tabindex="-1"></a>r_glmm_ants <span class="ot">&lt;-</span> <span class="fu">ant</span>(r_glmm)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:unnamed-chunk-63-1"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/unnamed-chunk-63-1.png" alt="実データの回帰係数とランダムネットワークの回帰係数の分布の比較" width="1152" />
@@ -2252,8 +2251,17 @@ no\_birth_{ji} &amp;\sim Poisson(\lambda_{ji})
 </div>
 <p><br/></p>
 <p>検定結果は以下の通り。順位と年齢の有意な影響は確認されたが、固有ベクトル中心性の影響は有意でないという結果が得られた。</p>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="Chapter4-2.html#cb116-1" tabindex="-1"></a>r_glmm_ants<span class="sc">$</span>model</span></code></pre></div>
-<pre><code>## NULL</code></pre>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="Chapter4-2.html#cb116-1" tabindex="-1"></a>r_glmm_ants<span class="sc">$</span>coefficients</span></code></pre></div>
+<pre><code>##                Estimate  Std. Error    z value     Pr(&gt;|z|) p.left p.rigth
+## (Intercept)  0.98545083 0.266388102  3.6993050 2.161907e-04  0.670   0.330
+## eigen       -0.02182084 0.202649228 -0.1076779 9.142512e-01  0.528   0.472
+## rank         0.06799049 0.009906833  6.8629891 6.743438e-12  1.000   0.000
+## age         -0.10673068 0.020844294 -5.1203790 3.049222e-07  0.000   1.000
+##             p.two.sides    lower.ci    uper.ci          mean
+## (Intercept)       0.660  0.49409368 1.27854434  0.8797652261
+## eigen             0.944 -0.40437345 0.33759754 -0.0388205044
+## rank              0.000 -0.01811588 0.02008254  0.0008329045
+## age               0.000 -0.04153359 0.03513181 -0.0029768278</code></pre>
 </div>
 </div>
 <div id="ネットワーク同士の関連の検討" class="section level4 hasAnchor" number="4.2.2.2">

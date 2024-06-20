@@ -366,12 +366,12 @@ r_lm_b <- stat.glm(perm_lm,
               ## 式
               formula = eigen ~ age + rank,
               ## 応答変数が従う分布を指定。二項分布なら"binomial"、ポワソン分布なら"poisson"
-              family = gaussian(link = "identity"),
+              family = "gaussian",
               progress = FALSE)
 ```
 
 分析結果は、`ant`関数を用いることで確認できる。  
-実データの回帰係数とランダムネットワークの回帰係数の分布の比較は以下のように可視化できる。  
+モデルの診断プロット（残差 vs 予測値、QQプロット）および実データの回帰係数とランダムネットワークの回帰係数の分布の比較は以下のように可視化できる。  
 ```{r, fig.dim = c(12,5.5), fig.cap = "実データの回帰係数とランダムネットワークの回帰係数の分布の比較"}
 r_lm_ants <- ant(r_lm_b)
 ```
@@ -379,7 +379,7 @@ r_lm_ants <- ant(r_lm_b)
 
 検定結果は以下の通り。`p.left`と`p_right`はランダムネットワークの係数が実際の係数よりも小さい/大きい確率を表す。`sna`パッケージを用いた場合と概ね同じ結果が得られている。  
 ```{r}
-r_lm_ants$model
+r_lm_ants$coefficients
 ```
 
 モデルの診断結果を`r_lm_ants$model.diagnostic`で調べることもできる。  
@@ -461,7 +461,7 @@ r_glmm <- stat.glmm(perm_glmm,
 ```
 
 分析結果は、`ant`パッケージを用いることで確認できる(**Step5**)。  
-実データの回帰係数とランダムネットワークの回帰係数の分布の比較は以下のようになる。  
+モデルの診断プロット（残差 vs 予測値、QQプロット）および実データの回帰係数とランダムネットワークの回帰係数の分布の比較は以下のようになる。  
 ```{r, fig.dim = c(12,5.5), fig.cap = "実データの回帰係数とランダムネットワークの回帰係数の分布の比較"}
 r_glmm_ants <- ant(r_glmm)
 ```
@@ -469,7 +469,7 @@ r_glmm_ants <- ant(r_glmm)
 
 検定結果は以下の通り。順位と年齢の有意な影響は確認されたが、固有ベクトル中心性の影響は有意でないという結果が得られた。  
 ```{r}
-r_glmm_ants$model
+r_glmm_ants$coefficients
 ```
 
 #### ネットワーク同士の関連の検討  

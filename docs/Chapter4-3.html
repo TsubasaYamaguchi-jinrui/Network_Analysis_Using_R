@@ -1263,7 +1263,7 @@ div.csl-indent {
 ## 
 ## in</code></pre>
 <p>分析結果は、<code>ant</code>関数を用いることで確認できる。<br />
-実データの回帰係数とランダムネットワークの回帰係数の分布の比較は以下のように可視化できる。</p>
+モデルの診断プロット（残差 vs 予測値、QQプロット）および実データの回帰係数とランダムネットワークの回帰係数の分布の比較は以下のように可視化できる。</p>
 <div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="Chapter4-3.html#cb159-1" tabindex="-1"></a>r_glm_ants <span class="ot">&lt;-</span> <span class="fu">ant</span>(glm_ants)</span></code></pre></div>
 <div class="figure" style="text-align: center"><span style="display:block;" id="fig:fig-npermteste-1"></span>
 <img src="Network_Analysis_Using_R_files/figure-html/fig-npermteste-1.png" alt="実データの回帰係数とランダムネットワークの回帰係数の分布の比較" width="1152" />
@@ -1279,8 +1279,15 @@ div.csl-indent {
 </div>
 <p><br/></p>
 <p>検定結果は以下の通り。<code>p.left</code>と<code>p_right</code>はランダムネットワークの係数が実際の係数よりも小さい/大きい確率を表す。<code>sna</code>パッケージを用いた場合と少し異なる結果が得られており、順位の関連も有意である。この違いはパッケージごとのアルゴリズムの違いに起因？</p>
-<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="Chapter4-3.html#cb160-1" tabindex="-1"></a>r_glm_ants<span class="sc">$</span>model</span></code></pre></div>
-<pre><code>## NULL</code></pre>
+<div class="sourceCode" id="cb160"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb160-1"><a href="Chapter4-3.html#cb160-1" tabindex="-1"></a>r_glm_ants<span class="sc">$</span>coefficients</span></code></pre></div>
+<pre><code>##                 Estimate  Std. Error    t value p.left p.rigth p.two.sides
+## (Intercept)  0.237424995 0.159227844  1.4911022 0.9999  0.0001       2e-04
+## age         -0.027928830 0.014936798 -1.8698004 0.0000  1.0000       0e+00
+## rank        -0.006942727 0.008129111 -0.8540574 0.0150  0.9850       3e-02
+##                 lower.ci      uper.ci         mean
+## (Intercept)  0.198183854  0.221152612  0.209428988
+## age         -0.026096189 -0.023854130 -0.024945476
+## rank        -0.006744554 -0.005549161 -0.006120301</code></pre>
 </div>
 </div>
 <div id="pre-network-permutationの欠点" class="section level3 hasAnchor" number="4.3.3">
