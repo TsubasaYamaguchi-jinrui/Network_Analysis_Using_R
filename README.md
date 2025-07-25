@@ -27,3 +27,5 @@
 - Sosa et al. (2020) A multilevel statistical toolkit to study animal social networks: the Animal Network Toolkit Software (ANTs) R package.
 - Borgatti et al.(2022) Analyzing Social Networks Using R. 
 - Network Analysis in R ([Dai Shizukaのホームページ](https://dshizuka.github.io/networkanalysis/tutorials.html))  
+
+[![DOI](https:/560066343/zenodo.org/badge/.svg)](https://zenodo.org/badge/latestdoi/560066343)
